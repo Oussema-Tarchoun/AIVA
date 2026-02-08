@@ -1,0 +1,349 @@
+{# templates/cours/index.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours index - 3D Glassmorphism Dashboard</title>
+    <meta name="description" content="3D Glassmorphism Dashboard Template by TemplateMo">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+
+    <style>
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .course-card {
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(16px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            border-color: rgba(96, 165, 250, 0.6);
+        }
+        .course-card-image {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            background-image: linear-gradient(120deg, #1d4ed8, #22c55e);
+        }
+        .course-card-body {
+            padding: 16px 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .course-code {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #9ca3af;
+        }
+        .course-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            line-height: 1.3;
+        }
+        .course-meta-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            color: #e5e7eb;
+            background: rgba(15, 23, 42, 0.7);
+        }
+        .badge-level {
+            border-color: rgba(96, 165, 250, 0.8);
+            color: #bfdbfe;
+        }
+        .badge-category {
+            border-color: rgba(52, 211, 153, 0.8);
+            color: #bbf7d0;
+        }
+        .badge-status {
+            border-color: rgba(248, 250, 252, 0.4);
+        }
+        .course-description {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #9ca3af;
+            max-height: 44px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .course-footer {
+            padding: 10px 18px 14px;
+            border-top: 1px solid rgba(31, 41, 55, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .course-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .course-actions a {
+            font-size: 11px;
+            color: #93c5fd;
+            text-decoration: none;
+        }
+        .course-actions a:hover {
+            text-decoration: underline;
+        }
+        .tri-link-small {
+            font-size: 12px;
+            color: #9ca3af;
+            text-decoration: none;
+        }
+        .tri-link-small:hover {
+            color: #e5e7eb;
+        }
+        .course-user {
+            display: block;
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="dashboard">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto; margin-top: 12%;">
+                </div>
+                <span class="logo-text">GlassDash</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-section">
+                    <span class="nav-section-title">Main Menu</span>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{{ path('app_cours_index') }}"
+                               class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16v4H4z"/>
+                                    <path d="M4 10h16v10H4z"/>
+                                </svg>
+                                Cours
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('app_chapitre_index') }}" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16v4H4z"/><path d="M4 10h16v4H4z"/><path d="M4 16h16v4H4z"/>
+                                </svg>
+                                Chapitres
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <span class="nav-section-title">Account</span>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{{ path('login') }}" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                </svg>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">TM</div>
+                    <div class="user-info">
+                        <div class="user-name">TemplateMo</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <nav class="navbar">
+                <div class="page-header">
+                    <h1 class="page-title">Cours index</h1>
+                    <div class="page-breadcrumb">
+                        <a href="{{ path('dashboard') }}">Dashboard</a>
+                        <span>/</span>
+                        <span>Cours</span>
+                    </div>
+                </div>
+                <div class="navbar-right">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search...">
+                    </div>
+                    <button class="nav-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <button class="nav-btn" id="theme-toggle" title="Toggle Light/Dark Mode">
+                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/>
+                            <path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/>
+                            <path d="M2 12h2"/><path d="M20 12h2"/>
+                            <path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+
+            <section class="content-grid" style="grid-template-columns: 1fr;">
+                <div class="glass-card table-card" style="grid-column: span 1;">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">All Cours</h2>
+                            <p class="card-subtitle">Manage all courses</p>
+                        </div>
+                        <div class="card-actions">
+                            <form method="get" action="{{ path('app_cours_index') }}" class="search-form" style="display:flex; gap:8px;">
+                                <input type="text"
+                                       name="q"
+                                       value="{{ search ?? '' }}"
+                                       placeholder="Rechercher par catégorie..."
+                                       class="search-input">
+                                <button type="submit" class="card-btn">Rechercher</button>
+                            </form>
+                            <a href="{{ path('app_cours_new') }}" class="card-btn" style="margin-left: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+                                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                Create new
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; margin-top:8px; padding:0 4px;">
+                        {% set triLabel = 'Date_creation ↑↓' %}
+                        {% if dir is defined and dir == 'ASC' %}
+                            {% set triLabel = 'Date_creation ↑' %}
+                        {% elseif dir is defined and dir == 'DESC' %}
+                            {% set triLabel = 'Date_creation ↓' %}
+                        {% endif %}
+                        <a href="{{ path('app_cours_index', {
+                            q: search ?? '',
+                            dir: (dir is defined and dir == 'ASC') ? 'DESC' : 'ASC'
+                        }) }}" class="tri-link-small">
+                            {{ triLabel }}
+                        </a>
+                    </div>
+
+                    <div class="courses-grid">
+                        {% for cour in cours %}
+                            <article class="course-card">
+                                <div class="course-card-image"></div>
+
+                                <div class="course-card-body">
+                                    <div class="course-code">
+                                        Cours #{{ cour.idCours }} • {{ cour.categorie }}
+                                    </div>
+                                    <div class="course-title">
+                                        {{ cour.tittre }}
+                                    </div>
+
+                                    <div class="course-meta-row">
+                                        <span class="badge badge-level">
+                                            {{ cour.niveau }}
+                                        </span>
+                                        <span class="badge">
+                                            Durée: {{ cour.dureeEstimee }} h
+                                        </span>
+                                        <span class="badge badge-status">
+                                            {{ cour.status }}
+                                        </span>
+                                    </div>
+
+                                    <p class="course-description">
+                                        {{ cour.description }}
+                                    </p>
+                                </div>
+
+                                <div class="course-footer">
+                                    <span>
+                                        {{ cour.dateCreation ? cour.dateCreation|date('Y-m-d') : '' }}
+                                        {% if cour.user %}
+                                            <span class="course-user">
+                                                par {{ cour.user.name }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                    <div class="course-actions">
+                                        <a href="{{ path('app_cours_show', {'id': cour.id}) }}">show</a>
+                                        <a href="{{ path('app_cours_edit', {'id': cour.id}) }}">edit</a>
+                                        <a href="{{ path('app_chapitre_by_cours', {'id': cour.id}) }}">chapitres</a>
+                                    </div>
+                                </div>
+                            </article>
+                        {% else %}
+                            <p style="padding: 18px; font-size: 13px; color: #9ca3af;">
+                                No records found.
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="mobile-menu-toggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    <footer class="site-footer">
+        <p>Copyright © 2026 Your Company.
+            Designed by <a href="https://templatemo.com" target="_blank" rel="nofollow">TemplateMo</a>
+        </p>
+    </footer>
+
+    <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+</body>
+</html>

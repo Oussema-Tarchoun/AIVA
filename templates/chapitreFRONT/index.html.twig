@@ -1,0 +1,246 @@
+{# templates/chapitreFRONT/index.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapters - AIVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <style>
+    .learning-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 0.25rem;
+    }
+    .page-header p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .chapter-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      padding: 1.5rem;
+      color: #e2e8f0;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.7);
+      transition: all 0.3s ease;
+    }
+    .chapter-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59, 130, 246, 0.6);
+      box-shadow: 0 20px 45px rgba(37, 99, 235, 0.4);
+    }
+    .chapter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .chapter-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .chapter-pill {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #cbd5f5;
+      background: rgba(15, 23, 42, 0.7);
+    }
+    .chapter-order {
+      color: #a5b4fc;
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+    .chapter-content-preview {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      max-height: 4.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chapter-footer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .btn-small {
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: block;
+    }
+    .btn-view {
+      background: rgba(0, 212, 170, 0.12);
+      color: #00d4aa;
+      border: 1px solid rgba(0, 212, 170, 0.4);
+    }
+    .btn-edit {
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+    .btn-delete {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .btn-view:hover {
+      background: rgba(0, 212, 170, 0.25);
+      border-color: #00d4aa;
+    }
+    .btn-edit:hover {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: #a855f7;
+    }
+    .btn-delete:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .btn-new {
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #020617;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+    }
+    .btn-new:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.5);
+    }
+    .back-link {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+    <div class="nav-links">
+      <a href="{{ path('finance') }}">Finance</a>
+      <a href="{{ path('cours_front_index') }}">Learning</a>
+      <a href="{{ path('nutrition') }}">Nutrition</a>
+      <a href="{{ path('health') }}">Health</a>
+      <a href="{{ path('home') }}">Home</a>
+    </div>
+    <button class="get-started">Get Started</button>
+  </nav>
+
+  <div class="learning-container">
+    <div class="page-header">
+      {% if cours %}
+        <p><a href="{{ path('cours_front_show', {'id': cours.id}) }}" class="back-link">← Back to {{ cours.tittre }}</a></p>
+        <h1>Chapters of {{ cours.tittre }}</h1>
+        <p>Course #{{ cours.idCours }} • {{ cours.categorie }}</p>
+      {% else %}
+        <h1>All Chapters</h1>
+        <p>Browse and manage all your chapters</p>
+      {% endif %}
+    </div>
+
+    <div class="toolbar">
+      <div>
+        {% if cours %}
+          <a href="{{ path('chapitre_front_new') }}" class="btn-new">+ New Chapter</a>
+        {% else %}
+          <a href="{{ path('chapitre_front_new') }}" class="btn-new">+ New Chapter</a>
+        {% endif %}
+      </div>
+      <a href="{{ path('cours_front_index') }}" class="back-link">← Back to My Courses</a>
+    </div>
+
+    {% if chapitres is not empty %}
+      <div class="chapters-grid">
+        {% for chapitre in chapitres %}
+          <div class="chapter-card">
+            <div class="chapter-header">
+              <div>
+                <div class="chapter-title">{{ chapitre.titre }}</div>
+                <div class="chapter-order">Order: {{ chapitre.ordre }}</div>
+              </div>
+              {% if chapitre.idCours %}
+                <span class="chapter-pill">{{ chapitre.idCours.tittre }}</span>
+              {% endif %}
+            </div>
+
+            <div class="chapter-content-preview">
+              {{ chapitre.contenu|slice(0, 200) }}{% if chapitre.contenu|length > 200 %}...{% endif %}
+            </div>
+
+            <div class="chapter-footer">
+              <a href="{{ path('chapitre_front_show', {'id': chapitre.id}) }}" class="btn-small btn-view">View</a>
+              <a href="{{ path('chapitre_front_edit', {'id': chapitre.id}) }}" class="btn-small btn-edit">Edit</a>
+              <form method="post"
+                    action="{{ path('chapitre_front_delete', {'id': chapitre.id}) }}"
+                    onsubmit="return confirm('Are you sure you want to delete this chapter?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chapitre.id) }}">
+                <button type="submit" class="btn-small btn-delete">Delete</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state-icon">📖</div>
+        <h3>No chapters found</h3>
+        <p>Create your first chapter to start structuring your course</p>
+        <a href="{{ path('chapitre_front_new') }}" class="btn-new">+ New Chapter</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

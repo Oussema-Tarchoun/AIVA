@@ -1,0 +1,27 @@
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+    {{ form_errors(form) }}
+
+    {# no idChapitre here anymore #}
+
+    <div class="form-row">
+        {{ form_row(form.titre) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.contenu) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.ordre) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.exercise) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.id_cours) }}
+    </div>
+
+    <div class="form-actions">
+        <button class="btn-primary">
+            {{ button_label|default('Save') }}
+        </button>
+    </div>
+{{ form_end(form) }}

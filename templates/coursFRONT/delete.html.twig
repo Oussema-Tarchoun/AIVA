@@ -1,0 +1,12 @@
+#[Route('/{id}', name: 'cours_front_delete', methods: ['POST'])]
+public function delete(Request $request, Cours $cours, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete'.$cours->getId(), $request->request->get('_token'))) {
+        $entityManager->remove($cours);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Course deleted successfully!');
+    }
+
+    return $this->redirectToRoute('cours_front_index', [], Response::HTTP_SEE_OTHER);
+}

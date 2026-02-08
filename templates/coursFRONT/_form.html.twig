@@ -1,0 +1,32 @@
+{# templates/coursFRONT/_form.html.twig #}
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+    {{ form_errors(form) }}
+
+    <div class="form-row">
+        {{ form_row(form.tittre) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.description) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.niveau) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.dureeEstimee) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.categorie) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.dateCreation) }}
+    </div>
+    <div class="form-row">
+        {{ form_row(form.status) }}
+    </div>
+
+    <div class="form-actions">
+        <button class="add-course-btn">
+            {{ button_label|default('Save') }}
+        </button>
+    </div>
+{{ form_end(form) }}

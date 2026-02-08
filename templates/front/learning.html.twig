@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Learning - AIVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <style>
+    /* Learning Page Specific Styles */
+    .learning-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00d4aa 0%, #60a5fa 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1.15rem;
+    }
+
+    /* Search and Filter Bar - Two Rows */
+    .controls-wrapper {
+      margin-bottom: 2.5rem;
+    }
+
+    .search-row {
+      margin-bottom: 1rem;
+    }
+
+    .search-box {
+      max-width: 500px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 1rem 1.25rem 1rem 3.25rem;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1.5px solid rgba(100, 116, 139, 0.3);
+      border-radius: 14px;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: #64748b;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #00d4aa;
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.12);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .filters-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      padding: 0.875rem 2.5rem 0.875rem 1.25rem;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1.5px solid rgba(100, 116, 139, 0.3);
+      border-radius: 12px;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      min-width: 160px;
+    }
+
+    .filter-select:hover {
+      border-color: rgba(100, 116, 139, 0.5);
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #00d4aa;
+      background-color: rgba(30, 41, 59, 0.9);
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+    }
+
+    .add-course-btn {
+      padding: 0.875rem 1.75rem;
+      background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+      color: #0a0f1a;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      margin-left: auto;
+      box-shadow: 0 4px 12px rgba(0, 212, 170, 0.25);
+    }
+
+    .add-course-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.4);
+      background: linear-gradient(135deg, #00e6c0 0%, #00c9a7 100%);
+    }
+
+    .add-course-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* Course Grid */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .course-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+      border: 1.5px solid rgba(100, 116, 139, 0.25);
+      border-radius: 20px;
+      padding: 1.75rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #00d4aa 0%, #60a5fa 50%, #a855f7 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .course-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 212, 170, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 212, 170, 0.2);
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+    }
+
+    .course-card:hover::before {
+      opacity: 1;
+    }
+
+    .course-card:hover::after {
+      opacity: 1;
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .course-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .course-status {
+      padding: 0.35rem 0.9rem;
+      border-radius: 24px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      white-space: nowrap;
+    }
+
+    .status-active {
+      background: rgba(0, 212, 170, 0.15);
+      color: #00d4aa;
+      border: 1px solid rgba(0, 212, 170, 0.3);
+    }
+
+    .status-completed {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .status-draft {
+      background: rgba(100, 116, 139, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(100, 116, 139, 0.3);
+    }
+
+    .course-description {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .course-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #64748b;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 8px;
+      border: 1px solid rgba(100, 116, 139, 0.15);
+    }
+
+    .meta-icon {
+      font-size: 1rem;
+    }
+
+    .course-footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(100, 116, 139, 0.25);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-view, .btn-edit, .btn-delete {
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-view {
+      background: rgba(0, 212, 170, 0.12);
+      color: #00d4aa;
+      border: 1.5px solid rgba(0, 212, 170, 0.4);
+    }
+
+    .btn-view:hover {
+      background: rgba(0, 212, 170, 0.25);
+      border-color: #00d4aa;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 212, 170, 0.3);
+    }
+
+    .btn-edit {
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+      border: 1.5px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .btn-edit:hover {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: #a855f7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(168, 85, 247, 0.3);
+    }
+
+    .btn-delete {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1.5px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-delete:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: #64748b;
+    }
+
+    .empty-state-icon {
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.4;
+    }
+
+    .empty-state h3 {
+      font-size: 1.75rem;
+      color: #cbd5e1;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      color: #94a3b8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .filters-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .add-course-btn {
+        margin-left: 0;
+        justify-content: center;
+      }
+
+      .page-header h1 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a855f7" />
+              <stop offset="50%" stop-color="#00d4aa" />
+              <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+          </defs>
+          <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+          <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+        </svg>
+        <span class="logo-text">AIVA</span>
+      </div>
+      <div class="nav-links">
+        <a href="{{ path('finance') }}">Finance</a>
+        <a href="{{ path('cours_front_index') }}" class="active">Learning</a>
+        <a href="{{ path('nutrition') }}">Nutrition</a>
+        <a href="{{ path('health') }}">Health</a>
+        <a href="{{ path('home') }}">Home</a>
+      </div>
+      <button class="get-started">Get Started</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="learning-container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>Personal Learning</h1>
+        <p>Track your courses, progress, and achieve your learning goals</p>
+      </div>
+
+      <!-- Search and Filter Controls -->
+      <div class="controls-wrapper">
+        <!-- Search Row -->
+        <div class="search-row">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search courses...">
+          </div>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="filters-row">
+          <select class="filter-select" id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="programming">Programming</option>
+            <option value="design">Design</option>
+            <option value="business">Business</option>
+            <option value="language">Language</option>
+            <option value="science">Science</option>
+          </select>
+
+          <select class="filter-select" id="levelFilter">
+            <option value="">All Levels</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+
+          <select class="filter-select" id="statusFilter">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="draft">Draft</option>
+          </select>
+
+          <button class="add-course-btn" onclick="alert('CRUD coming soon!')">
+            <span>+</span> Add Course
+          </button>
+        </div>
+      </div>
+
+      <!-- Courses Grid -->
+      <div class="courses-grid" id="coursesGrid">
+        
+        {# Sample courses #}
+        <div class="course-card" data-category="programming" data-level="beginner" data-status="active">
+          <div class="course-header">
+            <div>
+              <h3 class="course-title">Introduction to Python</h3>
+            </div>
+            <span class="course-status status-active">Active</span>
+          </div>
+          
+          <p class="course-description">Learn the fundamentals of Python programming from scratch</p>
+          
+          <div class="course-meta">
+            <div class="meta-item">
+              <span class="meta-icon">📚</span>
+              <span>Beginner</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">⏱️</span>
+              <span>20h</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">🏷️</span>
+              <span>Programming</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">📖</span>
+              <span>12 chapters</span>
+            </div>
+          </div>
+          
+          <div class="course-footer">
+            <a href="#" class="btn-view">View</a>
+            <a href="#" class="btn-edit">Edit</a>
+            <button class="btn-delete" onclick="return confirm('Delete this course?')">Delete</button>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="design" data-level="intermediate" data-status="active">
+          <div class="course-header">
+            <div>
+              <h3 class="course-title">UI/UX Design Principles</h3>
+            </div>
+            <span class="course-status status-active">Active</span>
+          </div>
+          
+          <p class="course-description">Master the art of creating beautiful and functional user interfaces</p>
+          
+          <div class="course-meta">
+            <div class="meta-item">
+              <span class="meta-icon">📚</span>
+              <span>Intermediate</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">⏱️</span>
+              <span>30h</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">🏷️</span>
+              <span>Design</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">📖</span>
+              <span>8 chapters</span>
+            </div>
+          </div>
+          
+          <div class="course-footer">
+            <a href="#" class="btn-view">View</a>
+            <a href="#" class="btn-edit">Edit</a>
+            <button class="btn-delete" onclick="return confirm('Delete this course?')">Delete</button>
+          </div>
+        </div>
+
+        <div class="course-card" data-category="business" data-level="advanced" data-status="completed">
+          <div class="course-header">
+            <div>
+              <h3 class="course-title">Digital Marketing Strategy</h3>
+            </div>
+            <span class="course-status status-completed">Completed</span>
+          </div>
+          
+          <p class="course-description">Advanced techniques for modern digital marketing campaigns</p>
+          
+          <div class="course-meta">
+            <div class="meta-item">
+              <span class="meta-icon">📚</span>
+              <span>Advanced</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">⏱️</span>
+              <span>40h</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">🏷️</span>
+              <span>Business</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">📖</span>
+              <span>15 chapters</span>
+            </div>
+          </div>
+          
+          <div class="course-footer">
+            <a href="#" class="btn-view">View</a>
+            <a href="#" class="btn-edit">Edit</a>
+            <button class="btn-delete" onclick="return confirm('Delete this course?')">Delete</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const levelFilter = document.getElementById('levelFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const coursesGrid = document.getElementById('coursesGrid');
+
+    function filterCourses() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const category = categoryFilter.value.toLowerCase();
+      const level = levelFilter.value.toLowerCase();
+      const status = statusFilter.value.toLowerCase();
+      
+      const cards = coursesGrid.querySelectorAll('.course-card');
+      
+      cards.forEach(card => {
+        const title = card.querySelector('.course-title').textContent.toLowerCase();
+        const description = card.querySelector('.course-description').textContent.toLowerCase();
+        const cardCategory = card.dataset.category;
+        const cardLevel = card.dataset.level;
+        const cardStatus = card.dataset.status;
+        
+        const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+        const matchesCategory = !category || cardCategory === category;
+        const matchesLevel = !level || cardLevel === level;
+        const matchesStatus = !status || cardStatus === status;
+        
+        if (matchesSearch && matchesCategory && matchesLevel && matchesStatus) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', filterCourses);
+    categoryFilter.addEventListener('change', filterCourses);
+    levelFilter.addEventListener('change', filterCourses);
+    statusFilter.addEventListener('change', filterCourses);
+  </script>
+</body>
+</html>
