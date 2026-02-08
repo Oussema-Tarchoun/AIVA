@@ -1,0 +1,13 @@
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 18px;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.search-btn:hover {
+    color: #667eea;
+}

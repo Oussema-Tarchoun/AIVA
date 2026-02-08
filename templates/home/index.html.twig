@@ -1,0 +1,96 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            {% if app.user %}
+                <h1>Welcome back, {{ app.user.name }}! 👋</h1>
+                <p>You're logged in as {{ is_granted('ROLE_ADMIN') ? 'an Administrator' : 'a User' }}</p>
+            {% else %}
+                <h1>Welcome to GlassDash</h1>
+                <p>Your modern platform for seamless management</p>
+            {% endif %}
+            
+            <div class="hero-buttons">
+                {% if app.user %}
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_user_index') }}" class="btn btn-outline">Go to Admin Panel</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Get Started</a>
+                    <a href="{{ path('app_login') }}" class="btn btn-outline">Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-card">
+                <div class="card-icon">🚀</div>
+                <h3>Fast & Efficient</h3>
+                <p>Streamline your workflow</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Our Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized for speed and performance</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure</h3>
+                <p>Your data is protected with industry-standard security</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Analytics</h3>
+                <p>Track your progress with powerful insights</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Beautiful Design</h3>
+                <p>Modern and intuitive user interface</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if app.user %}
+<section class="user-info">
+    <div class="container">
+        <div class="info-card">
+            <h2>Your Account Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ app.user.name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ app.user.email }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Role:</span>
+                    <span class="info-value">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <span class="badge badge-admin">Administrator</span>
+                        {% else %}
+                            <span class="badge badge-user">User</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
