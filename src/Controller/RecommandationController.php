@@ -9,8 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/recommandations')]
+#[IsGranted('ROLE_ADMIN')] // ✅ ADMIN ONLY + (avec security.yaml) redirect login au lieu 403
 class RecommandationController extends AbstractController
 {
     #[Route('', name: 'recommendations', methods: ['GET','POST'])]
@@ -65,7 +67,8 @@ class RecommandationController extends AbstractController
                         $editErrors[$rec->getId()]['dateGeneration'] = 'La date est obligatoire';
                     }
 
-                    if (empty($editErrors)) {
+                    // ✅ IMPORTANT: vérifier les erreurs du rec courant
+                    if (empty($editErrors[$rec->getId()] ?? [])) {
                         $rec->setTitre($titre)
                             ->setDescription($description)
                             ->setNiveauImpact($niveauImpact)
@@ -187,10 +190,8 @@ class RecommandationController extends AbstractController
     }
 
     #[Route('/search', name: 'recommandation_search', methods: ['GET'])]
-    public function searchAjax(
-        Request $request,
-        EntityManagerInterface $em
-    ): Response {
+    public function searchAjax(Request $request, EntityManagerInterface $em): Response
+    {
         $search = trim($request->query->get('q', ''));
 
         $qb = $em->getRepository(Recommandation::class)->createQueryBuilder('r');

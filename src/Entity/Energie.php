@@ -34,9 +34,9 @@ class Energie
     #[ORM\Column(length: 255)]
     private ?string $source = null;
 
-    // Relation ManyToOne vers User
+    // ✅ Relation ManyToOne vers User (CASCADE DELETE added)
     #[ORM\ManyToOne(inversedBy: "energies")]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     // Relation OneToMany vers Recommandation

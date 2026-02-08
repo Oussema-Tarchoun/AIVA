@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -21,22 +23,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-   
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isBlocked = false;
+
+    // ✅ ADD THIS RELATION WITH ENERGIE
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: Energie::class,
+        cascade: ['remove'],
+        orphanRemoval: true
+    )]
+    private Collection $energies;
+
+    public function __construct()
+    {
+        $this->energies = new ArrayCollection();
+    }
+
+    // =======================
+    // Getters & Setters
+    // =======================
 
     public function getId(): ?int
     {
@@ -51,45 +66,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -98,14 +95,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
     #[\Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
     }
 
     public function getName(): ?string
@@ -116,22 +111,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->isBlocked;
+    }
+
+    public function setIsBlocked(bool $isBlocked): static
+    {
+        $this->isBlocked = $isBlocked;
+        return $this;
+    }
+
+    // =======================
+    // Energie Relation Methods
+    // =======================
+
+    public function getEnergies(): Collection
+    {
+        return $this->energies;
+    }
+
+    public function addEnergie(Energie $energie): static
+    {
+        if (!$this->energies->contains($energie)) {
+            $this->energies->add($energie);
+            $energie->setUser($this);
+        }
 
         return $this;
     }
 
-   #[ORM\Column(type: 'boolean', options: ['default' => false])]
-private bool $isBlocked = false;
+    public function removeEnergie(Energie $energie): static
+    {
+        if ($this->energies->removeElement($energie)) {
+            if ($energie->getUser() === $this) {
+                $energie->setUser(null);
+            }
+        }
 
-public function isBlocked(): bool
-{
-    return $this->isBlocked;
-}
-
-public function setIsBlocked(bool $isBlocked): static
-{
-    $this->isBlocked = $isBlocked;
-    return $this;
-}
-   
+        return $this;
+    }
 }

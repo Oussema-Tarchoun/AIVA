@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')] // ✅ ADMIN ONLY + redirect login via security.yaml (access_denied_url)
 class StateEnergiController extends AbstractController
 {
     #[Route('/stateenergi', name: 'stateenergi')]
@@ -25,13 +27,14 @@ class StateEnergiController extends AbstractController
             throw $this->createAccessDeniedException('Votre compte est bloqué.');
         }
 
-        $isAdmin = $this->isGranted('ROLE_ADMIN');
+        // Ici c'est forcément admin grâce à IsGranted
+        $isAdmin = true;
 
         // ✅ Admin peut filtrer par utilisateur via ?user=ID, sinon "tous"
         $selectedUser = null;
         $selectedUserId = $request->query->get('user'); // "all" ou id
 
-        if ($isAdmin && $selectedUserId && $selectedUserId !== 'all') {
+        if ($selectedUserId && $selectedUserId !== 'all') {
             $selectedUser = $em->getRepository(User::class)->find($selectedUserId);
             if (!$selectedUser) {
                 $this->addFlash('error', 'Utilisateur invalide.');
@@ -39,13 +42,7 @@ class StateEnergiController extends AbstractController
             }
         }
 
-        // ✅ Si pas admin => stats du user connecté uniquement
-        if (!$isAdmin) {
-            $selectedUser = $currentUser;
-        }
-
         // ===================== DATA ENERGIES =====================
-        // Si $selectedUser === null => admin en mode "tous"
         if ($selectedUser) {
             $energies = $em->getRepository(Energie::class)->findBy(['user' => $selectedUser]);
         } else {
@@ -53,15 +50,10 @@ class StateEnergiController extends AbstractController
         }
 
         // ===================== DATA RECOMMANDATIONS =====================
-        // ⚠️ Si Recommandation est reliée à User (ex: rec->getUser()), tu peux filtrer pareil.
-        // Sinon on garde global.
         $allRecs = $em->getRepository(Recommandation::class)->findAll();
 
         // ===================== COUNTS =====================
-        // Totaux globaux (dashboard global)
         $totalUsers = $em->getRepository(User::class)->count([]);
-
-        // Total energies / recs selon filtre
         $totalEnergies = count($energies);
         $totalRecommandations = count($allRecs);
 
@@ -85,30 +77,24 @@ class StateEnergiController extends AbstractController
 
         foreach ($energies as $energy) {
             $date = $energy->getDateEnregistrement();
-            if (!$date) {
-                continue;
-            }
+            if (!$date) continue;
 
             $val = (float) $energy->getValeur();
             $totalConsommation += $val;
 
-            // Mensuel (année courante)
             if ((int)$date->format('Y') === $year) {
                 $monthIndex = (int)$date->format('n');
                 $monthlyData[$monthIndex] += $val;
             }
 
-            // Mois actuel
             if ((int)$date->format('n') === $currentMonth && (int)$date->format('Y') === $year) {
                 $currentMonthTotal += $val;
             }
 
-            // Mois dernier
             if ((int)$date->format('n') === $lastMonth && (int)$date->format('Y') === $lastMonthYear) {
                 $lastMonthTotal += $val;
             }
 
-            // Activités récentes
             $diff = $now->diff($date);
             if ($diff->days === 0 && $diff->h === 0) {
                 $timeAgo = $diff->i . ' minutes ago';
@@ -142,13 +128,10 @@ class StateEnergiController extends AbstractController
             ];
 
             $type = (string) $energy->getTypeEnergie();
-            if (!isset($typeTotals[$type])) {
-                $typeTotals[$type] = 0;
-            }
+            if (!isset($typeTotals[$type])) $typeTotals[$type] = 0;
             $typeTotals[$type] += $val;
         }
 
-        // ÉVOLUTION (%)
         $energyChangePercent = 0;
         $energyChangeDirection = 'positive';
 
@@ -157,7 +140,6 @@ class StateEnergiController extends AbstractController
             $energyChangeDirection = $energyChangePercent >= 0 ? 'positive' : 'negative';
         }
 
-        // GRAPHIQUE MENSUEL
         $months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
         $monthlyGraph = [];
 
@@ -169,7 +151,6 @@ class StateEnergiController extends AbstractController
             ];
         }
 
-        // DONUT CHART (Top 3 types)
         arsort($typeTotals);
         $topTypes = array_slice($typeTotals, 0, 3, true);
         $totalAll = array_sum($topTypes);
@@ -189,13 +170,10 @@ class StateEnergiController extends AbstractController
             $i++;
         }
 
-        // RECOMMANDATIONS PAR IMPACT (global)
         $impactCounts = [];
         foreach ($allRecs as $rec) {
             $impact = $rec->getNiveauImpact();
-            if (!isset($impactCounts[$impact])) {
-                $impactCounts[$impact] = 0;
-            }
+            if (!isset($impactCounts[$impact])) $impactCounts[$impact] = 0;
             $impactCounts[$impact]++;
         }
 
@@ -215,8 +193,8 @@ class StateEnergiController extends AbstractController
             $pIndex++;
         }
 
-        // ✅ pour dropdown admin
-        $users = $isAdmin ? $em->getRepository(User::class)->findAll() : [];
+        // ✅ dropdown admin
+        $users = $em->getRepository(User::class)->findAll();
 
         return $this->render('back/energie/stateenergi.html.twig', [
             'active_page' => 'stateenergi',

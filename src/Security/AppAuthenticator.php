@@ -42,24 +42,34 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-   public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-{
-    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-        return new RedirectResponse($targetPath);
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        $session = $request->getSession();
+
+        // ✅ Si on a un targetPath, on l'utilise seulement s'il n'est pas /login
+        if ($targetPath = $this->getTargetPath($session, $firewallName)) {
+            $loginUrl = $this->urlGenerator->generate(self::LOGIN_ROUTE);
+
+            // Si targetPath != login => OK
+            if ($targetPath !== $loginUrl && !str_contains($targetPath, '/login')) {
+                return new RedirectResponse($targetPath);
+            }
+
+            // ✅ IMPORTANT: si targetPath pointe vers login, on le supprime
+            $this->removeTargetPath($session, $firewallName);
+        }
+
+        // ✅ Redirection par rôle
+        $roles = $token->getRoleNames();
+
+        // Admin => "/"
+        if (in_array('ROLE_ADMIN', $roles, true)) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
+
+        // User => "/front"
+        return new RedirectResponse($this->urlGenerator->generate('front_home'));
     }
-
-    // Get the authenticated user
-    $user = $token->getUser();
-
-    // Check if user has ROLE_ADMIN
-    if (in_array('ROLE_ADMIN', $user->getRoles())) {
-        // Redirect to user management page (admin dashboard)
-        return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-    }
-
-    
-    return new RedirectResponse($this->urlGenerator->generate('app_home'));
-}
 
     protected function getLoginUrl(Request $request): string
     {
