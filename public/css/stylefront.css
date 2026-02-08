@@ -1,0 +1,187 @@
+/* Global Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0a0a12;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-links a {
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 40px;
+}
+
+.get-started {
+  border: 1px solid #00d4aa;
+  background: transparent;
+  color: #00d4aa;
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 80px;
+  position: relative;
+}
+
+/* Glow Effect */
+.glow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(0,212,170,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Hero Logo */
+.hero-logo {
+  margin-bottom: 16px;
+}
+
+/* Hero Text */
+.hero-subtitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+
+.hero-title {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.hero-title span {
+  background: linear-gradient(90deg, #00d4aa, #14b8a6);
+  background-clip: text;              /* standard */
+  -webkit-background-clip: text;      /* chrome / safari */
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-description {
+  color: #888;
+  font-size: 18px;
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* Hero Button */
+.hero-button {
+  background: linear-gradient(135deg, #0d9488, #00d4aa);
+  border: none;
+  color: #0a0a12;
+  padding: 16px 32px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* pour finance*/ 
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.input-form label {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-form input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #0a0a12;
+  color: #fff;
+  font-size: 14px;
+}
+
+.input-form input::placeholder {
+  color: #666;
+}
+
+
+
+
+/* Forms Login / Register */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.auth-form label {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.auth-form input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #0a0a12;
+  color: #fff;
+  font-size: 14px;
+}
+
+.auth-form input::placeholder {
+  color: #666;
+}
+
+.auth-form button {
+  margin-top: 8px;
+}

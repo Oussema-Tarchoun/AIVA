@@ -1,0 +1,174 @@
+{% extends 'back/sport/base_back.html.twig' %}
+
+{% block title %}Gestion des Objectifs{% endblock %}
+
+{% block body %}
+{% set currentSort = sort|default('id') %}
+{% set currentDir  = dir|default('desc') %}
+
+<div class="page-header">
+    <div class="page-title">🎯 Gestion des Objectifs</div>
+    <div class="page-breadcrumb">
+        <a href="#">Dashboard</a> <span>/</span> <span>Objectifs</span>
+    </div>
+</div>
+
+{# ✅ STATS CARDS (GlassDash style) #}
+<div class="stats-grid">
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Total objectifs</h3>
+                <div class="stat-value">{{ objectifs|length }}</div>
+            </div>
+            <div class="stat-icon cyan">🎯</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>En cours</h3>
+                <div class="stat-value">{{ objectifs|filter(o => o.statut == 'En cours')|length }}</div>
+            </div>
+            <div class="stat-icon magenta">⏳</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Atteints</h3>
+                <div class="stat-value">{{ objectifs|filter(o => o.statut == 'Atteint')|length }}</div>
+            </div>
+            <div class="stat-icon success">✅</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Abandonnés</h3>
+                <div class="stat-value">{{ objectifs|filter(o => o.statut == 'Abandonné')|length }}</div>
+            </div>
+            <div class="stat-icon purple">🛑</div>
+        </div>
+    </div>
+</div>
+
+{# ✅ TABLE CARD (GlassDash style) #}
+<div class="glass-card table-card">
+    <div class="card-header" style="gap:16px; flex-wrap:wrap;">
+        <div>
+            <div class="card-title">📋 Liste des objectifs</div>
+            <div class="card-subtitle">Recherche + Tri (fonctionnalités avancées)</div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-left:auto;">
+            <a class="card-btn active" href="{{ path('app_objectif_new') }}">➕ Nouvel objectif</a>
+        </div>
+    </div>
+
+    {# ✅ SEARCH + TRI (fonctionnel) #}
+    <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+        <input
+            class="search-input"
+            style="width:360px; max-width:100%;"
+            name="search"
+            value="{{ search|default('') }}"
+            placeholder="Rechercher (description / type / statut / user)..."
+        >
+
+        <select class="settings-select" name="sort">
+            <option value="id" {{ currentSort == 'id' ? 'selected' : '' }}>Tri: ID</option>
+            <option value="description" {{ currentSort == 'description' ? 'selected' : '' }}>Tri: Description</option>
+            <option value="user" {{ currentSort == 'user' ? 'selected' : '' }}>Tri: Utilisateur</option>
+            <option value="type" {{ currentSort == 'type' ? 'selected' : '' }}>Tri: Type</option>
+            <option value="valeurCible" {{ currentSort == 'valeurCible' ? 'selected' : '' }}>Tri: Cible</option>
+            <option value="dateDebut" {{ currentSort == 'dateDebut' ? 'selected' : '' }}>Tri: Date début</option>
+            <option value="dateFin" {{ currentSort == 'dateFin' ? 'selected' : '' }}>Tri: Date fin</option>
+            <option value="statut" {{ currentSort == 'statut' ? 'selected' : '' }}>Tri: Statut</option>
+        </select>
+
+        <select class="settings-select" name="dir">
+            <option value="asc" {{ currentDir == 'asc' ? 'selected' : '' }}>Ascendant ▲</option>
+            <option value="desc" {{ currentDir == 'desc' ? 'selected' : '' }}>Descendant ▼</option>
+        </select>
+
+        <button class="card-btn active" type="submit">🔎 Rechercher</button>
+        <a class="card-btn" href="{{ path('app_objectif_index') }}">↻ Reset</a>
+    </form>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Utilisateur</th>
+                    <th>Type</th>
+                    <th>Cible</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Statut</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for o in objectifs %}
+                <tr>
+                    <td style="color:var(--text-primary); font-weight:600;">
+                        {{ o.description }}
+                    </td>
+
+                    <td>
+                        <div class="table-user">
+                            <div class="table-avatar" style="background:linear-gradient(135deg, rgba(52,211,153,.2), rgba(212,165,116,.2));">
+                                👤
+                            </div>
+                            <div class="table-user-info">
+                                <div class="table-user-name">{{ o.user ? o.user.name : '—' }}</div>
+                                <div class="table-user-email">Utilisateur</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>{{ o.type }}</td>
+                    <td class="table-amount">{{ o.valeurCible }}</td>
+                    <td>{{ o.dateDebut ? o.dateDebut|date('d/m/Y') : '-' }}</td>
+                    <td>{{ o.dateFin ? o.dateFin|date('d/m/Y') : '-' }}</td>
+
+                    <td>
+                        {% if o.statut == 'Atteint' %}
+                            <span class="status-badge completed">✅ Atteint</span>
+                        {% elseif o.statut == 'En cours' %}
+                            <span class="status-badge processing">⏳ En cours</span>
+                        {% else %}
+                            <span class="status-badge pending">🛑 Abandonné</span>
+                        {% endif %}
+                    </td>
+
+                    <td style="text-align:right;">
+                        <a class="card-btn" href="{{ path('app_objectif_show',{id:o.id}) }}">👁</a>
+                        <a class="card-btn active" href="{{ path('app_objectif_edit',{id:o.id}) }}">✏️</a>
+
+                        <form method="post" action="{{ path('app_objectif_delete',{id:o.id}) }}"
+                              style="display:inline-block;"
+                              onsubmit="return confirm('Supprimer cet objectif ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~o.id) }}">
+                            <button class="card-btn" style="border-color:rgba(220,38,38,.35); color:#ffb4b4;" type="submit">🗑</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" style="padding:18px; color:var(--text-secondary);">
+                        Aucun objectif
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'back/sport/base_back.html.twig' %}
+
+{% block title %}Nouvelle Activité{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Page Container */
+        .form-page { padding: 30px; max-width: 800px; margin: 0 auto; }
+        .form-header { margin-bottom: 35px; }
+        .form-header h1 { font-size: 32px; font-weight: 700; color: rgba(255, 255, 255, 0.95); margin: 0 0 10px 0; display: flex; align-items: center; gap: 12px; }
+        .form-header p { color: rgba(255, 255, 255, 0.6); font-size: 15px; margin: 0; }
+        .form-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); animation: fadeInUp 0.5s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; color: rgba(255, 255, 255, 0.9); font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+        .required-star { color: #f87171; font-size: 16px; }
+        .form-control { width: 100%; padding: 14px 18px; background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: rgba(255, 255, 255, 0.95); font-size: 15px; transition: all 0.3s ease; font-family: inherit; }
+        .form-control:focus { outline: none; background: rgba(255, 255, 255, 0.12); border-color: rgba(102, 126, 234, 0.6); box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1); }
+        .form-control::placeholder { color: rgba(255, 255, 255, 0.4); }
+        select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(255,255,255,0.6)' d='M6 9L1 4h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; padding-right: 45px; }
+        select.form-control option { background: #1e293b; color: #fff; padding: 10px; }
+        input[type="date"].form-control { color-scheme: dark; }
+        .has-error .form-control { border-color: rgba(239, 68, 68, 0.6); background: rgba(239, 68, 68, 0.05); }
+        .form-error { color: #f87171; font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .form-error::before { content: "⚠"; font-size: 14px; }
+        .form-actions { display: flex; gap: 15px; margin-top: 35px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .btn { flex: 1; padding: 14px 24px; border-radius: 12px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.15); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.95); }
+        .form-helper { font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 6px; font-style: italic; }
+        @media (max-width: 768px) { .form-card { padding: 25px; } .form-actions { flex-direction: column; } .btn { width: 100%; } }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<div class="form-page">
+
+    <div class="form-header">
+        <h1><span>➕</span> Nouvelle Activité Physique</h1>
+        <p>Enregistrez votre séance d'entraînement</p>
+    </div>
+
+    <div class="form-card">
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        {# Type d'activité #}
+        <div class="form-group {% if form.type.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.type.vars.id }}">Type d'activité <span class="required-star">*</span></label>
+            {{ form_widget(form.type, {'attr': {'class':'form-control','placeholder':'Ex: Course, Natation, Musculation...'}}) }}
+            {% for error in form.type.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+            <div class="form-helper">Entrez le type d'activité que vous avez pratiqué</div>
+        </div>
+
+        {# Durée #}
+        <div class="form-group {% if form.duree.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.duree.vars.id }}">Durée (minutes) <span class="required-star">*</span></label>
+            {{ form_widget(form.duree, {'attr': {'class':'form-control','placeholder':'Ex: 30'}}) }}
+            {% for error in form.duree.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+        </div>
+
+        {# Calories #}
+        <div class="form-group {% if form.caloriesBruless.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.caloriesBruless.vars.id }}">Calories brûlées <span class="required-star">*</span></label>
+            {{ form_widget(form.caloriesBruless, {'attr': {'class':'form-control','placeholder':'Ex: 250'}}) }}
+            {% for error in form.caloriesBruless.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+            <div class="form-helper">Estimation du nombre de calories brûlées pendant l'activité</div>
+        </div>
+
+        {# Date - ✅ CORRIGÉE: pas de value custom #}
+        <div class="form-group {% if form.date.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.date.vars.id }}">Date de l'activité <span class="required-star">*</span></label>
+            {{ form_widget(form.date, {'attr': {'class':'form-control'}}) }}
+            {% for error in form.date.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+        </div>
+
+        {# Intensité #}
+        <div class="form-group {% if form.intensite.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.intensite.vars.id }}">Intensité <span class="required-star">*</span></label>
+            {{ form_widget(form.intensite, {'attr': {'class':'form-control'}}) }}
+            {% for error in form.intensite.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+        </div>
+
+        {# Objectif #}
+        <div class="form-group {% if form.objectif.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.objectif.vars.id }}">Objectif associé <span class="required-star">*</span></label>
+            {{ form_widget(form.objectif, {'attr': {'class':'form-control'}}) }}
+            {% for error in form.objectif.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+            <div class="form-helper">Sélectionnez l'objectif lié à cette activité</div>
+        </div>
+
+        {# Actions #}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><span>✓</span> Créer l'activité</button>
+            <a href="{{ path('back_sport_index') }}" class="btn btn-secondary"><span>←</span> Annuler</a>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+</div>
+
+{% endblock %}

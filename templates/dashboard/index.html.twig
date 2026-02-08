@@ -1,0 +1,14 @@
+{% extends 'back/sport/base_back.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div style="padding:30px">
+    <h1 style="color:white">📊 Back Dashboard</h1>
+
+    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap">
+        <a class="btn btn-primary" href="{{ path('back_sport_index') }}">🏃 Activités</a>
+        <a class="btn btn-primary" href="{{ path('app_objectif_index') }}">🎯 Objectifs</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}GlassDash{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+    
+    <style>
+        /* Messages Flash */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+        }
+
+        .alert {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .alert-error,
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .alert-warning {
+            background: rgba(251, 191, 36, 0.15);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+        /* Animation de sortie */
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .alert.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+    </style>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+<div class="background"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Messages Flash -->
+<div class="flash-messages">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }}" data-dismiss="5000">
+                <span class="alert-icon">
+                    {% if type == 'success' %}✓
+                    {% elseif type == 'error' or type == 'danger' %}✕
+                    {% elseif type == 'warning' %}⚠
+                    {% else %}ℹ{% endif %}
+                </span>
+                <span>{{ message }}</span>
+                <button class="alert-close" onclick="this.parentElement.classList.add('fade-out')">&times;</button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<div class="dashboard">
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ asset('images/logo.png') }}" width="45" alt="Logo">
+            <span class="logo-text">GlassDash</span>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="{{ path('back_sport_index') }}" class="nav-link"> Activités</a></li>
+            <li><a href="{{ path('app_objectif_index') }}" class="nav-link"> Objectifs</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        {% block body %}{% endblock %}
+    </main>
+
+</div>
+
+<script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+
+<script>
+// Auto-dismiss des messages flash après 5 secondes
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert[data-dismiss]');
+    alerts.forEach(alert => {
+        const timeout = parseInt(alert.dataset.dismiss);
+        setTimeout(() => {
+            alert.classList.add('fade-out');
+            setTimeout(() => alert.remove(), 300);
+        }, timeout);
+    });
+});
+</script>
+
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>
