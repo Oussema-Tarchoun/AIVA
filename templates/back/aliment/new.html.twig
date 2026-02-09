@@ -1,94 +1,13 @@
-{# templates/cours/new.html.twig #}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>New Cours - 3D Glassmorphism Dashboard</title>
-<meta name="description" content="3D Glassmorphism Dashboard Template by TemplateMo">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+{% extends 'base.html.twig' %}
 
+{% block title %}Nouvel Aliment{% endblock %}
+
+{% block body %}
 <style>
-.modal-page {
-display: flex;
-align-items: center;
-justify-content: center;
-min-height: 100vh;
-padding: 32px 16px;
-}
-.modal-card {
-max-width: 720px;
-width: 100%;
-border-radius: 24px;
-background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 55%),
-radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.18), transparent 55%),
-rgba(15, 23, 42, 0.9);
-border: 1px solid rgba(148, 163, 184, 0.4);
-box-shadow: 0 28px 80px rgba(0, 0, 0, 0.75);
-backdrop-filter: blur(18px);
-padding: 20px 22px 18px;
-}
-.modal-header {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-gap: 12px;
-margin-bottom: 12px;
-}
-.modal-title {
-font-size: 20px;
-font-weight: 600;
-color: #e5e7eb;
-}
-.modal-subtitle {
-font-size: 13px;
-color: #9ca3af;
-}
-.modal-close {
-border-radius: 999px;
-border: 1px solid rgba(148, 163, 184, 0.4);
-background: rgba(15, 23, 42, 0.9);
-color: #9ca3af;
-padding: 4px 10px;
-font-size: 12px;
-text-decoration: none;
-}
-.modal-close:hover {
-color: #e5e7eb;
-border-color: rgba(209, 213, 219, 0.8);
-}
-.modal-body {
-margin-top: 4px;
-}
-.modal-footer {
-margin-top: 18px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 8px;
-}
-.link-muted {
-font-size: 12px;
-color: #9ca3af;
-text-decoration: none;
-}
-.link-muted:hover {
-color: #e5e7eb;
-text-decoration: underline;
-}
+    .main-content {
+        margin-left: 15% !important;
+    }
 </style>
-</head>
-<body>
-<!-- Animated Background -->
-<div class="background"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-
-<div class="dashboard">
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -209,43 +128,100 @@ text-decoration: underline;
 
     </ul>
 </aside>
+<div class="main-content">
+    <nav class="navbar">
+        <div class="page-header">
+            <h1 class="page-title">Nouvel Aliment</h1>
+            <div class="page-breadcrumb">
+                <a href="{{ path('dashboard') }}">Dashboard</a>
+                <span>/</span>
+                <a href="{{ path('app_aliment_index') }}">Aliments</a>
+                <span>/</span>
+                <span>Nouveau</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <a href="{{ path('app_aliment_index') }}" class="btn btn-secondary" style="width: auto; padding: 10px 20px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Retour
+            </a>
+        </div>
+    </nav>
 
-<!-- Main Content -->
-<main class="main-content modal-page">
-<div class="modal-card">
-<div class="modal-header">
-<div>
-<div class="modal-title">New Cours</div>
-<div class="modal-subtitle">Fill in the course information.</div>
-</div>
-<a href="{{ path('app_cours_index') }}" class="modal-close">Close</a>
+    {# Afficher les messages flash d'erreur #}
+    {% for message in app.flashes('error') %}
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
+            <strong>Erreur:</strong> {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+        <div style="background: rgba(5, 150, 105, 0.15); border: 1px solid var(--emerald); color: var(--emerald); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
+            <strong>Succès:</strong> {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="settings-grid">
+        <div class="glass-card settings-nav-card">
+            <ul class="settings-nav">
+                <li class="settings-nav-item">
+                    <a href="#" class="settings-nav-link active" data-tab="informations">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                            <line x1="6" y1="1" x2="6" y2="4"/>
+                        </svg>
+                        Informations
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="glass-card">
+            {{ form_start(form) }}
+            
+            <div class="settings-tab-content active" id="tab-informations">
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Détails de l'Aliment</h3>
+                    {{ include('back/aliment/_form.html.twig') }}
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" style="width: auto;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Créer
+                    </button>
+                    <a href="{{ path('app_aliment_index') }}" class="btn btn-secondary" style="width: auto;">Annuler</a>
+                </div>
+            </div>
+            
+            {{ form_end(form) }}
+        </div>
+    </div>
 </div>
 
-<div class="modal-body">
-{{ include('cours/_form.html.twig') }}
-</div>
-
-<div class="modal-footer">
-<a href="{{ path('app_cours_index') }}" class="link-muted">
-← Back to courses list
-</a>
-</div>
-</div>
-</main>
-</div>
-
-<!-- Mobile Menu Toggle -->
-<button class="mobile-menu-toggle">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-<line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
-</svg>
-</button>
-
-<!-- Footer -->
-<footer class="site-footer">
-<p>Copyright © 2026 Your Company. Designed by <a href="https://templatemo.com" target="_blank" rel="nofollow">TemplateMo</a></p>
-</footer>
-
-<script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
-</body>
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabLinks = document.querySelectorAll('.settings-nav-link[data-tab]');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+    
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('data-tab');
+            
+            tabLinks.forEach(l => l.classList.remove('active'));
+            tabContents.forEach(t => t.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+<div class="form-grid">
+    <div class="form-group-settings full-width">
+        {{ form_label(form.nom) }}
+        {{ form_widget(form.nom) }}
+        {{ form_errors(form.nom) }}
+    </div>
+    
+    <div class="form-group-settings">
+        {{ form_label(form.quantite) }}
+        {{ form_widget(form.quantite) }}
+        {{ form_errors(form.quantite) }}
+    </div>
+</div>
+
+<div class="settings-section" style="margin-top: 24px;">
+    <h3 class="settings-section-title">Macronutriments</h3>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+        Entrez les valeurs nutritionnelles (en grammes)
+    </p>
+    
+    {% set currentMacro = form.vars.data.macro %}
+    
+    <div class="form-grid">
+        <div class="form-group-settings">
+            <label for="macro_proteine">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(5, 150, 105, 0.9)" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                Protéines (g)
+            </label>
+            <input type="number" step="0.1" id="macro_proteine" name="macro_proteine" placeholder="Ex: 3.5" value="{{ currentMacro.proteine|default('') }}" />
+        </div>
+        
+        <div class="form-group-settings">
+            <label for="macro_glucide">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(212, 165, 116, 0.9)" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                Glucides (g)
+            </label>
+            <input type="number" step="0.1" id="macro_glucide" name="macro_glucide" placeholder="Ex: 23.0" value="{{ currentMacro.glucide|default('') }}" />
+        </div>
+        
+        <div class="form-group-settings">
+            <label for="macro_lipide">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(147, 51, 234, 0.9)" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                Lipides (g)
+            </label>
+            <input type="number" step="0.1" id="macro_lipide" name="macro_lipide" placeholder="Ex: 10.0" value="{{ currentMacro.lipide|default('') }}" />
+        </div>
+    </div>
+</div>
+
+<style>
+.form-group-settings {
+    margin-bottom: 20px;
+}
+
+.form-group-settings label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.form-group-settings input,
+.form-group-settings textarea,
+.form-group-settings select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-group-settings input:focus,
+.form-group-settings textarea:focus,
+.form-group-settings select:focus {
+    outline: none;
+    border-color: var(--emerald);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group-settings.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+</style>

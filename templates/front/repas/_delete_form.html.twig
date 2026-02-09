@@ -1,0 +1,6 @@
+<form method="post"
+      action="{{ path('front_repas_delete', {'id': repas.id}) }}"
+      onsubmit="return confirm('Delete this meal?');">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ repas.id) }}">
+  <button class="chip danger" type="submit">Delete</button>
+</form>

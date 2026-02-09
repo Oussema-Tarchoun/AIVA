@@ -17,18 +17,18 @@ security:
       lazy: true
       provider: app_user_provider
 
-      # ✅ Symfony sait comment rediriger vers login
+      # Symfony redirige automatiquement vers login
       entry_point: App\Security\AppAuthenticator
 
-      # ✅ Ton authenticator custom
+      # Authenticator custom
       custom_authenticator: App\Security\AppAuthenticator
 
-      # ✅ Page login
+      # Page login
       form_login:
         login_path: app_login
         check_path: app_login
 
-      # ✅ Au lieu de 403 → redirect login
+      # Si accès refusé → redirect login
       access_denied_url: app_login
 
       logout:
@@ -40,10 +40,14 @@ security:
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/reset-password, roles: PUBLIC_ACCESS }
 
+    # ✅ Nutrition pages (ROLE_USER obligatoire)
+    - { path: ^/nutrition, roles: ROLE_USER }
+
+
     # ✅ Dashboard "/" ADMIN ONLY
     - { path: ^/$, roles: ROLE_ADMIN }
 
-    # ✅ ADMIN ONLY Routes
+    # ✅ ADMIN ONLY routes
     - { path: ^/energie, roles: ROLE_ADMIN }
     - { path: ^/recommandations, roles: ROLE_ADMIN }
     - { path: ^/stateenergi, roles: ROLE_ADMIN }

@@ -1,0 +1,311 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Repas{% endblock %}
+
+{% block body %}
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                 style="width: 80px; display: block; margin: 12px auto;">
+        </div>
+        <span class="logo-text">EnergyDash</span>
+    </div>
+
+    <ul class="nav-menu">
+
+        {# Menu Principal #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu Principal</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('dashboard') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-house"></i> Tableau de bord
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Menu énergies #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu énergies</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('energy') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
+                        <i class="fa-solid fa-bolt"></i> Consommation d'énergie
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('recommendations') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
+                        <i class="fa-solid fa-lightbulb"></i> Recommandations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('stateenergi') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Statistiques d'énergie
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# ✅ Menu Nutrition (Aliments + Repas) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Nutrition</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_aliment_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
+                        <i class="fa-solid fa-apple-whole"></i> Aliments
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_repas_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'repas_aliment_' %}active{% endif %}">
+                        <i class="fa-solid fa-utensils"></i> Repas
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# ✅ Menu Formation (Cours/Chapitres) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Formation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_cours_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                        <i class="fa-solid fa-book"></i> Cours
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_chapitre_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
+                        <i class="fa-solid fa-list"></i> Chapitres
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Compte #}
+        <li class="nav-section">
+            <span class="nav-section-title">Compte</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_profile') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
+                        <i class="fa-solid fa-user"></i> Profil
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_user_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
+                        <i class="fa-solid fa-users"></i> Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</aside>
+
+<div class="main-content">
+    <nav class="navbar">
+        <div class="page-header">
+            <h1 class="page-title">Mes Repas</h1>
+            <div class="page-breadcrumb">
+                <a href="{{ path('dashboard') }}">Dashboard</a>
+                <span>/</span>
+                <span>Repas</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <a href="{{ path('app_repas_new') }}" class="btn btn-primary" style="width: auto; padding: 10px 20px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Nouveau Repas
+            </a>
+        </div>
+    </nav>
+
+    {# Afficher les messages flash #}
+    {% for message in app.flashes('error') %}
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
+            <strong>Erreur:</strong> {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+        <div style="background: rgba(5, 150, 105, 0.15); border: 1px solid var(--emerald); color: var(--emerald); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
+            <strong>Succès:</strong> {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="glass-card">
+        <div class="settings-section">
+            <h3 class="settings-section-title">Liste des Repas</h3>
+
+            {# Barre de recherche et filtres #}
+            <div style="margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+                {# Formulaire de recherche par nom #}
+                <form method="get" action="{{ path('app_repas_index') }}" style="flex: 1; min-width: 250px;">
+                    <div style="position: relative;">
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ searchNom }}"
+                            placeholder="🔍 Rechercher par nom..."
+                            style="width: 100%; padding: 10px 40px 10px 16px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; background: rgba(255, 255, 255, 0.05); color: var(--text-primary); font-size: 14px;"
+                        />
+                        {% if sortCalories %}
+                            <input type="hidden" name="sort" value="{{ sortCalories }}" />
+                        {% endif %}
+                        <button
+                            type="submit"
+                            style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--emerald); cursor: pointer; padding: 4px 8px;"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
+                {# Boutons de tri par calories #}
+                <div style="display: flex; gap: 8px;">
+                    <a
+                        href="{{ path('app_repas_index', {'sort': 'asc', 'search': searchNom}) }}"
+                        class="card-btn"
+                        style="padding: 10px 16px; background: {{ sortCalories == 'asc' ? 'var(--emerald)' : 'rgba(255, 255, 255, 0.05)' }}; color: {{ sortCalories == 'asc' ? '#fff' : 'var(--text-primary)' }};"
+                    >
+                        ↑ Calories ↑
+                    </a>
+                    <a
+                        href="{{ path('app_repas_index', {'sort': 'desc', 'search': searchNom}) }}"
+                        class="card-btn"
+                        style="padding: 10px 16px; background: {{ sortCalories == 'desc' ? 'var(--emerald)' : 'rgba(255, 255, 255, 0.05)' }}; color: {{ sortCalories == 'desc' ? '#fff' : 'var(--text-primary)' }};"
+                    >
+                        ↓ Calories ↓
+                    </a>
+                    {% if searchNom or sortCalories %}
+                        <a
+                            href="{{ path('app_repas_index') }}"
+                            class="card-btn"
+                            style="padding: 10px 16px; background: rgba(239, 68, 68, 0.15); color: #ef4444;"
+                        >
+                            ✕ Réinitialiser
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Message de résultats #}
+            {% if searchNom %}
+                <div style="margin-bottom: 16px; padding: 10px 16px; background: rgba(5, 150, 105, 0.1); border-radius: 8px; color: var(--emerald); font-size: 14px;">
+                    📊 {{ repas|length }} résultat(s) pour "{{ searchNom }}"
+                </div>
+            {% endif %}
+
+            {% if repas|length > 0 %}
+                <div class="table-wrapper" style="margin: 0;">
+                    <table class="data-table" style="min-width: 100%;">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Heure</th>
+                            <th>
+                                Calories
+                                {% if sortCalories == 'asc' %}
+                                    <span style="color: var(--emerald);">↑</span>
+                                {% elseif sortCalories == 'desc' %}
+                                    <span style="color: var(--emerald);">↓</span>
+                                {% endif %}
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for r in repas %}
+                            <tr>
+                                <td><span class="table-id">#{{ r.id }}</span></td>
+                                <td><strong>{{ r.nom }}</strong></td>
+                                <td>
+                                    <span style="padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+                                        {% if r.type == 'petit-dejeuner' %}
+                                            background: rgba(251, 191, 36, 0.15); color: #fbbf24;
+                                        {% elseif r.type == 'dejeuner' %}
+                                            background: rgba(5, 150, 105, 0.15); color: var(--emerald);
+                                        {% elseif r.type == 'diner' %}
+                                            background: rgba(139, 92, 246, 0.15); color: #8b5cf6;
+                                        {% else %}
+                                            background: rgba(59, 130, 246, 0.15); color: #3b82f6;
+                                        {% endif %}
+                                    ">
+                                        {{ r.type|replace({'-': ' '})|title }}
+                                    </span>
+                                </td>
+                                <td>{{ r.heure|date('H:i') }}</td>
+                                <td>
+                                    <span style="color: rgba(239, 68, 68, 0.9); font-weight: 600; font-size: 16px;">
+                                        {{ r.calories }} kcal
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        <a href="{{ path('app_repas_show', {'id': r.id}) }}" class="card-btn" style="padding: 6px 12px;">Voir</a>
+                                        <a href="{{ path('app_repas_edit', {'id': r.id}) }}" class="card-btn" style="padding: 6px 12px;">Modifier</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.3;">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                        <line x1="6" y1="1" x2="6" y2="4"/>
+                        <line x1="10" y1="1" x2="10" y2="4"/>
+                        <line x1="14" y1="1" x2="14" y2="4"/>
+                    </svg>
+                    {% if searchNom %}
+                        <p style="font-size: 18px; margin-bottom: 8px;">Aucun repas trouvé pour "{{ searchNom }}"</p>
+                        <p style="font-size: 14px;">Essayez une autre recherche</p>
+                        <a href="{{ path('app_repas_index') }}" class="btn btn-primary" style="width: auto; margin-top: 16px; padding: 10px 20px;">
+                            Voir tous les repas
+                        </a>
+                    {% else %}
+                        <p style="font-size: 18px; margin-bottom: 8px;">Aucun repas trouvé</p>
+                        <p style="font-size: 14px;">Commencez par créer votre premier repas</p>
+                        <a href="{{ path('app_repas_new') }}" class="btn btn-primary" style="width: auto; margin-top: 16px; padding: 10px 20px;">
+                            Créer un Repas
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

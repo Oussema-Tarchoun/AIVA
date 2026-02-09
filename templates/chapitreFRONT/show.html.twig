@@ -112,31 +112,39 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <nav class="navbar">
-    <div class="logo">
-      <svg width="32" height="32" viewBox="0 0 100 100">
-        <defs>
-          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#a855f7" />
-            <stop offset="50%" stop-color="#00d4aa" />
-            <stop offset="100%" stop-color="#ec4899" />
-          </linearGradient>
-        </defs>
-        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
-        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
-      </svg>
-      <span class="logo-text">AIVA</span>
-    </div>
+  <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a855f7" />
+              <stop offset="50%" stop-color="#00d4aa" />
+              <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+          </defs>
+          <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+          <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+        </svg>
+        <span class="logo-text">AIVA</span>
+      </div>
     <div class="nav-links">
-      <a href="">Finance</a>
-      <a href="{{ path('cours_front_index') }}">Learning</a>
-      <a href="">Nutrition</a>
-      <a href="">Health</a>
-      <a href="">Home</a>
-    </div>
-    <button class="get-started">Get Started</button>
-  </nav>
+            <a href="" class="active">Finance</a>
+            <a href="">Learning</a>
+                    <a href="{{ path('front_aliment_index') }}">Nutrition</a>
+        <a href="{{ path('cours_front_index') }}">apprentissage</a>
+        <a href="{{ path('front_energie_index') }}">Énergie</a>
+    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+
+        </div>
+
+  <a href="{{ path('app_logout') }}" class="nav-link">
+                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                            </a>    </nav>
+
+<div class="container">
+ 
+  
 
   <div class="learning-container">
     <p><a href="{{ path('chapitre_front_index') }}" class="back-link">← Back to chapters</a></p>
@@ -147,8 +155,8 @@
           <div class="chapter-title">{{ chapitre.titre }}</div>
           <div class="chapter-meta">
             Chapter #{{ chapitre.idChapitre }}
-            {% if chapitre.idCours %}
-              <span class="chapter-pill">{{ chapitre.idCours.tittre }}</span>
+            {% if chapitre.cours %}
+              <span class="chapter-pill">{{ chapitre.cours.tittre }}</span>
             {% endif %}
           </div>
         </div>

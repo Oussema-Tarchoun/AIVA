@@ -171,7 +171,7 @@
     <div class="nav-links">
             <a href="" class="active">Finance</a>
             <a href="">Learning</a>
-            <a href="">Nutrition</a>
+                    <a href="{{ path('front_aliment_index') }}">Nutrition</a>
         <a href="{{ path('cours_front_index') }}">apprentissage</a>
         <a href="{{ path('front_energie_index') }}">Énergie</a>
     <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
@@ -214,8 +214,8 @@
                 <div class="chapter-title">{{ chapitre.titre }}</div>
                 <div class="chapter-order">Order: {{ chapitre.ordre }}</div>
               </div>
-              {% if chapitre.idCours %}
-                <span class="chapter-pill">{{ chapitre.idCours.tittre }}</span>
+              {% if chapitre.cours %}
+                <span class="chapter-pill">{{ chapitre.cours.tittre }}</span>
               {% endif %}
             </div>
 

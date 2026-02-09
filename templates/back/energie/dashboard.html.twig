@@ -21,104 +21,129 @@
     <div class="orb orb-3"></div>
 
     <div class="dashboard">
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 80px; display: block; margin: 12px auto;">
-            </div>
-            <span class="logo-text">EnergyDash</span>
+     <!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                 style="width: 80px; display: block; margin: 12px auto;">
         </div>
+        <span class="logo-text">EnergyDash</span>
+    </div>
 
-        <ul class="nav-menu">
+    <ul class="nav-menu">
 
-            {# Menu Principal #}
-            <li class="nav-section">
-                <span class="nav-section-title">Menu Principal</span>
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ path('dashboard') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
-                            <i class="fa-solid fa-house"></i> Tableau de bord
-                        </a>
-                    </li>
-                </ul>
-            </li>
+        {# Menu Principal #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu Principal</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('dashboard') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-house"></i> Tableau de bord
+                    </a>
+                </li>
+            </ul>
+        </li>
 
-            {# Menu énergies #}
-            <li class="nav-section">
-                <span class="nav-section-title">Menu énergies</span>
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ path('energy') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
-                            <i class="fa-solid fa-bolt"></i> Consommation d'énergie
-                        </a>
-                    </li>
+        {# Menu énergies #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu énergies</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('energy') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
+                        <i class="fa-solid fa-bolt"></i> Consommation d'énergie
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a href="{{ path('recommendations') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
-                            <i class="fa-solid fa-lightbulb"></i> Recommandations
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a href="{{ path('recommendations') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
+                        <i class="fa-solid fa-lightbulb"></i> Recommandations
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a href="{{ path('stateenergi') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
-                            <i class="fa-solid fa-chart-line"></i> Statistiques d'énergie
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ path('stateenergi') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Statistiques d'énergie
+                    </a>
+                </li>
+            </ul>
+        </li>
 
+        {# ✅ Menu Nutrition (Aliments + Repas) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Nutrition</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_aliment_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
+                        <i class="fa-solid fa-apple-whole"></i> Aliments
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_repas_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'repas_aliment_' %}active{% endif %}">
+                        <i class="fa-solid fa-utensils"></i> Repas
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# ✅ Menu Formation (Cours/Chapitres) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Formation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_cours_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                        <i class="fa-solid fa-book"></i> Cours
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_chapitre_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
+                        <i class="fa-solid fa-list"></i> Chapitres
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Compte #}
+        <li class="nav-section">
+            <span class="nav-section-title">Compte</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_profile') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
+                        <i class="fa-solid fa-user"></i> Profil
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_user_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
+                        <i class="fa-solid fa-users"></i> Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</aside>
             {# ✅ Menu Formation (Cours/Chapitres) #}
             <li class="nav-section">
-                <span class="nav-section-title">Formation</span>
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ path('app_cours_index') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
-                            <i class="fa-solid fa-book"></i> Cours
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ path('app_chapitre_index') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
-                            <i class="fa-solid fa-list"></i> Chapitres
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            {# Compte #}
-            <li class="nav-section">
-                <span class="nav-section-title">Compte</span>
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ path('app_profile') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
-                            <i class="fa-solid fa-user"></i> Profil
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ path('app_user_index') }}"
-                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
-                            <i class="fa-solid fa-users"></i> Users
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ path('app_logout') }}" class="nav-link">
-                            <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-        </ul>
-    </aside>
+ 
 
         <!-- Main Content -->
         <main class="main-content">

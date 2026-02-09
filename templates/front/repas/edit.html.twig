@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Meal - AIVA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#0b1b2b;
+      --glass: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family:"Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #1a3b6a 0%, transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, #3a1e65 0%, transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .orb{
+      position: fixed;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      filter: blur(38px);
+      opacity: .55;
+      z-index: -1;
+      animation: floaty 10s ease-in-out infinite;
+    }
+    .orb.one{ left:-140px; top:60px; background:#4f8cff; }
+    .orb.two{ right:-160px; top:120px; background:#ff4fd8; animation-delay:-3s; }
+    .orb.three{ left:40%; bottom:-200px; background:#3bffb8; animation-delay:-6s; }
+
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0) translateX(0) scale(1); }
+      50%{ transform: translateY(-24px) translateX(18px) scale(1.03); }
+    }
+
+    .wrap{ max-width: 1100px; margin:0 auto; padding: 44px 18px 80px; }
+
+    .hero{
+      position: relative;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 8px);
+      box-shadow: var(--shadow);
+      padding: 34px 26px 26px;
+      backdrop-filter: blur(14px);
+    }
+
+    .glow{
+      position:absolute; inset:-2px;
+      border-radius: calc(var(--radius) + 10px);
+      background: radial-gradient(800px 260px at 25% 10%, rgba(79,140,255,.22), transparent 60%),
+                  radial-gradient(700px 260px at 80% 20%, rgba(255,79,216,.18), transparent 60%);
+      pointer-events:none; z-index:0;
+    }
+    .hero > *{ position:relative; z-index:1; }
+
+    .hero-title{ margin:0 0 6px; font-size:40px; letter-spacing:.2px; }
+    .hero-title span{
+      background: linear-gradient(90deg, #7fb0ff, #ff7ae6);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero-description{ margin:0 0 18px; color:var(--muted); font-size:16px; }
+
+    .panel{
+      margin-top: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      max-width: 900px;
+    }
+
+    label{
+      display:block;
+      font-size: 12px;
+      letter-spacing: .3px;
+      color: var(--muted2);
+      margin: 14px 0 8px;
+    }
+
+    input, select, textarea{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+    }
+
+    textarea{ min-height: 110px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(127,176,255,.55);
+      box-shadow: 0 0 0 3px rgba(127,176,255,.18);
+    }
+
+    .btn-row{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top: 20px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      transition: .15s;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.24);
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-weight:700;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+    .chip:hover{ background: rgba(255,255,255,.12); }
+
+    /* Delete zone */
+    .danger-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top: 18px;
+    }
+
+    /* Symfony form errors */
+    .form-error-message, .invalid-feedback, .form-error{
+      color: #ff9db6;
+      margin-top: 6px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+<!-- Navbar (same structure you have) -->
+<nav class="navbar">
+  <div class="logo">
+    <svg width="32" height="32" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#a855f7" />
+          <stop offset="50%" stop-color="#00d4aa" />
+          <stop offset="100%" stop-color="#ec4899" />
+        </linearGradient>
+      </defs>
+      <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+      <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+    </svg>
+    <span class="logo-text">AIVA</span>
+  </div>
+
+  <div class="nav-links">
+    <a href="" class="active">Finance</a>
+    <a href="">Learning</a>
+    <a href="{{ path('front_aliment_index') }}">Nutrition</a>
+    <a href="{{ path('cours_front_index') }}">apprentissage</a>
+    <a href="{{ path('front_energie_index') }}">Énergie</a>
+    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+  </div>
+
+  <a href="{{ path('app_logout') }}" class="nav-link">
+    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+  </a>
+</nav>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
+  <div class="wrap">
+    <main class="hero">
+      <div class="glow"></div>
+
+      <h1 class="hero-title">Edit <span>{{ repas.nom }}</span></h1>
+      <p class="hero-description">Update your meal information.</p>
+
+      <section class="panel">
+        {{ form_start(form, {'attr': {'class': 'input-form'}}) }}
+
+          <label>Meal Type</label>
+          {{ form_widget(form.type) }}
+          {{ form_errors(form.type) }}
+
+          <label>Meal Name</label>
+          {{ form_widget(form.nom) }}
+          {{ form_errors(form.nom) }}
+
+          <label>Time</label>
+          {{ form_widget(form.heure) }}
+          {{ form_errors(form.heure) }}
+
+          <label>Calories</label>
+          {{ form_widget(form.calories) }}
+          {{ form_errors(form.calories) }}
+
+          <label>Notes</label>
+          {{ form_widget(form.description) }}
+          {{ form_errors(form.description) }}
+
+          <label>Foods</label>
+          {{ form_widget(form.aliments) }}
+          {{ form_errors(form.aliments) }}
+
+          <div class="btn-row">
+            <button type="submit" class="btn">Update <span>→</span></button>
+            <a href="{{ path('front_repas_index') }}" class="chip">Back</a>
+          </div>
+
+        {{ form_end(form) }}
+
+        <div class="danger-wrap">
+          {# ✅ IMPORTANT: tu avais {'repa': repas} -> normalement c'est 'repas' #}
+          {{ include('front/repas/_delete_form.html.twig', {'repas': repas}) }}
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
