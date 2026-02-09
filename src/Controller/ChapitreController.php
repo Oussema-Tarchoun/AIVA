@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Chapitre;
 use App\Entity\Cours;
-use App\Form\ChapitreType;
+use App\Form\ChapitreAdminType;
 use App\Repository\ChapitreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +18,6 @@ final class ChapitreController extends AbstractController
     #[Route('/', name: 'app_chapitre_index', methods: ['GET'])]
     public function index(Request $request, ChapitreRepository $chapitreRepository): Response
     {
-        // q = search on titre, dir = sort direction on ordre
         $search    = $request->query->get('q');
         $direction = $request->query->get('dir');
 
@@ -28,27 +27,41 @@ final class ChapitreController extends AbstractController
             'chapitres' => $chapitres,
             'search'    => $search,
             'dir'       => $direction,
-            'cour'      => null, // pas de cours filtré ici
+            'cour'      => null,
         ]);
     }
 
-   #[Route('/my-courses/{id}/chapters', name: 'chapitre_front_by_cours', methods: ['GET'])]
-public function byCoursFront(Cours $cour, ChapitreRepository $chapitreRepository): Response
-{
-    $chapitres = $chapitreRepository->findBy(['id_cours' => $cour]);
+    // BACKOFFICE: chapitres d’un cours pour l’admin (route attendue par cours/index.html.twig)
+    #[Route('/cours/{id}/chapitres', name: 'app_chapitre_by_cours', methods: ['GET'])]
+    public function byCours(Cours $cour, ChapitreRepository $chapitreRepository): Response
+    {
+        $chapitres = $chapitreRepository->findBy(['id_cours' => $cour]);
 
-    return $this->render('chapitreFRONT/index.html.twig', [
-        'chapitres' => $chapitres,
-        'cours'     => $cour,
-    ]);
-}
+        return $this->render('chapitre/index.html.twig', [
+            'chapitres' => $chapitres,
+            'search'    => null,
+            'dir'       => null,
+            'cour'      => $cour,
+        ]);
+    }
 
+    // FRONTOFFICE: chapitres d’un cours côté user
+    #[Route('/my-courses/{id}/chapters', name: 'chapitre_front_by_cours', methods: ['GET'])]
+    public function byCoursFront(Cours $cour, ChapitreRepository $chapitreRepository): Response
+    {
+        $chapitres = $chapitreRepository->findBy(['id_cours' => $cour]);
+
+        return $this->render('chapitreFRONT/index.html.twig', [
+            'chapitres' => $chapitres,
+            'cours'     => $cour,
+        ]);
+    }
 
     #[Route('/new', name: 'app_chapitre_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $chapitre = new Chapitre();
-        $form = $this->createForm(ChapitreType::class, $chapitre);
+       $form = $this->createForm(ChapitreAdminType::class, $chapitre);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,17 +73,16 @@ public function byCoursFront(Cours $cour, ChapitreRepository $chapitreRepository
 
         return $this->render('chapitre/new.html.twig', [
             'chapitre' => $chapitre,
-            'form' => $form,
+            'form'     => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_chapitre_show', methods: ['GET'])]
     public function show(Chapitre $chapitre): Response
     {
-        $contenu = (string) $chapitre->getContenu();
+        $contenu       = (string) $chapitre->getContenu();
         $videoEmbedUrl = null;
 
-        // Cherche un lien YouTube dans le contenu (formes watch?v=... ou youtu.be/...)
         if (preg_match(
             '~(https?://(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([A-Za-z0-9_\-]{6,}))~i',
             $contenu,
@@ -91,7 +103,7 @@ public function byCoursFront(Cours $cour, ChapitreRepository $chapitreRepository
     #[Route('/{id}/edit', name: 'app_chapitre_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Chapitre $chapitre, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ChapitreType::class, $chapitre);
+       $form = $this->createForm(ChapitreAdminType::class, $chapitre);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,7 +114,7 @@ public function byCoursFront(Cours $cour, ChapitreRepository $chapitreRepository
 
         return $this->render('chapitre/edit.html.twig', [
             'chapitre' => $chapitre,
-            'form' => $form,
+            'form'     => $form,
         ]);
     }
 
