@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isBlocked = false;
 
-    // ✅ ADD THIS RELATION WITH ENERGIE
+    // ✅ Relation Energie
     #[ORM\OneToMany(
         mappedBy: 'user',
         targetEntity: Energie::class,
@@ -44,9 +44,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private Collection $energies;
 
+    // ✅ Relation Objectif (needed because Objectif has ManyToOne inversedBy="objectifs")
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Objectif::class)]
+    private Collection $objectifs;
+
     public function __construct()
     {
         $this->energies = new ArrayCollection();
+        $this->objectifs = new ArrayCollection();
     }
 
     // =======================
@@ -149,6 +154,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->energies->removeElement($energie)) {
             if ($energie->getUser() === $this) {
                 $energie->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    // =======================
+    // Objectif Relation Methods
+    // =======================
+
+    public function getObjectifs(): Collection
+    {
+        return $this->objectifs;
+    }
+
+    public function addObjectif(Objectif $objectif): static
+    {
+        if (!$this->objectifs->contains($objectif)) {
+            $this->objectifs->add($objectif);
+            $objectif->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectif(Objectif $objectif): static
+    {
+        if ($this->objectifs->removeElement($objectif)) {
+            if ($objectif->getUser() === $this) {
+                $objectif->setUser(null);
             }
         }
 

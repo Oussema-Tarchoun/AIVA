@@ -49,6 +49,8 @@ security:
     - { path: ^/$, roles: ROLE_ADMIN }
 
     # ✅ ADMIN ONLY routes
+    - { path: ^/back/sport, roles: ROLE_ADMIN }
+    - { path: ^/back/objectif, roles: ROLE_ADMIN }
     - { path: ^/energie, roles: ROLE_ADMIN }
     - { path: ^/recommandations, roles: ROLE_ADMIN }
     - { path: ^/stateenergi, roles: ROLE_ADMIN }

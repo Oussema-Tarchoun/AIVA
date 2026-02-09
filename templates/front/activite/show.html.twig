@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Activité</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+</head>
+<body>
+<div class="container">
+  <nav class="navbar">
+    <div class="logo"><span class="logo-text">AIVA</span></div>
+    <div class="nav-links"><a href="{{ path('front_activite_index') }}">Back</a></div>
+  </nav>
+
+  <main class="hero">
+    <h1 class="hero-title">Activité <span>#{{ activite.id }}</span></h1>
+
+    <div style="width:min(850px,95%); margin:18px auto 0; border:1px solid #1a1a2e; border-radius:16px; background:rgba(255,255,255,0.02); padding:20px;">
+      <p><b>Type:</b> {{ activite.type }}</p>
+      <p><b>Durée:</b> {{ activite.duree }} min</p>
+      <p><b>Calories:</b> {{ activite.caloriesBrulees }}</p>
+      <p><b>Date:</b> {{ activite.date ? activite.date|date('Y-m-d') : '' }}</p>
+      <p><b>Intensité:</b> {{ activite.intensite }}</p>
+      <p><b>Objectif:</b> {{ activite.objectif ? activite.objectif.description : '—' }}</p>
+    </div>
+
+    <div style="margin-top:18px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <a class="hero-button" href="{{ path('front_activite_edit', {id: activite.id}) }}" style="text-decoration:none;">Edit</a>
+      <a class="hero-button" href="{{ path('front_activite_index') }}" style="text-decoration:none;">Back</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

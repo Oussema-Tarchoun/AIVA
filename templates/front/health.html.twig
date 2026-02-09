@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health & Activity - AIVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+</head>
+
+<body>
+<div class="container">
+
+  {# ===================== NAVBAR (NORMAL) ===================== #}
+       <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+   <a href="{{ path('front_categorie_index') }}">categorie</a>
+<a href="{{ path('front_activite_index') }}">Activité</a>
+    <a href="{{ path('front_objectif_index') }}">Objectif</a>
+               <a href="{{ path('front_depense_index') }}">depense</a>            
+<a href="{{ path('front_aliment_index') }}">Alimentation</a>
+        <a href="{{ path('cours_front_index') }}">apprentissage</a>
+        <a href="{{ path('front_energie_index') }}">Énergie</a>
+    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+
+        </div>
+
+  <a href="{{ path('app_logout') }}" class="nav-link">
+                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                            </a>  </nav>
+
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h2 class="hero-subtitle">HEALTH MODULE</h2>
+
+    <h1 class="hero-title">
+      Activity and <span>Objectif</span>
+    </h1>
+
+
+    {# ===================== TOP ACTIONS ===================== #}
+    <div style="margin-top:18px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <a class="hero-button" href="{{ path('front_objectif_new') }}" style="text-decoration:none;">
+        ➕ New Objectif →
+      </a>
+      <a class="hero-button" href="{{ path('front_activite_new') }}" style="text-decoration:none;">
+        ➕ New Activité →
+      </a>
+    </div>
+
+    {# ===================== SEARCH (GET SAME PAGE) ===================== #}
+    <div style="width:min(980px,95%); margin:22px auto 0;">
+      <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+        <input name="q"
+               value="{{ q|default('') }}"
+               placeholder="Search objectifs/activités..."
+               style="
+                 flex: 1;
+                 min-width: 280px;
+                 padding: 14px 16px;
+                 border-radius: 14px;
+                 border: 1px solid #2a2a44;
+                 background: #0a0a12;
+                 color: #fff;
+                 outline: none;
+               ">
+
+        {# keep sorts when searching #}
+        <input type="hidden" name="osort" value="{{ osort|default('id') }}">
+        <input type="hidden" name="odir" value="{{ odir|default('desc') }}">
+        <input type="hidden" name="asort" value="{{ asort|default('id') }}">
+        <input type="hidden" name="adir" value="{{ adir|default('desc') }}">
+
+        <button class="hero-button" type="submit">Search</button>
+
+        <a class="hero-button" href="{{ path('health') }}" style="text-decoration:none;">
+          Reset
+        </a>
+      </form>
+    </div>
+
+    {# ===================== ✅ METEO API (INTEGRATED SAME PAGE) ===================== #}
+    <div style="width:min(980px,95%); margin:18px auto 0; border:1px solid #1a1a2e; border-radius:16px; background:rgba(255,255,255,0.02); padding:18px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="font-weight:900; font-size:18px;">
+          🌦️ Météo (Open-Meteo)
+         
+        </div>
+
+        <form method="get" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0;">
+          {# ✅ keep existing params (search/sort) #}
+          <input type="hidden" name="q" value="{{ q|default('') }}">
+          <input type="hidden" name="osort" value="{{ osort|default('id') }}">
+          <input type="hidden" name="odir" value="{{ odir|default('desc') }}">
+          <input type="hidden" name="asort" value="{{ asort|default('id') }}">
+          <input type="hidden" name="adir" value="{{ adir|default('desc') }}">
+
+          <select name="city" style="padding:10px 12px; border-radius:12px; border:1px solid #2a2a44; background:#0a0a12; color:#fff;">
+            {% for c in cities %}
+              <option value="{{ c }}" {{ c == city ? 'selected' : '' }}>{{ c }}</option>
+            {% endfor %}
+          </select>
+
+          <button class="hero-button" type="submit">📍 Changer</button>
+        </form>
+      </div>
+
+      {% if meteoError %}
+        <div style="margin-top:14px; color:#ff6b6b; font-weight:800;">
+          🛑 {{ meteoError }}
+        </div>
+      {% else %}
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; justify-content:center;">
+
+          <div style="min-width:220px; border:1px solid #1a1a2e; border-radius:14px; padding:14px; background:rgba(255,255,255,0.02);">
+            <div style="color:#888; font-weight:700;">Ville</div>
+            <div style="margin-top:6px; font-size:20px; font-weight:900;">📍 {{ city }}</div>
+          </div>
+
+          <div style="min-width:220px; border:1px solid #1a1a2e; border-radius:14px; padding:14px; background:rgba(255,255,255,0.02);">
+            <div style="color:#888; font-weight:700;">Température</div>
+            <div style="margin-top:6px; font-size:22px; font-weight:900;">🌡️ {{ temperature is not null ? temperature|round(0) : 0 }}°C</div>
+          </div>
+
+          <div style="min-width:220px; border:1px solid #1a1a2e; border-radius:14px; padding:14px; background:rgba(255,255,255,0.02);">
+            <div style="color:#888; font-weight:700;">Condition</div>
+            <div style="margin-top:6px; font-size:18px; font-weight:900;">☁️ {{ condition }}</div>
+          </div>
+
+          <div style="min-width:220px; border:1px solid #1a1a2e; border-radius:14px; padding:14px; background:rgba(255,255,255,0.02);">
+            <div style="color:#888; font-weight:700;">Vent</div>
+            <div style="margin-top:6px; font-size:20px; font-weight:900;">💨 {{ wind is not null ? wind|round(0) : 0 }} km/h</div>
+          </div>
+
+        </div>
+
+        <div style="margin-top:12px; text-align:center;">
+          {% if temperature is not null and temperature >= 12 and temperature <= 28 and condition not in ['Pluie', 'Orage', 'Averses'] %}
+            <span style="display:inline-block; padding:10px 14px; border-radius:999px; border:1px solid #00d4aa; color:#00d4aa; font-weight:900;">
+              ✅ Recommandation : activité outdoor possible
+            </span>
+          {% else %}
+            <span style="display:inline-block; padding:10px 14px; border-radius:999px; border:1px solid #888; color:#888; font-weight:900;">
+              ℹ️ Recommandation : activité indoor conseillée
+            </span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {# ===================== OBJECTIFS DROPDOWN ===================== #}
+    <details open style="width: min(980px, 95%); margin: 26px auto 0;">
+      <summary style="
+          list-style:none; cursor:pointer;
+          padding: 14px 18px; border: 1px solid #1a1a2e; border-radius: 14px;
+          background: rgba(255,255,255,0.02);
+          font-weight: 800; font-size: 18px;
+          display:flex; align-items:center; justify-content: space-between;">
+        <span>📌 Objectifs</span>
+        <span style="color:#00d4aa; font-weight:900;">▼</span>
+      </summary>
+
+      <div style="margin-top: 12px; border:1px solid #1a1a2e; border-radius:12px; overflow:auto;">
+        <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+
+          <thead>
+          <tr style="border-bottom:1px solid #1a1a2e;">
+            {% set baseO = { q: q|default(''), asort: asort|default('id'), adir: adir|default('desc'), city: city|default('Sousse') } %}
+
+            {% macro th(label, key, osort, odir, base) %}
+              {% set dir = (osort == key and odir == 'asc') ? 'desc' : 'asc' %}
+              <th style="padding:14px; text-align:left; color:#888;">
+                <a href="{{ path('health', base|merge({ osort: key, odir: dir })) }}"
+                   style="color:#888; text-decoration:none;">
+                  {{ label }} ↕
+                </a>
+              </th>
+            {% endmacro %}
+            {% import _self as uiO %}
+
+            {{ uiO.th('ID','id', osort|default('id'), odir|default('desc'), baseO) }}
+            {{ uiO.th('Description','description', osort|default('id'), odir|default('desc'), baseO) }}
+           
+            {{ uiO.th('Type','type', osort|default('id'), odir|default('desc'), baseO) }}
+            {{ uiO.th('Statut','statut', osort|default('id'), odir|default('desc'), baseO) }}
+            <th style="padding:14px; text-align:left; color:#888;">Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {% for o in objectifs %}
+            <tr style="border-bottom:1px solid #1a1a2e;">
+              <td style="padding:14px;">#{{ o.id }}</td>
+              <td style="padding:14px;">
+                {{ o.description ? o.description|slice(0,55) ~ (o.description|length > 55 ? '...' : '') : '—' }}
+              </td>
+             
+              <td style="padding:14px;">{{ o.type }}</td>
+              <td style="padding:14px;">{{ o.statut }}</td>
+
+              <td style="padding:14px;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                  <a href="{{ path('front_objectif_show', {id:o.id}) }}"
+                     style="color:#00d4aa; text-decoration:none; font-weight:800;">Show</a>
+
+                  <a href="{{ path('front_objectif_edit', {id:o.id}) }}"
+                     style="color:#00d4aa; text-decoration:none; font-weight:800;">Edit</a>
+
+                  <form method="post"
+                        action="{{ path('front_objectif_delete', {'id': o.id}) }}"
+                        onsubmit="return confirm('Delete this objectif ?');"
+                        style="display:inline-block; margin:0;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ o.id) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit"
+                            style="background:transparent;border:1px solid #ff6b6b;color:#ff6b6b;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:800;">
+                      🗑 Delete
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" style="padding:18px; color:#888; text-align:center;">
+                No objectifs found.
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </details>
+
+    {# ===================== ACTIVITES DROPDOWN ===================== #}
+    <details style="width: min(980px, 95%); margin: 18px auto 0;">
+      <summary style="
+          list-style:none; cursor:pointer;
+          padding: 14px 18px; border: 1px solid #1a1a2e; border-radius: 14px;
+          background: rgba(255,255,255,0.02);
+          font-weight: 800; font-size: 18px;
+          display:flex; align-items:center; justify-content: space-between;">
+        <span>🏃 Activités</span>
+        <span style="color:#00d4aa; font-weight:900;">▼</span>
+      </summary>
+
+      <div style="margin-top: 12px; border:1px solid #1a1a2e; border-radius:12px; overflow:auto;">
+        <table style="width:100%; border-collapse:collapse; min-width: 1080px;">
+
+          <thead>
+          <tr style="border-bottom:1px solid #1a1a2e;">
+            {% set baseA = { q: q|default(''), osort: osort|default('id'), odir: odir|default('desc'), city: city|default('Sousse') } %}
+
+            {% macro th2(label, key, asort, adir, base2) %}
+              {% set dir = (asort == key and adir == 'asc') ? 'desc' : 'asc' %}
+              <th style="padding:14px; text-align:left; color:#888;">
+                <a href="{{ path('health', base2|merge({ asort: key, adir: dir })) }}"
+                   style="color:#888; text-decoration:none;">
+                  {{ label }} ↕
+                </a>
+              </th>
+            {% endmacro %}
+            {% import _self as uiA %}
+
+            {{ uiA.th2('ID','id', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Type','type', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Durée','duree', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Calories','calories', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Date','date', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Intensité','intensite', asort|default('id'), adir|default('desc'), baseA) }}
+            {{ uiA.th2('Objectif','objectif', asort|default('id'), adir|default('desc'), baseA) }}
+            <th style="padding:14px; text-align:left; color:#888;">Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {% for a in activites %}
+            <tr style="border-bottom:1px solid #1a1a2e;">
+              <td style="padding:14px;">#{{ a.id }}</td>
+              <td style="padding:14px;">{{ a.type }}</td>
+              <td style="padding:14px;">{{ a.duree }} min</td>
+              <td style="padding:14px;">{{ a.caloriesBruless }}</td>
+              <td style="padding:14px;">{{ a.date ? a.date|date('Y-m-d') : '' }}</td>
+              <td style="padding:14px;">{{ a.intensite }}</td>
+              <td style="padding:14px;">
+                {{ a.objectif ? a.objectif.description|slice(0,40) ~ (a.objectif.description|length > 40 ? '...' : '') : '—' }}
+              </td>
+
+              <td style="padding:14px;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                  <a href="{{ path('front_activite_show', {id:a.id}) }}"
+                     style="color:#00d4aa; text-decoration:none; font-weight:800;">Show</a>
+
+                  <a href="{{ path('front_activite_edit', {id:a.id}) }}"
+                     style="color:#00d4aa; text-decoration:none; font-weight:800;">Edit</a>
+
+                  <form method="post"
+                        action="{{ path('front_activite_delete', {'id': a.id}) }}"
+                        onsubmit="return confirm('Delete this activity ?');"
+                        style="display:inline-block; margin:0;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ a.id) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit"
+                            style="background:transparent;border:1px solid #ff6b6b;color:#ff6b6b;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:800;">
+                      🗑 Delete
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="8" style="padding:18px; color:#888; text-align:center;">
+                No activités found.
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </details>
+
+    <div style="height:40px;"></div>
+  </main>
+</div>
+</body>
+</html>

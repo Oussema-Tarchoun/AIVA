@@ -112,26 +112,28 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-    <nav class="navbar">
-      <div class="logo">
-        <svg width="32" height="32" viewBox="0 0 100 100">
-          <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#a855f7" />
-              <stop offset="50%" stop-color="#00d4aa" />
-              <stop offset="100%" stop-color="#ec4899" />
-            </linearGradient>
-          </defs>
-          <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
-          <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
-        </svg>
-        <span class="logo-text">AIVA</span>
-      </div>
-    <div class="nav-links">
-     <a href="{{ path('front_categorie_index') }}">categorie</a>
+     <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
 
-               <a href="{{ path('front_depense_index') }}">depense</a>            <a href="">Learning</a>
+    <div class="nav-links">
+   <a href="{{ path('front_categorie_index') }}">categorie</a>
+<a href="{{ path('front_activite_index') }}">Activité</a>
+    <a href="{{ path('front_objectif_index') }}">Objectif</a>
+               <a href="{{ path('front_depense_index') }}">depense</a>            
 <a href="{{ path('front_aliment_index') }}">Alimentation</a>
         <a href="{{ path('cours_front_index') }}">apprentissage</a>
         <a href="{{ path('front_energie_index') }}">Énergie</a>

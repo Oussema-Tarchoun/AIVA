@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activités - AIVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+</head>
+<body>
+<div class="container">
+      <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+   <a href="{{ path('front_categorie_index') }}">categorie</a>
+<a href="{{ path('front_activite_index') }}">Activité</a>
+    <a href="{{ path('front_objectif_index') }}">Objectif</a>
+               <a href="{{ path('front_depense_index') }}">depense</a>            
+<a href="{{ path('front_aliment_index') }}">Alimentation</a>
+        <a href="{{ path('cours_front_index') }}">apprentissage</a>
+        <a href="{{ path('front_energie_index') }}">Énergie</a>
+    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+
+        </div>
+
+  <a href="{{ path('app_logout') }}" class="nav-link">
+                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                            </a>  </nav>
+
+  <main class="hero">
+    <h1 class="hero-title">Activités <span>CRUD</span></h1>
+    <p class="hero-description">List + delete (CSRF) — front.</p>
+
+    <div style="margin-top:16px;">
+      <a class="hero-button" href="{{ path('front_activite_new') }}" style="text-decoration:none;">➕ New Activité</a>
+    </div>
+
+    <div style="width:min(980px,95%); margin:26px auto 0; border:1px solid #1a1a2e; border-radius:14px; overflow:auto;">
+      <table style="width:100%; border-collapse:collapse; min-width: 980px;">
+        <thead>
+        <tr style="border-bottom:1px solid #1a1a2e;">
+          <th style="padding:14px; text-align:left; color:#888;">ID</th>
+          <th style="padding:14px; text-align:left; color:#888;">Type</th>
+          <th style="padding:14px; text-align:left; color:#888;">Durée</th>
+          <th style="padding:14px; text-align:left; color:#888;">Calories</th>
+          <th style="padding:14px; text-align:left; color:#888;">Date</th>
+          <th style="padding:14px; text-align:left; color:#888;">Intensité</th>
+          <th style="padding:14px; text-align:left; color:#888;">Objectif</th>
+          <th style="padding:14px; text-align:left; color:#888;">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for a in activites %}
+          <tr style="border-bottom:1px solid #1a1a2e;">
+            <td style="padding:14px;">#{{ a.id }}</td>
+            <td style="padding:14px;">{{ a.type }}</td>
+            <td style="padding:14px;">{{ a.duree }} min</td>
+            <td style="padding:14px;">{{ a.caloriesBrulees }}</td>
+            <td style="padding:14px;">{{ a.date ? a.date|date('Y-m-d') : '' }}</td>
+            <td style="padding:14px;">{{ a.intensite }}</td>
+            <td style="padding:14px;">{{ a.objectif ? a.objectif.description : '—' }}</td>
+            <td style="padding:14px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <a href="{{ path('front_activite_show', {id:a.id}) }}" style="color:#00d4aa; font-weight:800; text-decoration:none;">Show</a>
+                <a href="{{ path('front_activite_edit', {id:a.id}) }}" style="color:#00d4aa; font-weight:800; text-decoration:none;">Edit</a>
+
+                <form method="post"
+                      action="{{ path('front_activite_delete', {id:a.id}) }}"
+                      onsubmit="return confirm('Delete this activity ?');"
+                      style="display:inline-block; margin:0;">
+                  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ a.id) }}">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit"
+                          style="background:transparent;border:1px solid #ff6b6b;color:#ff6b6b;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:800;">
+                    🗑 Delete
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" style="padding:18px; color:#888; text-align:center;">No activités found.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="height:40px;"></div>
+  </main>
+</div>
+</body>
+</html>

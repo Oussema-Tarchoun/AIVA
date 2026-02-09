@@ -162,7 +162,7 @@
 </head>
 <body>
 <div class="container">
-  <!-- Navbar -->
+       <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
       <svg width="32" height="32" viewBox="0 0 100 100">
@@ -178,10 +178,12 @@
       </svg>
       <span class="logo-text">AIVA</span>
     </div>
-  <div class="nav-links">
-  <a href="{{ path('front_categorie_index') }}">categorie</a>
 
-               <a href="{{ path('front_depense_index') }}">depense</a>            <a href="">Learning</a>
+    <div class="nav-links">
+   <a href="{{ path('front_categorie_index') }}">categorie</a>
+<a href="{{ path('front_activite_index') }}">Activité</a>
+    <a href="{{ path('front_objectif_index') }}">Objectif</a>
+               <a href="{{ path('front_depense_index') }}">depense</a>            
 <a href="{{ path('front_aliment_index') }}">Alimentation</a>
         <a href="{{ path('cours_front_index') }}">apprentissage</a>
         <a href="{{ path('front_energie_index') }}">Énergie</a>
@@ -192,7 +194,6 @@
   <a href="{{ path('app_logout') }}" class="nav-link">
                                 <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
                             </a>  </nav>
-
 
 
   <div class="learning-container">

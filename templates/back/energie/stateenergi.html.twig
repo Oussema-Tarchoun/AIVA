@@ -48,7 +48,32 @@
                 </li>
             </ul>
         </li>
+  {# ✅ Activités added #}
+              <span class="nav-section-title">sports</span>
 
+        <li class="nav-item">
+            <a href="{{ path('back_sport_index') }}"
+               class="nav-link {% if app.request.attributes.get('_route') starts with 'back_sport_' %}active{% endif %}">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 7h10"/>
+                    <path d="M7 12h10"/>
+                    <path d="M7 17h10"/>
+                </svg>
+                Activités
+            </a>
+        </li>
+
+        {# ✅ Objectifs added #}
+        <li class="nav-item">
+            <a href="{{ path('app_objectif_index') }}"
+               class="nav-link {% if app.request.attributes.get('_route') starts with 'app_objectif_' %}active{% endif %}">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 3"/>
+                </svg>
+                Objectifs
+            </a>
+        </li>
         {# Finance (ton menu existant) #}
         <li class="nav-section">
             <span class="nav-section-title">Finance</span>
@@ -237,7 +262,6 @@
         </div>
     </div>
 </aside>
-
 
         <!-- Main Content -->
         <main class="main-content">
