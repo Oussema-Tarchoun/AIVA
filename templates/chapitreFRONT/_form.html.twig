@@ -1,0 +1,38 @@
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+    {# Display global form errors #}
+    {{ form_errors(form) }}
+
+    {# --- Titre --- #}
+    <div class="form-row">
+        {{ form_row(form.titre) }}
+    </div>
+
+    {# --- Contenu --- #}
+    <div class="form-row">
+        {{ form_row(form.contenu) }}
+    </div>
+
+    {# --- Ordre --- #}
+    <div class="form-row">
+        {{ form_row(form.ordre) }}
+    </div>
+
+    {# --- Exercice --- #}
+    <div class="form-row">
+        {{ form_row(form.exercise) }}
+    </div>
+
+    {# --- Relation with Cours --- #}
+    <div class="form-row">
+        {{ form_row(form.cours) }}
+    </div>
+
+    {# --- Submit Button --- #}
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">
+            {{ button_label|default('Save') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

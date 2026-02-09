@@ -16,7 +16,7 @@
 {% set energies = energies|default([]) %}
 
 <div class="container">
-  <nav class="navbar">
+ <nav class="navbar">
     <div class="logo">
       <svg width="32" height="32" viewBox="0 0 100 100">
         <defs>
@@ -32,19 +32,19 @@
       <span class="logo-text">AIVA</span>
     </div>
 
-     <div class="nav-links">
+    <div class="nav-links">
             <a href="" class="active">Finance</a>
             <a href="">Learning</a>
             <a href="">Nutrition</a>
-            <a href="">Health</a>
+        <a href="{{ path('cours_front_index') }}">apprentissage</a>
         <a href="{{ path('front_energie_index') }}">Énergie</a>
     <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
 
         </div>
+
   <a href="{{ path('app_logout') }}" class="nav-link">
                                 <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
                             </a>  </nav>
-
   <main class="hero">
     <div class="glow"></div>
 
