@@ -18,4 +18,7 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314

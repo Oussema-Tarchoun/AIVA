@@ -35,6 +35,21 @@
             "./migrations/.gitignore"
         ]
     },
+<<<<<<< HEAD
+=======
+    "easycorp/easyadmin-bundle": {
+        "version": "4.28",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.14",
+            "ref": "13b3e524d1038a6861ad6c7fc64e31b644ba0c54"
+        },
+        "files": [
+            "./config/routes/easyadmin.yaml"
+        ]
+    },
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
     "phpunit/phpunit": {
         "version": "11.5",
         "recipe": {
@@ -270,6 +285,18 @@
             "./templates/base.html.twig"
         ]
     },
+<<<<<<< HEAD
+=======
+    "symfony/uid": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
+    },
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
     "symfony/ux-turbo": {
         "version": "2.32",
         "recipe": {
@@ -282,6 +309,21 @@
             "./config/packages/ux_turbo.yaml"
         ]
     },
+<<<<<<< HEAD
+=======
+    "symfony/ux-twig-component": {
+        "version": "2.32",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.13",
+            "ref": "f367ae2a1faf01c503de2171f1ec22567febeead"
+        },
+        "files": [
+            "./config/packages/twig_component.yaml"
+        ]
+    },
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
     "symfony/validator": {
         "version": "7.4",
         "recipe": {
@@ -319,6 +361,21 @@
             "./config/packages/messenger.yaml"
         ]
     },
+<<<<<<< HEAD
+=======
+    "symfonycasts/reset-password-bundle": {
+        "version": "1.24",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "97c1627c0384534997ae1047b93be517ca16de43"
+        },
+        "files": [
+            "./config/packages/reset_password.yaml"
+        ]
+    },
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
     "twig/extra-bundle": {
         "version": "v3.23.0"
     }

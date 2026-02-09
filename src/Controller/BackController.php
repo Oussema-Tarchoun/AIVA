@@ -5,12 +5,19 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+<<<<<<< HEAD
 
+=======
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+#[IsGranted('ROLE_ADMIN')] // ✅ ADMIN ONLY (redirect login via access_denied_url)
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
 class BackController extends AbstractController
 {
     #[Route('/', name: 'dashboard')]
     public function dashboard(): Response
     {
+<<<<<<< HEAD
         return $this->render('back/dashboard.html.twig', [
             'active_page' => 'dashboard'
         ]);
@@ -56,3 +63,10 @@ class BackController extends AbstractController
         ]);
     }
 }
+=======
+        return $this->render('back/energie/dashboard.html.twig', [
+            'active_page' => 'dashboard'
+        ]);
+    }
+}
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314

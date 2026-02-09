@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AbstractController
 {
+<<<<<<< HEAD
        #[Route('/index', name: 'index')]
     public function index(): Response
     {
@@ -43,5 +44,13 @@ class FrontController extends AbstractController
     public function nutrition(): Response
     {
         return $this->render('front/nutrition.html.twig');
+=======
+    #[Route('/front', name: 'dashboardf')]
+    public function dashboard(): Response
+    {
+        return $this->render('front/index.html.twig', [
+            'active_page' => 'dashboardf'
+        ]);
+>>>>>>> f5b1638a8a5efd0d8f8bcf9078ab43dc9a779314
     }
 }
