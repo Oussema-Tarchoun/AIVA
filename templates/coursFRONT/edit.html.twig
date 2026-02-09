@@ -120,15 +120,21 @@
       </svg>
       <span class="logo-text">AIVA</span>
     </div>
-    <div class="nav-links">
-      <a href="">Finance</a>
-      <a href="" class="active">Learning</a>
-      <a href="">Nutrition</a>
-      <a href="">Health</a>
-      <a href="">Home</a>
-    </div>
-    <button class="get-started">Get Started</button>
-  </nav>
+     <div class="nav-links">
+  <a href="{{ path('front_categorie_index') }}">categorie</a>
+
+               <a href="{{ path('front_depense_index') }}">depense</a>            <a href="">Learning</a>
+                    <a href="{{ path('front_aliment_index') }}">Nutrition</a>
+        <a href="{{ path('cours_front_index') }}">apprentissage</a>
+        <a href="{{ path('front_energie_index') }}">Énergie</a>
+    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+
+        </div>
+
+  <a href="{{ path('app_logout') }}" class="nav-link">
+                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                            </a>  </nav>
+
 
   <div class="learning-container">
     <div class="page-header" style="text-align:left; margin-bottom:1.5rem;">

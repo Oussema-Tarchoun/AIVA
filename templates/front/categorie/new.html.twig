@@ -1,0 +1,18 @@
+{% extends 'front/base_finance.html.twig' %}
+ <div class="container">
+   
+{% block title %}Ajouter une catégorie - AIVA{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>Ajouter une catégorie</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+
+        <div class="form-actions">
+            <button type="submit" class="hero-button">Enregistrer</button>
+<a href="{{ path('front_categorie_index') }}">← Retour à la page Finance</a>        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

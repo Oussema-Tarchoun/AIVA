@@ -1,0 +1,20 @@
+{% extends 'front/base_finance.html.twig' %}
+
+{% block title %}Détail dépense - AIVA{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>Détail de la dépense</h1>
+    <ul style="list-style:none; padding:0; color:#e2e8f0;">
+        <li style="margin-bottom:8px;"><strong>Description :</strong> {{ depense.description }}</li>
+        <li style="margin-bottom:8px;"><strong>Montant :</strong> {{ depense.montant }} TND</li>
+        <li style="margin-bottom:8px;"><strong>Date :</strong> {{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}</li>
+        <li style="margin-bottom:8px;"><strong>Statut :</strong> {{ depense.statut }}</li>
+        <li style="margin-bottom:8px;"><strong>Catégorie :</strong> {{ depense.categorie ? depense.categorie.nomCategorie : '-' }}</li>
+    </ul>
+    <div class="form-actions">
+        <a href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" class="hero-button" style="text-decoration:none;">Modifier</a>
+          <a href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
+    </div>
+</div>
+{% endblock %}

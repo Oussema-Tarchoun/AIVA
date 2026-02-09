@@ -34,7 +34,9 @@ security:
       logout:
         path: app_logout
 
+
   access_control:
+
     # ✅ Pages publiques
     - { path: ^/register, roles: PUBLIC_ACCESS }
     - { path: ^/login, roles: PUBLIC_ACCESS }
@@ -43,7 +45,6 @@ security:
     # ✅ Nutrition pages (ROLE_USER obligatoire)
     - { path: ^/nutrition, roles: ROLE_USER }
 
-
     # ✅ Dashboard "/" ADMIN ONLY
     - { path: ^/$, roles: ROLE_ADMIN }
 
@@ -51,10 +52,20 @@ security:
     - { path: ^/energie, roles: ROLE_ADMIN }
     - { path: ^/recommandations, roles: ROLE_ADMIN }
     - { path: ^/stateenergi, roles: ROLE_ADMIN }
+
     - { path: ^/user, roles: ROLE_ADMIN }
+    - { path: ^/chapitre, roles: ROLE_ADMIN }
+    - { path: ^/cours, roles: ROLE_ADMIN }
+
+    - { path: ^/aliment, roles: ROLE_ADMIN }
+    - { path: ^/repas, roles: ROLE_ADMIN }
+
+    - { path: ^/depense, roles: ROLE_ADMIN }
+    - { path: ^/categorie, roles: ROLE_ADMIN }
 
     # ✅ Tout le reste nécessite ROLE_USER
     - { path: ^/, roles: ROLE_USER }
+
 
 when@test:
   security:

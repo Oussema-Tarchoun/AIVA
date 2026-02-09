@@ -1,0 +1,62 @@
+{% extends 'front/base_finance.html.twig' %}
+
+{% block title %}Mes dépenses - AIVA{% endblock %}
+
+{% block content %}
+<div class="finance-panel">
+    <div class="finance-panel-head">
+        <div>
+            <h1>Mes dépenses</h1>
+            <p>Liste de toutes vos dépenses.</p>
+        </div>
+        <a href="{{ path('front_depense_new') }}" class="hero-button">Ajouter une dépense</a>
+    </div>
+
+    <div class="table-card">
+        <table class="aiva-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Catégorie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for depense in depenses %}
+                    <tr>
+                        <td class="cell-strong">{{ depense.description }}</td>
+                        <td><span class="cal-pill">{{ depense.montant }} TND</span></td>
+                        <td>{{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}</td>
+                        <td>
+                            <span class="status-badge {{ depense.statut|lower }}">{{ depense.statut }}</span>
+                        </td>
+                        <td>{{ depense.categorie ? depense.categorie.nomCategorie : '-' }}</td>
+                        <td>
+                            <div class="actions">
+                                <a href="{{ path('front_depense_show', {id: depense.idDepense}) }}" class="front-btn">Voir</a>
+                                <a href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" class="btn-link btn-link--edit">Modifier</a>
+                                <form method="post" action="{{ path('front_depense_delete', {id: depense.idDepense}) }}" style="display:inline;" onsubmit="return confirm('Supprimer cette dépense ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depense.idDepense) }}">
+                                    <button type="submit" class="btn-link btn-link--delete">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="front-empty">Aucune dépense. Cliquez sur « Ajouter une dépense » pour commencer.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p style="margin-top: 20px;">
+          <a href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,541 @@
+{# templates/categorie/index.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catégories - AIVA</title>
+    <meta name="description" content="3D Glassmorphism Dashboard Template by TemplateMo">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+
+    <style>
+        .table-wrapper-inset { margin: 0; padding: 0; width: 100%; overflow-x: auto; min-height: 120px; }
+        .flash-messages { margin: 0 24px 16px 24px; }
+        .flash-message { padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; font-size: 15px; }
+        .flash-success { background: rgba(34, 197, 94, 0.3); color: #86efac; }
+        .flash-error { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+        
+        /* TITRES ET EN-TÊTES DE PAGE - TAILLES OPTIMALES */
+        .page-title {
+            font-size: 42px !important;
+            font-weight: 700 !important;
+        }
+        
+        .page-breadcrumb {
+            font-size: 18px !important;
+        }
+        
+        .card-title {
+            font-size: 28px !important;
+            font-weight: 700 !important;
+        }
+        
+        .card-subtitle {
+            font-size: 18px !important;
+        }
+        
+        /* BOUTON NOUVELLE CATÉGORIE */
+        .card-btn {
+            font-size: 17px !important;
+            padding: 14px 24px !important;
+        }
+        
+        /* TAILLE DE POLICE OPTIMALE DES TABLEAUX */
+        .data-table th {
+            font-size: 17px !important;
+            padding: 18px 22px !important;
+        }
+        
+        .data-table td {
+            font-size: 18px !important;
+            padding: 18px 22px !important;
+        }
+        
+        .data-table .actions a {
+            font-size: 16px !important;
+            padding: 12px 20px !important;
+        }
+        
+        /* Force pour tous les tableaux */
+        table th {
+            font-size: 17px !important;
+            padding: 18px 22px !important;
+        }
+        
+        table td {
+            font-size: 18px !important;
+            padding: 18px 22px !important;
+        }
+        
+        /* Boutons Voir / Éditer */
+        table td.actions { 
+            display: flex; 
+            gap: 14px; 
+            flex-wrap: wrap; 
+        }
+        
+        table td.actions a { 
+            display: inline-flex !important; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 12px 20px !important; 
+            font-size: 16px !important; 
+            font-weight: 600; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            white-space: nowrap; 
+        }
+        
+        table td.actions a.action-btn-voir,
+        a.action-btn-voir { 
+            background: #059669 !important; 
+            color: #fff !important; 
+            border: 1px solid #10b981 !important; 
+            font-size: 16px !important;
+            padding: 12px 20px !important;
+        }
+        
+        table td.actions a.action-btn-voir:hover,
+        a.action-btn-voir:hover { 
+            background: #34d399 !important; 
+            color: #0a0f0d !important; 
+        }
+        
+        table td.actions a.action-btn-editer,
+        a.action-btn-editer { 
+            background: #b45309 !important; 
+            color: #fff !important; 
+            border: 1px solid #d4a574 !important; 
+            font-size: 16px !important;
+            padding: 12px 20px !important;
+        }
+        
+        table td.actions a.action-btn-editer:hover,
+        a.action-btn-editer:hover { 
+            background: #e8c9a0 !important; 
+            color: #1a1510 !important; 
+        }
+        
+        /* Classes génériques pour les boutons d'action */
+        .action-btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px !important;
+            font-size: 16px !important;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 32px !important;
+            }
+            
+            .page-breadcrumb {
+                font-size: 16px !important;
+            }
+            
+            .card-title {
+                font-size: 24px !important;
+            }
+            
+            .card-subtitle {
+                font-size: 16px !important;
+            }
+            
+            .card-btn {
+                font-size: 15px !important;
+                padding: 12px 20px !important;
+            }
+            
+            .data-table th,
+            table th {
+                font-size: 16px !important;
+                padding: 16px 18px !important;
+            }
+            
+            .data-table td,
+            table td {
+                font-size: 16px !important;
+                padding: 16px 18px !important;
+            }
+            
+            .data-table .actions a,
+            table td.actions a,
+            .action-btn,
+            .action-btn-voir,
+            .action-btn-editer {
+                font-size: 15px !important;
+                padding: 10px 16px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 26px !important;
+            }
+            
+            .page-breadcrumb {
+                font-size: 14px !important;
+            }
+            
+            .card-title {
+                font-size: 20px !important;
+            }
+            
+            .card-subtitle {
+                font-size: 14px !important;
+            }
+            
+            .card-btn {
+                font-size: 14px !important;
+                padding: 10px 16px !important;
+            }
+            
+            .data-table th,
+            table th {
+                font-size: 14px !important;
+                padding: 12px 14px !important;
+            }
+            
+            .data-table td,
+            table td {
+                font-size: 14px !important;
+                padding: 12px 14px !important;
+            }
+            
+            .data-table .actions a,
+            table td.actions a,
+            .action-btn,
+            .action-btn-voir,
+            .action-btn-editer {
+                font-size: 14px !important;
+                padding: 10px 14px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="background"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="dashboard">
+    <!-- Sidebar -->
+  <!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto; margin-top: 12%;">
+        </div>
+        <span class="logo-text">AIVA</span>
+    </div>
+
+    <ul class="nav-menu">
+
+        {# Menu Principal #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu Principal</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('dashboard') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12l9-9 9 9"/>
+                            <path d="M9 21V9h6v12"/>
+                        </svg>
+                        Tableau de bord
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Finance (ton menu existant) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Finance</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_depense_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_depense_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 3h12v4H6z"/>
+                            <path d="M4 9h16v4H4z"/>
+                            <path d="M6 15h12v4H6z"/>
+                        </svg>
+                        Dépenses
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_categorie_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_categorie_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                        Catégories
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Menu énergies #}
+        <li class="nav-section">
+            <span class="nav-section-title">Énergies</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('energy') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
+                        </svg>
+                        Consommation d'énergie
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('recommendations') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18h6"/>
+                            <path d="M10 22h4"/>
+                            <path d="M12 2a7 7 0 0 0-4 12c.6.6 1 1.5 1 2h6c0-.5.4-1.4 1-2a7 7 0 0 0-4-12z"/>
+                        </svg>
+                        Recommandations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('stateenergi') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"/>
+                            <path d="M7 14l3-3 4 4 5-7"/>
+                        </svg>
+                        Statistiques d'énergie
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# ✅ Alimentation (au lieu de Nutrition) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Alimentation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_aliment_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3c-3 2-5 5-5 8a5 5 0 0 0 10 0c0-3-2-6-5-8z"/>
+                            <path d="M12 14v7"/>
+                        </svg>
+                        Aliments
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_repas_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_repas_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 3v7a4 4 0 0 0 4 4v7"/>
+                            <path d="M8 3v8"/>
+                            <path d="M14 3v18"/>
+                            <path d="M20 3v7a4 4 0 0 1-4 4"/>
+                        </svg>
+                        Repas
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Formation #}
+        <li class="nav-section">
+            <span class="nav-section-title">Formation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_cours_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19a2 2 0 0 0 2 2h12"/>
+                            <path d="M6 17V5a2 2 0 0 1 2-2h10v14H8a2 2 0 0 0-2 2z"/>
+                        </svg>
+                        Cours
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_chapitre_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6h13"/>
+                            <path d="M8 12h13"/>
+                            <path d="M8 18h13"/>
+                            <path d="M3 6h.01"/>
+                            <path d="M3 12h.01"/>
+                            <path d="M3 18h.01"/>
+                        </svg>
+                        Chapitres
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Compte #}
+        <li class="nav-section">
+            <span class="nav-section-title">Compte</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_profile') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Profil
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_user_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="user-avatar">TM</div>
+            <div class="user-info">
+                <div class="user-name">TemplateMo</div>
+                <div class="user-role">Administrator</div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </div>
+    </div>
+</aside>
+
+
+    <!-- Main content -->
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="page-header">
+                <h1 class="page-title">Catégories</h1>
+                <div class="page-breadcrumb">
+                    <a href="{{ path('dashboard') }}">Dashboard</a>
+                    <span>/</span>
+                    <span>Catégories</span>
+                </div>
+            </div>
+        </nav>
+
+        <section class="content-grid" style="grid-template-columns: 1fr;">
+            <div class="glass-card table-card" style="grid-column: span 1;">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">Liste des catégories</h2>
+                        <p class="card-subtitle">Gère les catégories utilisées pour tes dépenses</p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{{ path('app_categorie_new') }}" class="card-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Nouvelle catégorie
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flash-messages">
+                    {% for message in app.flashes('success') %}
+                        <div class="flash-message flash-success">{{ message }}</div>
+                    {% endfor %}
+                    {% for message in app.flashes('error') %}
+                        <div class="flash-message flash-error">{{ message }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="table-wrapper table-wrapper-inset">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for categorie in categories %}
+                                <tr>
+                                    <td>{{ categorie.idCategorie }}</td>
+                                    <td>{{ categorie.nomCategorie }}</td>
+                                    <td>{{ categorie.description ?? '-' }}</td>
+                                    <td class="actions">
+                                        <a href="{{ path('app_categorie_show', {'id': categorie.idCategorie}) }}" class="action-btn action-btn-voir">Voir</a>
+                                        <a href="{{ path('app_categorie_edit', {'id': categorie.idCategorie}) }}" class="action-btn action-btn-editer">Éditer</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">Aucune catégorie trouvée</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<button class="mobile-menu-toggle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+</button>
+
+<footer class="site-footer">
+    <p>COPYRIGHT © 2026 Your Company. Designed by
+        <a href="https://templatemo.com" target="_blank" rel="nofollow">TemplateMo</a>
+    </p>
+</footer>
+
+<script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+{# templates/depense/edit.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Depense</title>
+    <meta name="description" content="3D Glassmorphism Dashboard Template by TemplateMo">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+
+    <style>
+        .form-wrapper {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 18px;
+        }
+        .form-row label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
+        }
+        .form-input.error {
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.6);
+        }
+        .card-body .card-btn.submit-btn {
+            margin-top: 24px;
+            padding: 10px 22px;
+        }
+        
+        /* icône du datepicker en blanc */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+        input[type="date"] {
+            color-scheme: dark;
+        }
+        
+        /* Messages Flash */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+        .flash-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+        .flash-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
+        /* Erreurs sous les champs */
+        .field-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="dashboard">
+      <!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto; margin-top: 12%;">
+        </div>
+        <span class="logo-text">AIVA</span>
+    </div>
+
+    <ul class="nav-menu">
+
+        {# Menu Principal #}
+        <li class="nav-section">
+            <span class="nav-section-title">Menu Principal</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('dashboard') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12l9-9 9 9"/>
+                            <path d="M9 21V9h6v12"/>
+                        </svg>
+                        Tableau de bord
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Finance (ton menu existant) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Finance</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_depense_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_depense_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 3h12v4H6z"/>
+                            <path d="M4 9h16v4H4z"/>
+                            <path d="M6 15h12v4H6z"/>
+                        </svg>
+                        Dépenses
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_categorie_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_categorie_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                        Catégories
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Menu énergies #}
+        <li class="nav-section">
+            <span class="nav-section-title">Énergies</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('energy') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
+                        </svg>
+                        Consommation d'énergie
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('recommendations') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18h6"/>
+                            <path d="M10 22h4"/>
+                            <path d="M12 2a7 7 0 0 0-4 12c.6.6 1 1.5 1 2h6c0-.5.4-1.4 1-2a7 7 0 0 0-4-12z"/>
+                        </svg>
+                        Recommandations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('stateenergi') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"/>
+                            <path d="M7 14l3-3 4 4 5-7"/>
+                        </svg>
+                        Statistiques d'énergie
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# ✅ Alimentation (au lieu de Nutrition) #}
+        <li class="nav-section">
+            <span class="nav-section-title">Alimentation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_aliment_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3c-3 2-5 5-5 8a5 5 0 0 0 10 0c0-3-2-6-5-8z"/>
+                            <path d="M12 14v7"/>
+                        </svg>
+                        Aliments
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_repas_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_repas_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 3v7a4 4 0 0 0 4 4v7"/>
+                            <path d="M8 3v8"/>
+                            <path d="M14 3v18"/>
+                            <path d="M20 3v7a4 4 0 0 1-4 4"/>
+                        </svg>
+                        Repas
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Formation #}
+        <li class="nav-section">
+            <span class="nav-section-title">Formation</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_cours_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19a2 2 0 0 0 2 2h12"/>
+                            <path d="M6 17V5a2 2 0 0 1 2-2h10v14H8a2 2 0 0 0-2 2z"/>
+                        </svg>
+                        Cours
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_chapitre_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6h13"/>
+                            <path d="M8 12h13"/>
+                            <path d="M8 18h13"/>
+                            <path d="M3 6h.01"/>
+                            <path d="M3 12h.01"/>
+                            <path d="M3 18h.01"/>
+                        </svg>
+                        Chapitres
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {# Compte #}
+        <li class="nav-section">
+            <span class="nav-section-title">Compte</span>
+            <ul>
+                <li class="nav-item">
+                    <a href="{{ path('app_profile') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Profil
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_user_index') }}"
+                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="user-avatar">TM</div>
+            <div class="user-info">
+                <div class="user-name">TemplateMo</div>
+                <div class="user-role">Administrator</div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </div>
+    </div>
+</aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <nav class="navbar">
+                <div class="page-header">
+                    <h1 class="page-title">Modifier la dépense</h1>
+                    <div class="page-breadcrumb">
+                        <a href="{{ path('dashboard') }}">Dashboard</a>
+                        <span>/</span>
+                        <a href="{{ path('app_depense_index') }}">Dépenses</a>
+                        <span>/</span>
+                        <span>Édition</span>
+                    </div>
+                </div>
+            </nav>
+
+            <section class="content-grid" style="grid-template-columns: 1fr;">
+                <div class="glass-card" style="grid-column: span 1;">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Modifier la dépense</h2>
+                            <p class="card-subtitle">Met à jour les informations de la dépense</p>
+                        </div>
+                        <div class="card-actions">
+                            {{ include('depense/_delete_form.html.twig', { depense: depense }) }}
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        {# Messages Flash #}
+                        <div class="flash-messages">
+                            {% for message in app.flashes('success') %}
+                                <div class="flash-message flash-success">
+                                    <span>✅</span>
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
+
+                            {% for message in app.flashes('error') %}
+                                <div class="flash-message flash-error">
+                                    <span>❌</span>
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-wrapper">
+                            {{ form_start(form, { attr: { class: 'form-grid', novalidate: 'novalidate' } }) }}
+
+                                <div class="form-row">
+                                    {{ form_label(form.description) }}
+                                    {{ form_widget(form.description, { 
+                                        attr: { 
+                                            class: form.description.vars.errors|length > 0 ? 'form-input error' : 'form-input' 
+                                        } 
+                                    }) }}
+                                    {% if form.description.vars.errors|length > 0 %}
+                                        {% for error in form.description.vars.errors %}
+                                            <div class="field-error">
+                                                <span>⚠️</span>
+                                                <span>{{ error.message }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-row">
+                                    {{ form_label(form.montant) }}
+                                    {{ form_widget(form.montant, { 
+                                        attr: { 
+                                            class: form.montant.vars.errors|length > 0 ? 'form-input error' : 'form-input' 
+                                        } 
+                                    }) }}
+                                    {% if form.montant.vars.errors|length > 0 %}
+                                        {% for error in form.montant.vars.errors %}
+                                            <div class="field-error">
+                                                <span>⚠️</span>
+                                                <span>{{ error.message }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                {# ✅ CORRIGÉ : date_depense au lieu de dateDepense #}
+                                <div class="form-row">
+                                    {{ form_label(form.date_depense) }}
+                                    {{ form_widget(form.date_depense, { 
+                                        attr: { 
+                                            class: form.date_depense.vars.errors|length > 0 ? 'form-input error' : 'form-input' 
+                                        } 
+                                    }) }}
+                                    {% if form.date_depense.vars.errors|length > 0 %}
+                                        {% for error in form.date_depense.vars.errors %}
+                                            <div class="field-error">
+                                                <span>⚠️</span>
+                                                <span>{{ error.message }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-row">
+                                    {{ form_label(form.statut) }}
+                                    {{ form_widget(form.statut, { 
+                                        attr: { 
+                                            class: form.statut.vars.errors|length > 0 ? 'form-input error' : 'form-input' 
+                                        } 
+                                    }) }}
+                                    {% if form.statut.vars.errors|length > 0 %}
+                                        {% for error in form.statut.vars.errors %}
+                                            <div class="field-error">
+                                                <span>⚠️</span>
+                                                <span>{{ error.message }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-row">
+                                    {{ form_label(form.categorie) }}
+                                    {{ form_widget(form.categorie, { 
+                                        attr: { 
+                                            class: form.categorie.vars.errors|length > 0 ? 'form-input error' : 'form-input' 
+                                        } 
+                                    }) }}
+                                    {% if form.categorie.vars.errors|length > 0 %}
+                                        {% for error in form.categorie.vars.errors %}
+                                            <div class="field-error">
+                                                <span>⚠️</span>
+                                                <span>{{ error.message }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <button type="submit" class="card-btn submit-btn">Update</button>
+
+                            {{ form_end(form) }}
+
+                            <div style="margin-top: 16px;">
+                                <a href="{{ path('app_depense_index') }}" class="card-btn">
+                                    ← back to list
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="mobile-menu-toggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    <footer class="site-footer">
+        <p>COPYRIGHT © 2026 Your Company. Designed by
+            <a href="https://templatemo.com" target="_blank" rel="nofollow">TemplateMo</a>
+        </p>
+    </footer>
+
+    <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'front/base_finance.html.twig' %}
+
+{% block title %}Modifier une dépense - AIVA{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>Modifier une dépense</h1>
+
+    {# ✅ AJOUT DE novalidate POUR DÉSACTIVER LA VALIDATION HTML5 #}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+        <div class="form-actions">
+            <button type="submit" class="hero-button">Enregistrer les modifications</button>
+              <a href="{{ path('front_depense_index') }}"> ← Retour à la page depense</a>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
