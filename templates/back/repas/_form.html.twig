@@ -1,0 +1,82 @@
+<div class="form-grid">
+    <div class="form-group-settings full-width">
+        {{ form_label(form.nom, 'Nom du Repas') }}
+        {{ form_widget(form.nom, {'attr': {'placeholder': 'Ex: Déjeuner du lundi'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+    
+    <div class="form-group-settings">
+        {{ form_label(form.type, 'Type de Repas') }}
+        {{ form_widget(form.type, {'attr': {'class': 'settings-select'}}) }}
+        {{ form_errors(form.type) }}
+    </div>
+    
+    <div class="form-group-settings">
+        {{ form_label(form.heure, 'Heure') }}
+        {{ form_widget(form.heure, {'attr': {'type': 'time'}}) }}
+        {{ form_errors(form.heure) }}
+    </div>
+    
+    <div class="form-group-settings full-width">
+        {{ form_label(form.calories, 'Calories (kcal)') }}
+        {{ form_widget(form.calories, {'attr': {'placeholder': '0', 'type': 'number'}}) }}
+        {{ form_errors(form.calories) }}
+    </div>
+    
+    <div class="form-group-settings full-width">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'placeholder': 'Ajoutez une description...', 'rows': 4}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+</div>
+
+<style>
+.form-group-settings {
+    margin-bottom: 20px;
+}
+
+.form-group-settings label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.form-group-settings input,
+.form-group-settings textarea,
+.form-group-settings select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-group-settings input:focus,
+.form-group-settings textarea:focus,
+.form-group-settings select:focus {
+    outline: none;
+    border-color: var(--emerald);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group-settings textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group-settings.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+</style>

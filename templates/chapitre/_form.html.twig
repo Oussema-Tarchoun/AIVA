@@ -1,0 +1,67 @@
+{# templates/chapitre/_form.html.twig #}
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+<style>
+    .form-grid-row {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 18px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+    }
+    .form-field-block label {
+        font-size: 13px;
+        color: #e5e7eb;
+        display: block;
+        margin-bottom: 4px;
+    }
+    .form-errors {
+        font-size: 11px;
+        color: #fecaca;
+        margin-top: 4px;
+    }
+</style>
+
+<div class="form-grid-row">
+    <div class="form-field-block">
+        {{ form_label(form.titre, 'Titre') }}
+        {{ form_widget(form.titre) }}
+        <div class="form-errors">{{ form_errors(form.titre) }}</div>
+    </div>
+</div>
+
+<div class="form-grid-row">
+    <div class="form-field-block">
+        {{ form_label(form.contenu, 'Contenu') }}
+        {{ form_widget(form.contenu) }}
+        <div class="form-errors">{{ form_errors(form.contenu) }}</div>
+    </div>
+</div>
+
+<div class="form-grid-row">
+    <div class="form-field-block">
+        {{ form_label(form.ordre, 'Ordre') }}
+        {{ form_widget(form.ordre) }}
+        <div class="form-errors">{{ form_errors(form.ordre) }}</div>
+    </div>
+</div>
+
+<div class="form-grid-row">
+    <div class="form-field-block">
+        {{ form_label(form.exercise, 'Exercice') }}
+        {{ form_widget(form.exercise) }}
+        <div class="form-errors">{{ form_errors(form.exercise) }}</div>
+    </div>
+</div>
+
+<div class="form-grid-row">
+    <div class="form-field-block">
+        {{ form_label(form.cours, 'Cours') }}
+        {{ form_widget(form.cours) }}
+        <div class="form-errors">{{ form_errors(form.cours) }}</div>
+    </div>
+</div>
+
+<button class="card-btn">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

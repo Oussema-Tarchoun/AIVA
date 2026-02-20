@@ -1,0 +1,194 @@
+{# templates/front/objectif/edit.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Objectif - AIVA</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ✅ prevent input overflow */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ✅ same theme form card */
+    .form-card{
+      width: min(900px, 95%);
+      margin: 18px auto 0;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding: 22px;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .form-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    .form-head h3{
+      margin:0;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+    .form-head p{
+      margin:6px 0 0;
+      opacity:.75;
+      font-size: 13px;
+    }
+
+    /* grid rows */
+    .form-grid{
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      gap:14px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .form-grid.top{ align-items:start; }
+
+    @media (max-width: 820px){
+      .form-grid{ grid-template-columns: 1fr; }
+    }
+
+    /* inputs */
+    .form-card input,
+    .form-card select,
+    .form-card textarea{
+      width:100%;
+      max-width:100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: #fff;
+      outline: none;
+      font-size: 14px;
+    }
+    .form-card textarea{
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-card input:focus,
+    .form-card select:focus,
+    .form-card textarea:focus{
+      border-color:#00d4aa;
+      box-shadow: 0 0 0 3px rgba(0,212,170,.18);
+    }
+
+    .field-label{
+      color: rgba(226,232,240,.85);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .field-errors{
+      margin-top: 6px;
+      color: #ff6b6b;
+      font-size: 13px;
+    }
+
+    .form-actions{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .form-actions .hero-button{ text-decoration:none; }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}" class="active">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">depense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+    </div>
+
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">Edit <span>Objectif</span></h1>
+    <p class="hero-description">Update your objective details.</p>
+
+    <div class="form-card">
+      <div class="form-head">
+        <div>
+          <h3>Update objectif</h3>
+          <p>Change description, dates, status and target value.</p>
+        </div>
+        <a class="hero-button" href="{{ path('front_objectif_index') }}" style="text-decoration:none;">
+          ← Back
+        </a>
+      </div>
+
+      {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+      <div class="form-grid top">
+        <div class="field-label">{{ form_label(form.description) }}</div>
+        <div>
+          {{ form_widget(form.description) }}
+          <div class="field-errors">{{ form_errors(form.description) }}</div>
+        </div>
+      </div>
+
+      {% set fields = [form.type, form.valeurCible, form.dateDebut, form.dateFin, form.statut] %}
+      {% for field in fields %}
+        <div class="form-grid">
+          <div class="field-label">{{ form_label(field) }}</div>
+          <div>
+            {{ form_widget(field) }}
+            <div class="field-errors">{{ form_errors(field) }}</div>
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="form-actions">
+        <button class="hero-button" type="submit">Update</button>
+        <a class="hero-button" href="{{ path('front_objectif_index') }}">Cancel</a>
+      </div>
+
+      {{ form_end(form) }}
+    </div>
+  </main>
+</div>
+</body>
+</html>

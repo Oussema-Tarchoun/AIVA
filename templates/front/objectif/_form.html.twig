@@ -1,0 +1,49 @@
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+<div style="
+  width: min(850px, 95%);
+  margin: 18px auto 0;
+  border: 1px solid #1a1a2e;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  padding: 22px;
+">
+
+  {% macro row(field) %}
+    <div style="display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:center; margin-bottom:14px;">
+      <div style="color:#bdbdbd; font-weight:700; font-size:14px;">
+        {{ form_label(field) }}
+      </div>
+      <div>
+        {{ form_widget(field, { attr: { style: 'width:100%; padding:12px 14px; border-radius:12px; border:1px solid #2a2a44; background:#0a0a12; color:#fff;' } }) }}
+        <div style="margin-top:6px; color:#ff6b6b; font-size:13px;">{{ form_errors(field) }}</div>
+      </div>
+    </div>
+  {% endmacro %}
+  {% import _self as ui %}
+
+  
+
+  <div style="display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:start; margin-bottom:14px;">
+    <div style="color:#bdbdbd; font-weight:700; font-size:14px; padding-top:10px;">
+      {{ form_label(form.description) }}
+    </div>
+    <div>
+      {{ form_widget(form.description, { attr: { style: 'width:100%; min-height:120px; padding:12px 14px; border-radius:12px; border:1px solid #2a2a44; background:#0a0a12; color:#fff; resize:vertical;' } }) }}
+      <div style="margin-top:6px; color:#ff6b6b; font-size:13px;">{{ form_errors(form.description) }}</div>
+    </div>
+  </div>
+
+  {{ ui.row(form.type) }}
+  {{ ui.row(form.valeurCible) }}
+  {{ ui.row(form.dateDebut) }}
+  {{ ui.row(form.dateFin) }}
+  {{ ui.row(form.statut) }}
+
+  <div style="margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <button class="hero-button" type="submit">{{ button_label|default('Save') }}</button>
+    <a class="hero-button" href="{{ path('front_objectif_index') }}" style="text-decoration:none;">Cancel</a>
+  </div>
+</div>
+
+{{ form_end(form) }}

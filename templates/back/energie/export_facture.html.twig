@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
+        .muted { color:#666; font-size: 11px; }
+        .box { padding: 10px; border: 1px solid #ddd; margin-top: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #ccc; padding: 6px; vertical-align: top; }
+        th { background: #f3f3f3; }
+        ul { margin: 6px 0 0 18px; padding: 0; }
+        li { margin: 2px 0; }
+    </style>
+</head>
+<body>
+<h1> Consommation</h1>
+<p class="muted">Date : {{ date|date('Y-m-d') }}</p>
+
+{% if isAll %}
+    <p>Scope : <strong>Tous les utilisateurs</strong></p>
+{% else %}
+    <p>Utilisateur : <strong>{{ user ? (user.name ~ ' - ' ~ user.email) : 'Inconnu' }}</strong></p>
+{% endif %}
+
+<div class="box">
+    <strong>Total consommation :</strong> {{ total }}<br>
+    <span class="muted">Nombre d'enregistrements : {{ energies|length }}</span>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Utilisateur</th>
+        <th>Type</th>
+        <th>Période</th>
+        <th>Valeur</th>
+        <th>Date</th>
+        <th>Source</th>
+        <th>Recommandations (avec description)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for e in energies %}
+        <tr>
+            <td>
+                {% if e.user %}
+                    {{ e.user.name }}<br><span class="muted">{{ e.user.email }}</span>
+                {% else %}
+                    <span class="muted">Inconnu</span>
+                {% endif %}
+            </td>
+            <td>{{ e.typeEnergie }}</td>
+            <td>{{ e.periode }}</td>
+            <td>{{ e.valeur }}</td>
+            <td>{{ e.dateEnregistrement ? e.dateEnregistrement|date('Y-m-d') : '' }}</td>
+            <td>{{ e.source }}</td>
+            <td>
+                {% if e.recommandations|length > 0 %}
+                    <ul>
+                        {% for r in e.recommandations %}
+                            <li>
+                                <strong>({{ r.niveauImpact ?? 'N/A' }}) {{ r.titre ?? 'Recommandation' }}</strong><br>
+                                <span class="muted">{{ r.description ?? '' }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="muted">Aucune</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="7">Aucune donnée</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

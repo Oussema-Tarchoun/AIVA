@@ -1,0 +1,102 @@
+{% extends 'back/sport/base_back.html.twig' %}
+
+{% block title %}Météo (API){% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div class="page-title">🌦️ Météo (API Open-Meteo)</div>
+    <div class="page-breadcrumb">
+        <a href="#">Dashboard</a> <span>/</span> <span>API</span> <span>/</span> <span>Météo</span>
+    </div>
+</div>
+
+<div class="glass-card table-card">
+    <div class="card-header" style="gap:16px; flex-wrap:wrap;">
+        <div>
+            <div class="card-title">📡 Données météo</div>
+            <div class="card-subtitle">Appel API côté serveur (Symfony HttpClient)</div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-left:auto;">
+            <a class="card-btn" href="{{ path('back_sport_index') }}">↩ Retour activités</a>
+        </div>
+    </div>
+
+    <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; margin: 0 16px 16px 16px;">
+        <select class="settings-select" name="city">
+            {% for c in cities %}
+                <option value="{{ c }}" {{ c == city ? 'selected' : '' }}>{{ c }}</option>
+            {% endfor %}
+        </select>
+        <button class="card-btn active" type="submit">📍 Changer</button>
+    </form>
+
+    {% if error %}
+        <div style="padding:16px;">
+            <span class="status-badge pending">🛑 {{ error }}</span>
+        </div>
+    {% else %}
+        <div style="padding:16px; display:flex; gap:16px; flex-wrap:wrap;">
+
+            {# ✅ IMPORTANT: ما نستعملوش stat-value للنص #}
+            <div class="glass-card stat-card glass-card-3d" style="min-width:260px;">
+                <div class="stat-card-inner">
+                    <div class="stat-info">
+                        <h3>Ville</h3>
+                        <div style="font-size:20px; font-weight:800; color:var(--text-primary);">
+                            {{ city }}
+                        </div>
+                    </div>
+                    <div class="stat-icon cyan">📍</div>
+                </div>
+            </div>
+
+            {# ✅ رقم وحدو (باش الJS ما يبدلش 10.1 -> 101) #}
+            <div class="glass-card stat-card glass-card-3d" style="min-width:260px;">
+                <div class="stat-card-inner">
+                    <div class="stat-info">
+                        <h3>Température</h3>
+                        <div class="stat-value">
+                            <span>{{ temperature is not null ? (temperature|round(0)) : 0 }}</span>°C
+                        </div>
+                    </div>
+                    <div class="stat-icon magenta">🌡️</div>
+                </div>
+            </div>
+
+            {# ✅ IMPORTANT: Condition نص => ما نحطّوهاش stat-value #}
+            <div class="glass-card stat-card glass-card-3d" style="min-width:260px;">
+                <div class="stat-card-inner">
+                    <div class="stat-info">
+                        <h3>Condition</h3>
+                        <div style="font-size:18px; font-weight:800; color:var(--text-primary);">
+                            {{ condition }}
+                        </div>
+                    </div>
+                    <div class="stat-icon success">☁️</div>
+                </div>
+            </div>
+
+            <div class="glass-card stat-card glass-card-3d" style="min-width:260px;">
+                <div class="stat-card-inner">
+                    <div class="stat-info">
+                        <h3>Vent</h3>
+                        <div class="stat-value">
+                            <span>{{ wind is not null ? (wind|round(0)) : 0 }}</span> km/h
+                        </div>
+                    </div>
+                    <div class="stat-icon purple">💨</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding:16px;">
+            {% if temperature is not null and temperature >= 12 and temperature <= 28 and condition not in ['Pluie', 'Orage', 'Averses'] %}
+                <span class="status-badge completed">✅ Recommandation : activité outdoor possible</span>
+            {% else %}
+                <span class="status-badge processing">ℹ️ Recommandation : activité indoor conseillée</span>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

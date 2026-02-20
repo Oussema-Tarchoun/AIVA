@@ -1,0 +1,317 @@
+/* Profile Page - AIVA Theme */
+
+/* Profile Main Container */
+.profile-main {
+  padding: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 50px;
+  padding: 40px;
+  background: transparent;
+  border: 1px solid #1a1a2e;
+  border-radius: 20px;
+  position: relative;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at top left, rgba(168, 85, 247, 0.05), transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(0, 212, 170, 0.05), transparent 50%);
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.profile-avatar-large {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #a855f7, #00d4aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 36px;
+  color: white;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.profile-header-info {
+  z-index: 1;
+}
+
+.profile-header-info h1 {
+  font-size: 36px;
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.profile-email {
+  font-size: 16px;
+  color: #888;
+  margin: 0 0 16px 0;
+}
+
+.profile-role-badge {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.role-badge {
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.role-badge.admin {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+  border: none;
+}
+
+.role-badge.user {
+  background: transparent;
+  color: #00d4aa;
+  border: 1px solid #00d4aa;
+}
+
+/* Profile Grid */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+/* Profile Card */
+.profile-card {
+  background: transparent;
+  border: 1px solid #1a1a2e;
+  border-radius: 20px;
+  padding: 30px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(0, 212, 170, 0.03), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.profile-card:hover {
+  border-color: rgba(0, 212, 170, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 212, 170, 0.1);
+}
+
+.profile-card:hover::before {
+  opacity: 1;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #1a1a2e;
+  position: relative;
+  z-index: 1;
+}
+
+.card-header svg {
+  color: #00d4aa;
+  stroke: #00d4aa;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Info Row */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(26, 26, 46, 0.5);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Change Password Button */
+.change-password-btn {
+  background: linear-gradient(135deg, #0d9488, #00d4aa);
+  border: none;
+  color: #0a0a12;
+  padding: 14px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.change-password-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 212, 170, 0.4);
+}
+
+/* Roles List */
+.roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  border-radius: 12px;
+  color: #00d4aa;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.role-item:hover {
+  background: rgba(0, 212, 170, 0.05);
+  border-color: #00d4aa;
+}
+
+.role-item svg {
+  width: 16px;
+  height: 16px;
+  stroke: #00d4aa;
+}
+
+/* Action Buttons */
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: transparent;
+  border: 1px solid #1a1a2e;
+  border-radius: 12px;
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  background: rgba(0, 212, 170, 0.05);
+  border-color: #00d4aa;
+  color: #00d4aa;
+  transform: translateX(5px);
+}
+
+.action-button:hover svg {
+  stroke: #00d4aa;
+}
+
+.action-button.logout-action {
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.action-button.logout-action:hover {
+  background: rgba(255, 107, 107, 0.05);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.action-button.logout-action svg {
+  stroke: #ff6b6b;
+}
+
+.action-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: #888;
+  transition: stroke 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-main {
+    padding: 24px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header-info h1 {
+    font-size: 24px;
+  }
+
+  .profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+}

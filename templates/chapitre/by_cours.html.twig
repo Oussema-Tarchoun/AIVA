@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Chapitres of {{ cours.tittre }}
+{% endblock %}
+
+{% block body %}
+    <h1>Chapitres for: {{ cours.tittre }}</h1>
+
+    <ul>
+        {% for chapitre in chapitres %}
+            <li>
+                <strong>{{ chapitre.titre }}</strong>
+            </li>
+        {% else %}
+            <li>No chapitres found for this cours.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('app_cours_index') }}">⬅ Back to courses</a>
+{% endblock %}

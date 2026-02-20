@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommandations - AIVA</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ===== SEARCH & SORT BAR ===== */
+    .search-sort-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      padding: 0 4px;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex: 1 1 260px;
+    }
+    .search-input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,.45);
+      font-size: 14px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border .2s;
+      box-sizing: border-box;
+    }
+    .search-input-wrap input:focus { border-color: rgba(255,255,255,.4); }
+    .search-input-wrap input::placeholder { color: rgba(255,255,255,.35); }
+
+    /* Sort buttons */
+    .sort-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 12px auto 0;
+      padding: 0 4px;
+    }
+    .sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, border .2s, color .2s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .sort-btn:hover {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+    }
+    .sort-btn.active {
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.45);
+      color: #fff;
+      font-weight: 700;
+    }
+    .sort-arrow { font-size: 11px; }
+
+    .results-count {
+      font-size: 13px;
+      color: rgba(255,255,255,.5);
+      max-width: 1200px;
+      margin: 10px auto 0;
+      padding: 0 4px;
+    }
+
+    /* Impact badges */
+    .badge-faible  { background: rgba(72,199,142,.2);  border-color: rgba(72,199,142,.4);  color: #48c78e; }
+    .badge-moyen   { background: rgba(255,189,46,.2);  border-color: rgba(255,189,46,.4);  color: #ffbd2e; }
+    .badge-eleve   { background: rgba(255,107,107,.2); border-color: rgba(255,107,107,.4); color: #ff6b6b; }
+
+    .no-results {
+      display: none;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px dashed rgba(255,255,255,.15);
+      text-align: center;
+      color: rgba(255,255,255,.5);
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+
+<body>
+
+{# ===== Safe defaults (avoid "variable does not exist") ===== #}
+{% set recommandations = recommandations|default([]) %}
+{% set search = search|default('') %}
+{% set sort = sort|default('date') %}
+{% set order = order|default('DESC') %}
+
+<div class="container">
+
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#a855f7" />
+            <stop offset="50%"  stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}" class="active">Recommandations</a>
+    </div>
+
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">💡 Mes Recommandations</h1>
+    <p class="hero-description">
+      Conseils personnalisés basés sur vos consommations enregistrées.
+    </p>
+
+    <!-- FLASH -->
+    <div style="margin: 12px 0;">
+      {% for message in app.flashes('success') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(0,210,150,.15);border:1px solid rgba(0,210,150,.35);">
+          {{ message }}
+        </div>
+      {% endfor %}
+      {% for message in app.flashes('danger') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);">
+          {{ message }}
+        </div>
+      {% endfor %}
+      {% for message in app.flashes('info') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(80,160,255,.12);border:1px solid rgba(80,160,255,.35);">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- ===== BARRE RECHERCHE DYNAMIQUE (SANS BOUTON) ===== -->
+    <form method="get" action="{{ path('front_recommandation_index') }}" class="search-sort-bar" id="searchForm">
+      <div class="search-input-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" id="searchInput"
+               value="{{ search }}"
+               placeholder="Rechercher par titre, type, impact, description…"
+               autocomplete="off">
+      </div>
+
+      <input type="hidden" name="sort"  value="{{ sort }}">
+      <input type="hidden" name="order" value="{{ order }}">
+
+      {% if search %}
+        <a href="{{ path('front_recommandation_index', {sort: sort, order: order}) }}"
+           class="sort-btn"
+           style="color:#ff6b6b;border-color:rgba(255,107,107,.3);">
+          <i class="fa-solid fa-xmark"></i> Effacer
+        </a>
+      {% endif %}
+    </form>
+
+    <!-- Boutons de tri (liens GET) -->
+    <div class="sort-btns" style="max-width:1200px;margin:12px auto 0;padding:0 4px;">
+      <span style="font-size:12px;color:rgba(255,255,255,.45);margin-right:4px;">Trier :</span>
+
+      {% set sortFields = {
+        'titre':   '📝 Titre',
+        'type':    '⚡ Type',
+        'impact':  '🎯 Impact',
+        'date':    '🗓 Date',
+        'valeur':  '📊 Valeur',
+        'moyenne': '📈 Moyenne/j'
+      } %}
+
+      {% for field, label in sortFields %}
+        {% set isActive = (sort == field) %}
+        {% set nextOrder = (isActive and order == 'ASC') ? 'DESC' : 'ASC' %}
+        <a href="{{ path('front_recommandation_index', {q: search, sort: field, order: nextOrder}) }}"
+           class="sort-btn {{ isActive ? 'active' : '' }}">
+          {{ label }}
+          {% if isActive %}
+            <span class="sort-arrow">{{ order == 'ASC' ? '↑' : '↓' }}</span>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="results-count">
+      {% if search %}
+        {{ recommandations|length }} résultat{{ recommandations|length != 1 ? 's' : '' }} pour « {{ search }} »
+      {% else %}
+        {{ recommandations|length }} recommandation{{ recommandations|length != 1 ? 's' : '' }}
+      {% endif %}
+    </div>
+
+    <!-- GRID -->
+    <div id="recoGrid" style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+      gap:45px;
+      margin-top:16px;
+      width:100%;
+      max-width:1200px;
+      margin-left:auto;
+      margin-right:auto;
+    ">
+      {% for reco in recommandations %}
+        {% set e = reco.energie %}
+        {% set v = e ? e.valeur : 0 %}
+        {% set p = e ? e.periode : 1 %}
+        {% set m = p > 0 ? (v / p) : 0 %}
+        {% set type = e ? e.typeEnergie : 'Énergie' %}
+        {% set icon =
+          type == 'Électricité' ? 'fa-bolt' :
+          type == 'Gaz' ? 'fa-fire' :
+          'fa-droplet'
+        %}
+        {% set impactLower = reco.niveauImpact ? reco.niveauImpact|lower : 'moyen' %}
+        {% set badgeClass =
+          impactLower == 'faible' ? 'badge-faible' :
+          impactLower == 'élevé' or impactLower == 'eleve' ? 'badge-eleve' :
+          'badge-moyen'
+        %}
+
+        <div class="reco-card"
+          data-titre="{{ reco.titre|lower }}"
+          data-type="{{ type|lower }}"
+          data-impact="{{ impactLower }}"
+          data-date="{{ reco.dateGeneration ? reco.dateGeneration|date('Y-m-d') : '' }}"
+          data-valeur="{{ v }}"
+          data-moyenne="{{ p > 0 ? (v / p) : 0 }}"
+          data-description="{{ reco.description|lower|e('html_attr') }}"
+          style="
+            padding:18px;
+            border-radius:18px;
+            background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+            border:1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
+            transition: transform .25s, box-shadow .25s;
+          "
+          onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 15px 35px rgba(0,0,0,.3)'"
+          onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;">
+            <div style="flex:1;">
+              <div style="font-size:17px;font-weight:800;">
+                <i class="fa-solid {{ icon }}"></i>
+                {{ reco.titre ?: ('Recommandation ' ~ type) }}
+              </div>
+
+              <div style="font-size:13px;opacity:.75;margin-top:6px;">
+                <i class="fa-regular fa-calendar"></i>
+                {{ reco.dateGeneration ? reco.dateGeneration|date('d/m/Y') : '' }}
+              </div>
+
+              <div style="margin-top:10px;font-size:13px;opacity:.85;line-height:1.55;">
+                • {{ type }} <br>
+                • Consommation : {{ v|number_format(2, ',', ' ') }} (sur {{ p|number_format(0, ',', ' ') }} jours) <br>
+                • Moyenne : {{ m|number_format(2, ',', ' ') }} / jour
+              </div>
+            </div>
+
+            <span style="
+              padding:6px 14px;
+              border-radius:999px;
+              font-size:12px;
+              font-weight:800;
+              border:1px solid;
+              height:fit-content;
+              white-space:nowrap;
+            " class="{{ badgeClass }}">
+              {{ reco.niveauImpact ?: 'Moyen' }}
+            </span>
+          </div>
+
+          <!-- Description -->
+          <div style="
+            margin-top:14px;
+            font-size:14px;
+            line-height:1.65;
+            white-space: pre-wrap;
+          ">
+            {{ reco.description ?: 'Aucune description disponible.' }}
+          </div>
+
+          <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+            <form method="post"
+                  action="{{ path('front_recommandation_delete', {id: reco.id}) }}"
+                  onsubmit="return confirm('Supprimer cette recommandation ?');">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete_reco_' ~ reco.id) }}">
+              <button class="btn btn-danger" type="submit">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      {% else %}
+        <div style="
+          padding:20px;
+          border-radius:16px;
+          background:rgba(255,255,255,.04);
+          border:1px dashed rgba(255,255,255,.15);
+        ">
+          Aucune recommandation disponible.
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="no-results" id="noResults">
+      <i class="fa-solid fa-magnifying-glass" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+      Aucune recommandation ne correspond à votre recherche.
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ===== RECHERCHE DYNAMIQUE BACK-END (Debounce, sans bouton) =====
+  const searchInput = document.getElementById('searchInput');
+  const searchForm  = document.getElementById('searchForm');
+
+  let searchTimeout = null;
+  let lastValue = searchInput ? searchInput.value : "";
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+
+      searchTimeout = setTimeout(() => {
+        const v = searchInput.value.trim();
+
+        // évite de soumettre si rien n'a changé
+        if (v === lastValue.trim()) return;
+
+        lastValue = v;
+        searchForm.submit();
+      }, 600);
+    });
+
+    {% if search %}
+      // focus fin de texte si recherche existante
+      searchInput.focus();
+      const val = searchInput.value;
+      searchInput.value = "";
+      searchInput.value = val;
+    {% endif %}
+  }
+</script>
+
+</body>
+</html>

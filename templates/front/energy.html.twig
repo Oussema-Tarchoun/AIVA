@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Énergie - AIVA</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== SEARCH & SORT BAR ===== */
+    .search-sort-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      padding: 0 4px;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex: 1 1 260px;
+    }
+    .search-input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,.45);
+      font-size: 14px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border .2s;
+      box-sizing: border-box;
+    }
+    .search-input-wrap input:focus { border-color: rgba(255,255,255,.4); }
+    .search-input-wrap input::placeholder { color: rgba(255,255,255,.35); }
+
+    /* Sort buttons */
+    .sort-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 12px auto 0;
+      padding: 0 4px;
+    }
+    .sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, border .2s, color .2s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .sort-btn:hover {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+    }
+    .sort-btn.active {
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.45);
+      color: #fff;
+      font-weight: 700;
+    }
+    .sort-arrow { font-size: 11px; }
+
+    .results-count {
+      font-size: 13px;
+      color: rgba(255,255,255,.5);
+      max-width: 1200px;
+      margin: 10px auto 0;
+      padding: 0 4px;
+    }
+
+    /* ===== MODAL OVERLAY ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.5);
+      animation: modalIn .25s ease;
+    }
+    @keyframes modalIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: rgba(255,255,255,.75);
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border .2s;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus { border-color: rgba(255,255,255,.4); }
+    .form-group select option { background: #1a1a2e; color: #fff; }
+
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Flash messages */
+    .flash-container {
+      max-width: 1200px;
+      margin: 0 auto 16px;
+      padding: 0 16px;
+    }
+    .flash-success {
+      background: rgba(72,199,142,.15);
+      border: 1px solid rgba(72,199,142,.4);
+      color: #48c78e;
+      padding: 12px 18px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .flash-danger {
+      background: rgba(255,107,107,.15);
+      border: 1px solid rgba(255,107,107,.4);
+      color: #ff6b6b;
+      padding: 12px 18px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* No results */
+    .no-results {
+      display: none;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px dashed rgba(255,255,255,.15);
+      text-align: center;
+      color: rgba(255,255,255,.5);
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+
+<body>
+
+{# ===== Defaults safe (avoid "variable does not exist") ===== #}
+{% set energies  = energies|default([]) %}
+{% set addErrors = addErrors|default({}) %}
+{% set oldAdd    = oldAdd|default({}) %}
+{% set search    = search|default('') %}
+{% set sort      = sort|default('date') %}
+{% set order     = order|default('DESC') %}
+
+<div class="container">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}" class="active">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandations</a>
+    </div>
+
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <main class="hero">
+
+    <h1 class="hero-title">⚡ Mes Énergies</h1>
+    <p class="hero-description">
+      Suivez votre consommation d'électricité, gaz et eau.
+    </p>
+
+    <!-- Flash messages -->
+    <div class="flash-container">
+      {% for msg in app.flashes('success') %}
+        <div class="flash-success"><i class="fa-solid fa-circle-check"></i> {{ msg }}</div>
+      {% endfor %}
+      {% for msg in app.flashes('danger') %}
+        <div class="flash-danger"><i class="fa-solid fa-triangle-exclamation"></i> {{ msg }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="section-head">
+      <h2 class="section-title">Mes énergies</h2>
+      <button class="btn btn-primary" type="button" id="openAddModal">
+        + Ajouter
+      </button>
+    </div>
+
+    <!-- ===== BARRE RECHERCHE DYNAMIQUE (SANS BOUTON) ===== -->
+    <form method="get" action="{{ path('front_energie_index') }}" class="search-sort-bar" id="searchForm">
+      <div class="search-input-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" id="searchInput"
+               value="{{ search }}"
+               placeholder="Rechercher par type, source…"
+               autocomplete="off">
+      </div>
+
+      {# Conserver sort/order dans le formulaire de recherche #}
+      <input type="hidden" name="sort"  value="{{ sort }}">
+      <input type="hidden" name="order" value="{{ order }}">
+
+      {% if search %}
+        <a href="{{ path('front_energie_index', {sort: sort, order: order}) }}"
+           class="sort-btn"
+           style="color:#ff6b6b;border-color:rgba(255,107,107,.3);">
+          <i class="fa-solid fa-xmark"></i> Effacer
+        </a>
+      {% endif %}
+    </form>
+
+    <!-- Boutons de tri (liens GET) -->
+    <div class="sort-btns" style="max-width:1200px;margin:12px auto 0;padding:0 4px;">
+      <span style="font-size:12px;color:rgba(255,255,255,.45);margin-right:4px;">Trier :</span>
+
+      {% set sortFields = {
+        'type':    '⚡ Type',
+        'periode': '📅 Période',
+        'valeur':  '📊 Valeur',
+        'source':  '🔌 Source',
+        'date':    '🗓 Date',
+        'id':      '# ID'
+      } %}
+
+      {% for field, label in sortFields %}
+        {% set isActive = (sort == field) %}
+        {% set nextOrder = (isActive and order == 'ASC') ? 'DESC' : 'ASC' %}
+        <a href="{{ path('front_energie_index', {q: search, sort: field, order: nextOrder}) }}"
+           class="sort-btn {{ isActive ? 'active' : '' }}">
+          {{ label }}
+          {% if isActive %}
+            <span class="sort-arrow">{{ order == 'ASC' ? '↑' : '↓' }}</span>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="results-count">
+      {% if search %}
+        {{ energies|length }} résultat{{ energies|length != 1 ? 's' : '' }} pour « {{ search }} »
+      {% else %}
+        {{ energies|length }} énergie{{ energies|length != 1 ? 's' : '' }}
+      {% endif %}
+    </div>
+
+    <!-- GRID -->
+    <div id="energieGrid" style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+      gap:45px;
+      margin-top:16px;
+      width:100%;
+      max-width:1200px;
+      margin-left:auto;
+      margin-right:auto;
+    ">
+
+      {% for energie in energies %}
+
+        {% set icon =
+          energie.typeEnergie == 'Électricité' ? 'fa-bolt' :
+          energie.typeEnergie == 'Gaz' ? 'fa-fire' :
+          'fa-droplet'
+        %}
+
+        <div class="energie-card"
+          data-type="{{ energie.typeEnergie|lower }}"
+          data-periode="{{ energie.periode }}"
+          data-valeur="{{ energie.valeur }}"
+          data-source="{{ energie.source|lower }}"
+          data-date="{{ energie.dateEnregistrement ? energie.dateEnregistrement|date('Y-m-d') : '' }}"
+          data-id="{{ energie.id }}"
+          style="
+            width:100%;
+            padding:20px;
+            border-radius:20px;
+            background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+            border:1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
+            transition:.25s;
+          "
+          onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 15px 35px rgba(0,0,0,.3)'"
+          onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+
+          <!-- HEADER -->
+          <div style="display:flex;justify-content:space-between;align-items:start;">
+            <div>
+              <div style="font-size:18px;font-weight:700;">
+                <i class="fa-solid {{ icon }}"></i>
+                {{ energie.typeEnergie }}
+              </div>
+              <div style="font-size:13px;opacity:.7;margin-top:6px;">
+                <i class="fa-regular fa-calendar"></i>
+                {{ energie.dateEnregistrement ? energie.dateEnregistrement|date('d/m/Y') : '' }}
+              </div>
+            </div>
+            <span style="
+              padding:6px 12px;
+              border-radius:999px;
+              font-size:12px;
+              font-weight:700;
+              background:rgba(255,255,255,.06);
+              border:1px solid rgba(255,255,255,.15);
+            ">#{{ energie.id }}</span>
+          </div>
+
+          <!-- BODY -->
+          <div style="margin-top:16px;font-size:14px;line-height:1.8;">
+            <p><b>Période :</b> {{ energie.periode }}</p>
+            <p><b>Valeur :</b> {{ energie.valeur }}</p>
+            <p><b>Source :</b> {{ energie.source }}</p>
+          </div>
+
+          <!-- ACTIONS -->
+          <div style="margin-top:18px;display:flex;justify-content:space-between;gap:10px;">
+            <button
+              type="button"
+              class="btn btn-warning openEditModal"
+              data-id="{{ energie.id }}"
+              data-type="{{ energie.typeEnergie }}"
+              data-periode="{{ energie.periode }}"
+              data-valeur="{{ energie.valeur }}"
+              data-date="{{ energie.dateEnregistrement ? energie.dateEnregistrement|date('Y-m-d') : '' }}"
+              data-source="{{ energie.source|e('html_attr') }}"
+            >
+              <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <form method="post"
+                  action="{{ path('front_energie_delete', {id: energie.id}) }}"
+                  onsubmit="return confirm('Supprimer cette énergie ?');">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete_energie_' ~ energie.id) }}">
+              <button class="btn btn-danger" type="submit">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      {% else %}
+        <div style="
+          padding:20px;
+          border-radius:16px;
+          background:rgba(255,255,255,.04);
+          border:1px dashed rgba(255,255,255,.15);
+        ">
+          Aucune énergie enregistrée.
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="no-results" id="noResults">
+      <i class="fa-solid fa-magnifying-glass" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+      Aucune énergie ne correspond à votre recherche.
+    </div>
+
+  </main>
+</div>
+
+<!-- ===================== MODAL AJOUTER ===================== -->
+<div class="modal-overlay {% if addErrors is not empty %}open{% endif %}" id="addModal">
+  <div class="modal-box">
+    <div class="modal-title">⚡ Ajouter une énergie</div>
+
+    <form method="post" action="{{ path('front_energie_add') }}">
+      {# Optional: keep current filters in POST (useful if you later read them) #}
+      <input type="hidden" name="q" value="{{ search }}">
+      <input type="hidden" name="sort" value="{{ sort }}">
+      <input type="hidden" name="order" value="{{ order }}">
+
+      <div class="form-group">
+        <label>Type d'énergie *</label>
+        <select name="typeEnergie" >
+          <option value="">-- Choisir --</option>
+          {% for t in ['Électricité','Gaz','Eau'] %}
+            <option value="{{ t }}" {{ (oldAdd.typeEnergie ?? '') == t ? 'selected' : '' }}>{{ t }}</option>
+          {% endfor %}
+        </select>
+        {% if addErrors.typeEnergie is defined %}
+          <div class="error-msg">{{ addErrors.typeEnergie }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label>Période (jours) *</label>
+        <input type="number" name="periode" min="1" step="any"
+               value="{{ oldAdd.periode ?? '' }}" placeholder="ex: 30" >
+        {% if addErrors.periode is defined %}
+          <div class="error-msg">{{ addErrors.periode }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label>Valeur (kWh / m³ / L) *</label>
+        <input type="number" name="valeur" min="0" step="any"
+               value="{{ oldAdd.valeur ?? '' }}" placeholder="ex: 150" >
+        {% if addErrors.valeur is defined %}
+          <div class="error-msg">{{ addErrors.valeur }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label>Source *</label>
+        <input type="text" name="source"
+               value="{{ oldAdd.source ?? '' }}" placeholder="ex: Compteur EDF" >
+        {% if addErrors.source is defined %}
+          <div class="error-msg">{{ addErrors.source }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label>Date d'enregistrement</label>
+        <input type="date" name="dateEnregistrement"
+               value="{{ oldAdd.dateEnregistrement ?? '' }}">
+        {% if addErrors.dateEnregistrement is defined %}
+          <div class="error-msg">{{ addErrors.dateEnregistrement }}</div>
+        {% endif %}
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="closeAddModal">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL MODIFIER ===================== -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Modifier l'énergie</div>
+
+    <form method="post" id="editForm" action="">
+      <div class="form-group">
+        <label>Type d'énergie *</label>
+        <select name="typeEnergie" id="editType" >
+          <option value="">-- Choisir --</option>
+          <option value="Électricité">Électricité</option>
+          <option value="Gaz">Gaz</option>
+          <option value="Eau">Eau</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Période (jours) *</label>
+        <input type="number" name="periode" id="editPeriode" min="1" step="any" >
+      </div>
+
+      <div class="form-group">
+        <label>Valeur (kWh / m³ / L) *</label>
+        <input type="number" name="valeur" id="editValeur" min="0" step="any" >
+      </div>
+
+      <div class="form-group">
+        <label>Source *</label>
+        <input type="text" name="source" id="editSource" >
+      </div>
+
+      <div class="form-group">
+        <label>Date d'enregistrement</label>
+        <input type="date" name="dateEnregistrement" id="editDate">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="closeEditModal">Annuler</button>
+        <button type="submit" class="btn btn-warning">Modifier</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  // ===== Routes =====
+  const updateBaseUrl = "{{ path('front_energie_update', {id: '__ID__'}) }}";
+
+  // ===== Modal helpers =====
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) closeModal(this.id);
+    });
+  });
+
+  document.getElementById('openAddModal').addEventListener('click', () => openModal('addModal'));
+  document.getElementById('closeAddModal').addEventListener('click', () => closeModal('addModal'));
+
+  document.querySelectorAll('.openEditModal').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.getElementById('editType').value    = this.dataset.type;
+      document.getElementById('editPeriode').value = this.dataset.periode;
+      document.getElementById('editValeur').value  = this.dataset.valeur;
+      document.getElementById('editDate').value    = this.dataset.date;
+      document.getElementById('editSource').value  = this.dataset.source;
+      document.getElementById('editForm').action   = updateBaseUrl.replace('__ID__', this.dataset.id);
+      openModal('editModal');
+    });
+  });
+
+  document.getElementById('closeEditModal').addEventListener('click', () => closeModal('editModal'));
+
+  // ===== RECHERCHE DYNAMIQUE BACK-END (Debounce, sans bouton) =====
+  const searchInput = document.getElementById('searchInput');
+  const searchForm  = document.getElementById('searchForm');
+  let searchTimeout = null;
+  let lastValue = searchInput ? searchInput.value : "";
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+
+      searchTimeout = setTimeout(() => {
+        const v = searchInput.value.trim();
+
+        // évite de soumettre si la valeur n'a pas changé
+        if (v === lastValue.trim()) return;
+
+        lastValue = v;
+        searchForm.submit();
+      }, 600);
+    });
+
+    // Focus fin de texte si recherche existante
+    if ("{{ search }}") {
+      searchInput.focus();
+      const val = searchInput.value;
+      searchInput.value = "";
+      searchInput.value = val;
+    }
+  }
+</script>
+
+
+</body>
+</html>
