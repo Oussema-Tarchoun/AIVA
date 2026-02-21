@@ -131,10 +131,6 @@ class FrontDepenseController extends AbstractController
 
                         $this->addFlash('success', 'La dépense a été ajoutée avec succès !');
 
-<<<<<<< HEAD
-=======
-                        // ✅ REDIRECTION FIXED HERE
->>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
                         return $this->redirectToRoute('front_depense_index');
 
                     } catch (\Exception $e) {
@@ -266,10 +262,6 @@ class FrontDepenseController extends AbstractController
 
                 $this->addFlash('success', 'La dépense a été modifiée avec succès !');
 
-<<<<<<< HEAD
-=======
-                // ✅ REDIRECTION FIXED HERE
->>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
                 return $this->redirectToRoute('front_depense_index');
             }
         }

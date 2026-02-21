@@ -326,33 +326,32 @@
 
                 <div style="margin: 20px 0;">
                     <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                        <!-- Live Search -->
-                        <div style="position: relative; flex: 1; max-width: 500px;">
-                            <span id="search-icon" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none;">🔍</span>
-                            <input
-                                type="text"
-                                id="live-search"
-                                placeholder="Search by name, email or ID…"
-                                autocomplete="off"
-                                style="width: 100%; padding: 10px 15px 10px 42px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: var(--text-primary); outline: none; font-size: 14px; transition: border-color .2s;"
-                            >
-                            <span id="search-hint" style="display:block; margin-top: 5px; font-size: 11px; color: var(--text-secondary); min-height: 16px;"></span>
-                        </div>
+                        <!-- Search Form -->
+                        <form method="get" action="{{ path('app_user_index') }}" style="display: flex; gap: 10px; flex: 1; max-width: 500px;">
+                            <input type="text" name="search" placeholder="Search by name or email..." value="{{ search }}"
+                                   style="flex: 1; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: var(--text-primary); outline: none;">
+                            <input type="hidden" name="sort" value="{{ currentSort }}">
+                            <input type="hidden" name="order" value="{{ currentOrder }}">
+                            <button type="submit" class="card-btn">🔍 Search</button>
+                            {% if search %}
+                                <a href="{{ path('app_user_index', {'sort': currentSort, 'order': currentOrder}) }}" class="card-btn">Clear</a>
+                            {% endif %}
+                        </form>
 
-                        <!-- Sort Buttons (kept for page-load sort) -->
+                        <!-- Sort Buttons -->
                         <div style="display: flex; gap: 8px; align-items: center;">
                             <span style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Sort by:</span>
-                            <a href="{{ path('app_user_index', {'sort': 'name', 'order': currentSort == 'name' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC'}) }}"
+                            <a href="{{ path('app_user_index', {'sort': 'name', 'order': currentSort == 'name' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC', 'search': search}) }}"
                                class="card-btn"
                                style="padding: 8px 14px; background: {{ currentSort == 'name' ? 'linear-gradient(135deg, var(--emerald-light), var(--emerald))' : 'rgba(255, 255, 255, 0.05)' }}; font-size: 13px; font-weight: 500;">
                                 Name {% if currentSort == 'name' %}{{ currentOrder == 'ASC' ? '↑' : '↓' }}{% endif %}
                             </a>
-                            <a href="{{ path('app_user_index', {'sort': 'email', 'order': currentSort == 'email' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC'}) }}"
+                            <a href="{{ path('app_user_index', {'sort': 'email', 'order': currentSort == 'email' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC', 'search': search}) }}"
                                class="card-btn"
                                style="padding: 8px 14px; background: {{ currentSort == 'email' ? 'linear-gradient(135deg, var(--emerald-light), var(--emerald))' : 'rgba(255, 255, 255, 0.05)' }}; font-size: 13px; font-weight: 500;">
                                 Email {% if currentSort == 'email' %}{{ currentOrder == 'ASC' ? '↑' : '↓' }}{% endif %}
                             </a>
-                            <a href="{{ path('app_user_index', {'sort': 'id', 'order': currentSort == 'id' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC'}) }}"
+                            <a href="{{ path('app_user_index', {'sort': 'id', 'order': currentSort == 'id' ? (currentOrder == 'ASC' ? 'DESC' : 'ASC') : 'ASC', 'search': search}) }}"
                                class="card-btn"
                                style="padding: 8px 14px; background: {{ currentSort == 'id' ? 'linear-gradient(135deg, var(--emerald-light), var(--emerald))' : 'rgba(255, 255, 255, 0.05)' }}; font-size: 13px; font-weight: 500;">
                                 ID {% if currentSort == 'id' %}{{ currentOrder == 'ASC' ? '↑' : '↓' }}{% endif %}
@@ -389,7 +388,7 @@
                         </tr>
                         </thead>
 
-                        <tbody id="user-tbody">
+                        <tbody>
                         {% for user in users %}
                             <tr>
                                 <td>{{ user.id }}</td>
@@ -440,8 +439,14 @@
                                 </td>
                             </tr>
                         {% else %}
-                            <tr id="no-results-row">
-                                <td colspan="6" style="text-align: center; padding: 40px;">No users found</td>
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px;">
+                                    {% if search %}
+                                        No users found matching "{{ search }}"
+                                    {% else %}
+                                        No users found
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -468,150 +473,5 @@
 </footer>
 
 <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
-
-<script>
-(function () {
-    const input   = document.getElementById('live-search');
-    const hint    = document.getElementById('search-hint');
-    const tbody   = document.getElementById('user-tbody');
-    const SEARCH_URL = '{{ path('app_user_search') }}';
-
-    // CSRF tokens are embedded per-row from Twig; for dynamic rows we fetch fresh ones via a hidden endpoint.
-    // Since block/delete need CSRF, we keep the forms but generate tokens server-side per user.
-    // We embed a Twig-generated token map for all currently-loaded users and refresh on search.
-    // Simpler approach: use a per-action token fetched inline.
-
-    let debounceTimer = null;
-
-    function highlight(text, query) {
-        if (!query) return escHtml(text);
-        const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-        return escHtml(text).replace(re, '<mark style="background:rgba(16,185,129,.35);color:inherit;border-radius:3px;">$1</mark>');
-    }
-
-    function escHtml(str) {
-        return String(str)
-            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
-
-    function renderRows(users, q) {
-        if (!users.length) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;">No users found${q ? ' for &ldquo;' + escHtml(q) + '&rdquo;' : ''}</td></tr>`;
-            return;
-        }
-
-        tbody.innerHTML = users.map(u => {
-            const initials  = escHtml(u.name.slice(0,2).toUpperCase());
-            const nameHl    = highlight(u.name,  q);
-            const emailHl   = highlight(u.email, q);
-            const idHl      = highlight(String(u.id), q);
-            const blocked   = u.isBlocked;
-            const statusBadge = blocked
-                ? '<span class="status-badge pending">Blocked</span>'
-                : '<span class="status-badge completed">Active</span>';
-            const roles = u.roles.map(r =>
-                `<span class="status-badge completed" style="font-size:11px;margin:2px;">${escHtml(r)}</span>`
-            ).join('');
-            const blockIcon  = blocked ? '🔓' : '🔒';
-            const blockBg    = blocked ? 'linear-gradient(135deg,var(--success),var(--emerald))' : 'rgba(255,255,255,0.1)';
-            const blockTitle = blocked ? 'Unblock' : 'Block';
-            const blockToken = u.blockToken  || '';
-            const deleteToken= u.deleteToken || '';
-
-            return `
-            <tr>
-                <td>${idHl}</td>
-                <td>
-                    <div class="table-user">
-                        <div class="table-avatar" style="background:linear-gradient(135deg,var(--emerald-light),var(--emerald));">${initials}</div>
-                        <span class="table-user-name">${nameHl}</span>
-                    </div>
-                </td>
-                <td>${emailHl}</td>
-                <td>${roles}</td>
-                <td>${statusBadge}</td>
-                <td style="text-align:center;">
-                    <div style="display:inline-flex;gap:5px;">
-                        <a href="${escHtml(u.showUrl)}" class="card-btn" style="padding:5px 10px;font-size:12px;" title="View">👁️</a>
-                        <a href="${escHtml(u.editUrl)}" class="card-btn" style="padding:5px 10px;font-size:12px;" title="Edit">✏️</a>
-                        <form method="post" action="${escHtml(u.blockUrl)}" style="display:inline;" data-user-id="${u.id}" class="block-form">
-                            <input type="hidden" name="_token" value="${escHtml(blockToken)}">
-                            <button type="submit" class="card-btn"
-                                style="padding:5px 10px;font-size:12px;background:${blockBg};"
-                                onclick="return confirm('Are you sure?')"
-                                title="${blockTitle}">${blockIcon}</button>
-                        </form>
-                        <form method="post" action="${escHtml(u.deleteUrl)}" style="display:inline;" class="delete-form" data-user-id="${u.id}">
-                            <input type="hidden" name="_token" value="${escHtml(deleteToken)}">
-                            <button type="submit" class="card-btn"
-                                style="padding:5px 10px;font-size:12px;background:linear-gradient(135deg,#ef4444,#dc2626);"
-                                onclick="return confirm('Delete this user?')"
-                                title="Delete">🗑️</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>`;
-        }).join('');
-    }
-
-    async function fetchTokens(users) {
-        // Fetch CSRF tokens for block and delete for each user via a lightweight approach:
-        // We use the Symfony csrf_token() which is session-based, so we fetch them from a
-        // hidden endpoint or embed them via a data attribute on the page.
-        // Simplest: fetch /user/csrf-tokens?ids=1,2,3
-        // Instead, we embed them in a <script> tag on the page for the initial load,
-        // and for dynamic results we request them from the server.
-        const ids = users.map(u => u.id).join(',');
-        try {
-            const resp = await fetch(`{{ path('app_user_csrf_tokens') }}?ids=${ids}`);
-            if (!resp.ok) return {};
-            return await resp.json();
-        } catch { return {}; }
-    }
-
-    async function doSearch(q) {
-        const url = SEARCH_URL + (q ? '?q=' + encodeURIComponent(q) : '');
-        try {
-            const resp  = await fetch(url);
-            const users = await resp.json();
-
-            // Fetch CSRF tokens for these users
-            const tokens = await fetchTokens(users);
-            users.forEach(u => {
-                u.blockToken  = tokens[u.id]?.block  || '';
-                u.deleteToken = tokens[u.id]?.delete || '';
-            });
-
-            renderRows(users, q);
-        } catch (e) {
-            console.error('Search error', e);
-        }
-    }
-
-    // Update hint text
-    function updateHint(q) {
-        if (!q) { hint.textContent = ''; return; }
-        if (/^\d+$/.test(q)) {
-            hint.textContent = '🔢 Searching by ID: ' + q;
-        } else if (q.includes('@')) {
-            hint.textContent = '📧 Searching by email';
-        } else {
-            hint.textContent = '👤 Searching by name or email';
-        }
-    }
-
-    input.addEventListener('input', function () {
-        const q = this.value.trim();
-        updateHint(q);
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => doSearch(q), 220);
-    });
-
-    // Focus style
-    input.addEventListener('focus', () => input.style.borderColor = 'var(--emerald)');
-    input.addEventListener('blur',  () => input.style.borderColor = 'rgba(255,255,255,0.15)');
-})();
-</script>
 </body>
 </html>

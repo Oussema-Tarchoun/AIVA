@@ -91,18 +91,10 @@
   <h1>Modifier une dépense</h1>
 
   {# ✅ Disable HTML5 validation #}
-<<<<<<< HEAD
   {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'depenseForm'}}) }}
 
     {{ form_errors(form) }}
 
-=======
-  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-
-    {{ form_errors(form) }}
-
-    {# ✅ safest: render all fields in DepenseType #}
->>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     {{ form_widget(form) }}
 
     <div class="form-actions">
@@ -118,7 +110,6 @@
   {{ form_end(form) }}
 </div>
 
-<<<<<<< HEAD
 <!-- Confirmation montant anormal -->
 <div id="confirmModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
   <div style="max-width:440px; width:90%; padding:28px; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); border:1px solid rgba(245,158,11,.35); backdrop-filter:blur(20px); text-align:center;">
@@ -184,6 +175,4 @@
 })();
 </script>
 
-=======
->>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 {% endblock %}

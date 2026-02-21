@@ -106,7 +106,6 @@ class ResetPasswordController extends AbstractController
 
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
-            $user->setResetPasswordAttempts(0); // Reset attempts on success
             $this->entityManager->flush();
 
             $this->cleanSessionAfterReset();
@@ -137,18 +136,6 @@ class ResetPasswordController extends AbstractController
         }
 
         try {
-            $user->incrementResetPasswordAttempts();
-            
-            if ($user->getResetPasswordAttempts() >= 3) {
-                $user->setIsBlocked(true);
-            }
-            
-            $this->entityManager->flush();
-
-            if ($user->isBlocked()) {
-                return $this->redirectToRoute('app_check_email');
-            }
-
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
             return $this->redirectToRoute('app_check_email');
