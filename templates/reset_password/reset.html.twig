@@ -36,23 +36,27 @@
                     <p class="login-subtitle">Enter your new password</p>
                 </div>
 
-                {{ form_start(resetForm) }}
+                {{ form_start(resetForm, {'attr': {'novalidate': 'novalidate', 'id': 'resetPasswordForm'}}) }}
                     <div class="form-group">
+                        <div id="password1Error" class="error-message" style="display: none;">❌ Password cannot be empty</div>
                         <label class="form-label">New Password</label>
                         {{ form_widget(resetForm.plainPassword.first, {
                             'attr': {
                                 'class': 'form-input',
-                                'placeholder': 'Enter new password'
+                                'placeholder': 'Enter new password',
+                                'id': 'password1'
                             }
                         }) }}
                     </div>
 
                     <div class="form-group">
+                        <div id="password2Error" class="error-message" style="display: none;">❌ Please confirm your password</div>
                         <label class="form-label">Confirm Password</label>
                         {{ form_widget(resetForm.plainPassword.second, {
                             'attr': {
                                 'class': 'form-input',
-                                'placeholder': 'Confirm new password'
+                                'placeholder': 'Confirm new password',
+                                'id': 'password2'
                             }
                         }) }}
                     </div>
@@ -67,10 +71,47 @@
                 {{ form_end(resetForm) }}
             </div>
         </div>
-
-      
     </div>
 
+    <style>
+    .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border-left: 3px solid #ef4444;
+        color: #ef4444;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    </style>
+
+    <script>
+    document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        const password1 = document.getElementById('password1');
+        const password2 = document.getElementById('password2');
+        const password1Error = document.getElementById('password1Error');
+        const password2Error = document.getElementById('password2Error');
+        
+        password1Error.style.display = 'none';
+        password2Error.style.display = 'none';
+        
+        if (!password1.value.trim()) {
+            password1Error.style.display = 'block';
+            isValid = false;
+        }
+        
+        if (!password2.value.trim()) {
+            password2Error.style.display = 'block';
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+    </script>
     <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
 </body>
 </html>

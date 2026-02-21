@@ -15,15 +15,23 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 
 class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
-
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private MailerInterface $mailer,
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
     public function authenticate(Request $request): Passport
@@ -57,6 +65,31 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
             // ✅ IMPORTANT: si targetPath pointe vers login, on le supprime
             $this->removeTargetPath($session, $firewallName);
+        }
+
+        // ✅ IP tracking and security alert
+        /** @var User $user */
+        $user = $token->getUser();
+        $clientIp = $request->getClientIp();
+        
+        if (!in_array($clientIp, $user->getKnownIps(), true)) {
+            // IP is unknown, send alert
+            $email = (new TemplatedEmail())
+                ->from(new Address('admin@aiva.com', 'Aiva Security'))
+                ->to($user->getEmail())
+                ->subject('Security Alert: New Login from ' . $clientIp)
+                ->htmlTemplate('emails/security_alert.html.twig')
+                ->context([
+                    'user' => $user,
+                    'ip' => $clientIp,
+                    'date' => new \DateTime(),
+                ]);
+
+            $this->mailer->send($email);
+
+            // Add IP to known list
+            $user->addKnownIp($clientIp);
+            $this->entityManager->flush();
         }
 
         // ✅ Redirection par rôle

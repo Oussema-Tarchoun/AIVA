@@ -41,14 +41,16 @@
                     <div class="alert alert-error">{{ flash_error }}</div>
                 {% endfor %}
 
-                {{ form_start(requestForm) }}
+                {{ form_start(requestForm, {'attr': {'novalidate': 'novalidate', 'id': 'resetRequestForm'}}) }}
                     <div class="form-group">
+                        <div id="emailError" class="error-message" style="display: none;">❌ Email address cannot be empty</div>
                         <label class="form-label" for="email">Email Address</label>
                         {{ form_widget(requestForm.email, {
                             'attr': {
                                 'class': 'form-input',
                                 'placeholder': 'Enter your email',
-                                'autofocus': true
+                                'autofocus': true,
+                                'id': 'resetEmail'
                             }
                         }) }}
                     </div>
@@ -67,10 +69,33 @@
                 </p>
             </div>
         </div>
-
-      
     </div>
 
+    <style>
+    .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border-left: 3px solid #ef4444;
+        color: #ef4444;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    </style>
+
+    <script>
+    document.getElementById('resetRequestForm').addEventListener('submit', function(e) {
+        const email = document.getElementById('resetEmail');
+        const emailError = document.getElementById('emailError');
+        
+        emailError.style.display = 'none';
+        
+        if (!email.value.trim()) {
+            emailError.style.display = 'block';
+            e.preventDefault();
+        }
+    });
+    </script>
     <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
 </body>
 </html>

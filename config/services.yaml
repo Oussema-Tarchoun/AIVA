@@ -16,6 +16,7 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    # ✅ Gemini Service bien indenté
     App\Service\GeminiRecommandationService:
         arguments:
             $geminiApiKey: '%env(GEMINI_API_KEY)%'

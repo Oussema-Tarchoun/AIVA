@@ -3,16 +3,112 @@
 {% block title %}Modifier une dépense - AIVA{% endblock %}
 
 {% block content %}
-<div class="form-card">
-    <h1>Modifier une dépense</h1>
 
-    {# ✅ AJOUT DE novalidate POUR DÉSACTIVER LA VALIDATION HTML5 #}
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_widget(form) }}
-        <div class="form-actions">
-            <button type="submit" class="hero-button">Enregistrer les modifications</button>
-              <a href="{{ path('front_depense_index') }}"> ← Retour à la page depense</a>
-        </div>
-    {{ form_end(form) }}
+<style>
+  /* ✅ Same glass card theme */
+  .form-card{
+    max-width: 720px;
+    margin: 30px auto 60px;
+    padding: 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+  }
+
+  .form-card h1{
+    margin: 0 0 18px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* ✅ Fix input overflow */
+  .form-card *, .form-card *::before, .form-card *::after { box-sizing: border-box; }
+
+  .form-card label{
+    display:block;
+    font-size: 13px;
+    margin: 12px 0 6px;
+    opacity: .8;
+  }
+
+  .form-card input,
+  .form-card select,
+  .form-card textarea{
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(0,0,0,.18);
+    color: inherit;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 14px;
+  }
+
+  .form-card textarea{
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  .form-card input:focus,
+  .form-card select:focus,
+  .form-card textarea:focus{
+    border-color: #00d4aa;
+    box-shadow: 0 0 0 3px rgba(0,212,170,.25);
+  }
+
+  /* errors */
+  .form-error-message,
+  .invalid-feedback,
+  .form-error,
+  ul li{
+    color: #ffb4c5;
+    font-size: 13px;
+  }
+  ul{ padding-left: 18px; margin: 6px 0 0; }
+
+  .form-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top: 8px;
+  }
+
+  .back-link{
+    color: rgba(226,232,240,.85);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .back-link:hover{ text-decoration: underline; }
+</style>
+
+<div class="form-card">
+  <h1>Modifier une dépense</h1>
+
+  {# ✅ Disable HTML5 validation #}
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {{ form_errors(form) }}
+
+    {# ✅ safest: render all fields in DepenseType #}
+    {{ form_widget(form) }}
+
+    <div class="form-actions">
+      <button type="submit" class="hero-button">
+        Enregistrer les modifications
+      </button>
+
+      <a class="back-link" href="{{ path('front_depense_index') }}">
+        ← Retour à la page depense
+      </a>
+    </div>
+
+  {{ form_end(form) }}
 </div>
+
 {% endblock %}

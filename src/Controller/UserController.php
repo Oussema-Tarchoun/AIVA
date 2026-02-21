@@ -7,16 +7,76 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user')]
 #[IsGranted('ROLE_ADMIN')] // ✅ ADMIN ONLY (redirigé vers login via access_denied_url)
 final class UserController extends AbstractController
 {
+    public function __construct(private CsrfTokenManagerInterface $csrfTokenManager) {}
+    #[Route('/search', name: 'app_user_search', methods: ['GET'])]
+    public function search(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $q = trim($request->query->get('q', ''));
+
+        if ($q === '') {
+            $users = $userRepository->findBy([], ['name' => 'ASC'], 50);
+        } else {
+            $qb = $userRepository->createQueryBuilder('u')
+                ->where('u.name LIKE :q OR u.email LIKE :q')
+                ->setParameter('q', '%' . $q . '%');
+
+            // If the query looks like a number, also search by ID
+            if (is_numeric($q)) {
+                $qb->orWhere('u.id = :id')
+                   ->setParameter('id', (int) $q);
+            }
+
+            $users = $qb->orderBy('u.name', 'ASC')->getQuery()->getResult();
+        }
+
+        $data = array_map(function (User $u) {
+            return [
+                'id'        => $u->getId(),
+                'name'      => $u->getName(),
+                'email'     => $u->getEmail(),
+                'roles'     => $u->getRoles(),
+                'isBlocked' => $u->isBlocked(),
+                'showUrl'   => $this->generateUrl('app_user_show',  ['id' => $u->getId()]),
+                'editUrl'   => $this->generateUrl('app_user_edit',  ['id' => $u->getId()]),
+                'blockUrl'  => $this->generateUrl('app_user_block', ['id' => $u->getId()]),
+                'deleteUrl' => $this->generateUrl('app_user_delete',['id' => $u->getId()]),
+            ];
+        }, $users);
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/csrf-tokens', name: 'app_user_csrf_tokens', methods: ['GET'])]
+    public function csrfTokens(Request $request): JsonResponse
+    {
+        $ids = array_filter(
+            array_map('intval', explode(',', $request->query->get('ids', ''))),
+            fn($id) => $id > 0
+        );
+
+        $tokens = [];
+        foreach ($ids as $id) {
+            $tokens[$id] = [
+                'block'  => $this->csrfTokenManager->getToken('block'  . $id)->getValue(),
+                'delete' => $this->csrfTokenManager->getToken('delete' . $id)->getValue(),
+            ];
+        }
+
+        return new JsonResponse($tokens);
+    }
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, UserRepository $userRepository): Response
     {
@@ -140,4 +200,6 @@ final class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
