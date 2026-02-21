@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resend Verification - AIVA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .resend-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .resend-container {
+            width: min(450px, 100%);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 80px rgba(0,0,0,.4);
+        }
+        h1 { 
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700; 
+            margin-bottom: 15px; 
+            text-align: center;
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p { opacity: 0.7; font-size: 14px; margin-bottom: 25px; text-align: center; line-height: 1.5; font-family: 'Outfit', sans-serif; }
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; margin-bottom: 10px; font-weight: 500; font-size: 14px; opacity: 0.9; }
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+        .form-input:focus { border-color: #00d4aa; background: rgba(255,255,255,0.08); box-shadow: 0 0 15px rgba(0, 212, 170, 0.2); }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d4aa, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 212, 170, 0.3); }
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .back-link:hover { color: #00d4aa; }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="resend-page">
+        <div class="resend-container">
+            <h1>Resend Link</h1>
+            <p>Didn't receive your verification email? Enter your email address below and we'll send you a new one.</p>
+            
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-input" required placeholder="name@company.com">
+                </div>
+                <button type="submit" class="submit-btn">SEND VERIFICATION LINK</button>
+            </form>
+            
+            <a href="{{ path('app_login') }}" class="back-link">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Back to Login
+            </a>
+        </div>
+    </div>
+</body>
+</html>

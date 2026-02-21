@@ -5,6 +5,12 @@
 {% block content %}
 
 <style>
+<<<<<<< HEAD
+=======
+  /* =========================
+     ✅ SAME CSS AS DÉPENSES
+  ========================= */
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   body, html {
     margin: 0;
     padding: 0;
@@ -14,6 +20,12 @@
     min-height: 100vh;
   }
 
+<<<<<<< HEAD
+=======
+  /* =========================
+     HERO SECTION LOOK (inside base)
+  ========================= */
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   .hero {
     display: flex;
     flex-direction: column;
@@ -27,49 +39,92 @@
 
   .glow {
     position: absolute;
+<<<<<<< HEAD
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
     width: 560px;
     height: 340px;
     background: radial-gradient(ellipse, rgba(0,212,170,0.15) 0%, transparent 70%);
+=======
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    height: 320px;
+    background: radial-gradient(
+      ellipse,
+      rgba(0,212,170,0.15) 0%,
+      transparent 70%
+    );
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     pointer-events: none;
   }
 
   .hero-title {
     font-size: 46px;
+<<<<<<< HEAD
     font-weight: 800;
     margin-bottom: 14px;
     line-height: 1.1;
     letter-spacing: -0.02em;
+=======
+    font-weight: bold;
+    margin-bottom: 14px;
+    line-height: 1.1;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 
   .hero-description {
     color: #888;
     font-size: 16px;
+<<<<<<< HEAD
     max-width: 640px;
+=======
+    max-width: 600px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     line-height: 1.7;
     margin-bottom: 26px;
   }
 
+<<<<<<< HEAD
   .section-head {
     width: 100%;
     max-width: 1100px;
+=======
+  /* =========================
+     SECTION HEAD + BUTTONS
+  ========================= */
+  .section-head {
+    width: 100%;
+    max-width: 1000px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+<<<<<<< HEAD
     margin-bottom: 14px;
     padding-left: 60px;
     padding-right: 60px;
     box-sizing: border-box;
     gap: 16px;
+=======
+    margin-bottom: 16px;
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 
   .section-title {
     margin: 0;
     font-size: 20px;
+<<<<<<< HEAD
     font-weight: 700;
+=======
+    font-weight: 600;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     text-align: left;
   }
 
@@ -78,14 +133,21 @@
     border-radius: 999px;
     padding: 10px 16px;
     font-size: 13px;
+<<<<<<< HEAD
     font-weight: 700;
+=======
+    font-weight: 600;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     cursor: pointer;
     transition: transform 0.08s ease, opacity 0.15s ease;
     display:inline-flex;
     align-items:center;
     gap:8px;
     text-decoration:none;
+<<<<<<< HEAD
     user-select:none;
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 
   .btn:active { transform: scale(0.98); }
@@ -96,12 +158,15 @@
     color: #0a0a12;
   }
 
+<<<<<<< HEAD
   .btn-secondary {
     background: rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.12);
     color: #e7e7e7;
   }
 
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   .btn-warning {
     background: linear-gradient(135deg, #f59e0b, #fde68a);
     color: #0a0a12;
@@ -112,6 +177,7 @@
     color: #0a0a12;
   }
 
+<<<<<<< HEAD
   /* ✅ FILTER BAR (Search + Sort by name only) */
   .filters-wrap{
     width:100%;
@@ -233,10 +299,48 @@
   }
 
   .cat-card:hover{
+=======
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid #1a1a2e;
+    color: #c7c7c7;
+  }
+
+  /* =========================
+     ✅ HORIZONTAL CARDS LIST
+  ========================= */
+  .depenses-list{
+    width:100%;
+    max-width:1000px;
+    padding-left:60px;
+    padding-right:60px;
+    box-sizing:border-box;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .depense-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:20px;
+    border-radius:18px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    backdrop-filter: blur(10px);
+    transition:.2s;
+  }
+
+  .depense-card:hover{
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     transform: translateY(-4px);
     box-shadow: 0 10px 30px rgba(0,0,0,.25);
   }
 
+<<<<<<< HEAD
   .card-top{
     display:flex;
     align-items:flex-start;
@@ -272,6 +376,30 @@
     line-height: 1.6;
     opacity: .95;
     margin: 0;
+=======
+  .depense-left{ flex:1; min-width:0; }
+
+  .depense-title{
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:6px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .depense-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+    font-size:14px;
+    color:#c7c7c7;
+    opacity:.95;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 
   .pill{
@@ -283,11 +411,16 @@
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
     font-size:12px;
+<<<<<<< HEAD
     font-weight:800;
+=======
+    font-weight:700;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     color:#e7e7e7;
     white-space:nowrap;
   }
 
+<<<<<<< HEAD
   .card-actions{
     display:flex;
     gap:10px;
@@ -321,12 +454,35 @@
     background: rgba(239,68,68,.12);
     border-color: rgba(239,68,68,.25);
     color:#fecaca;
+=======
+  .depense-id{
+    flex-shrink:0;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    color:#e7e7e7;
+  }
+
+  .depense-actions{
+    display:flex;
+    gap:10px;
+    flex-shrink:0;
+    align-items:center;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 
   .empty-box{
     width:100%;
+<<<<<<< HEAD
     max-width:1100px;
     margin-top: 14px;
+=======
+    max-width:1000px;
+    margin-top:24px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     padding:20px;
     border-radius:16px;
     background:rgba(255,255,255,.04);
@@ -335,6 +491,7 @@
     box-sizing:border-box;
   }
 
+<<<<<<< HEAD
   @media (max-width: 1100px){
     .categories-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
@@ -352,6 +509,26 @@
     .search{ min-width: 0; }
     .filters-right{ justify-content: space-between; }
     .mini{ justify-content: flex-start; text-align:left; }
+=======
+  /* =========================
+     RESPONSIVE
+  ========================= */
+  @media (max-width: 900px) {
+    .section-head { padding-left: 20px; padding-right: 20px; }
+    .depenses-list { padding-left: 20px; padding-right: 20px; }
+  }
+
+  @media (max-width: 720px){
+    .depense-card{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .depense-actions{
+      width:100%;
+      justify-content:flex-end;
+    }
+    .depense-id{ align-self:flex-end; }
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   }
 </style>
 
@@ -363,8 +540,16 @@
     Mes Catégories
   </h1>
 
+<<<<<<< HEAD
   <p class="hero-description">Gérez vos catégories de dépenses.</p>
 
+=======
+  <p class="hero-description">
+    Gérez vos catégories de dépenses.
+  </p>
+
+  <!-- HEAD ACTION -->
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   <div class="section-head">
     <h2 class="section-title">Mes catégories</h2>
     <a class="btn btn-primary" href="{{ path('front_categorie_new') }}">
@@ -372,6 +557,7 @@
     </a>
   </div>
 
+<<<<<<< HEAD
   <!-- ✅ Recherche + Tri (nom uniquement) -->
   <div class="filters-wrap">
     <div class="filters">
@@ -453,11 +639,73 @@
   {% endif %}
 
   <div style="margin-top:20px; width:100%; max-width:1100px; padding:0 60px; box-sizing:border-box; text-align:left;">
+=======
+  {% if categories|length == 0 %}
+    <div class="empty-box">
+      Aucune catégorie. Cliquez sur « Ajouter » pour commencer.
+    </div>
+  {% else %}
+    <div class="depenses-list">
+      {% for categorie in categories %}
+        <div class="depense-card">
+
+          <!-- LEFT -->
+          <div class="depense-left">
+            <div class="depense-title">
+              <i class="fa-solid fa-tags"></i>
+              {{ categorie.nomCategorie }}
+            </div>
+
+            <div class="depense-meta">
+              <span>
+                <i class="fa-solid fa-align-left"></i>
+                {{ categorie.description ?: '—' }}
+              </span>
+
+              {# optionnel: si tu as un champ type/statut ajoute une pill ici #}
+              {# <span class="pill">...</span> #}
+            </div>
+          </div>
+
+          <!-- ID -->
+          <span class="depense-id">#{{ categorie.idCategorie }}</span>
+
+          <!-- ACTIONS -->
+          <div class="depense-actions">
+            <a class="btn btn-secondary"
+               href="{{ path('front_categorie_show', {id: categorie.idCategorie}) }}">
+              <i class="fa-regular fa-eye"></i>
+            </a>
+
+            <a class="btn btn-warning"
+               href="{{ path('front_categorie_edit', {id: categorie.idCategorie}) }}">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+
+            <form method="post"
+                  action="{{ path('front_categorie_delete', {'id': categorie.idCategorie}) }}"
+                  onsubmit="return confirm('Supprimer cette catégorie ?');"
+                  style="margin:0;">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.idCategorie) }}">
+              <button class="btn btn-danger" type="submit">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div style="margin-top:20px; width:100%; max-width:1000px; padding:0 60px; box-sizing:border-box; text-align:left;">
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     <a href="{{ path('front_categorie_index') }}" style="color:#00d4aa; text-decoration:none;">
       ← Retour
     </a>
   </div>
 </main>
+<<<<<<< HEAD
 
 <script>
   (function () {
@@ -512,5 +760,7 @@
     apply();
   })();
 </script>
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 
 {% endblock %}

@@ -68,7 +68,11 @@
 <div class="form-card">
   <h1>Ajouter une dépense</h1>
 
+<<<<<<< HEAD
   {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'depenseForm'}}) }}
+=======
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     {{ form_errors(form) }}
     {{ form_widget(form) }}
 
@@ -77,6 +81,7 @@
       <a class="back-link" href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
     </div>
   {{ form_end(form) }}
+<<<<<<< HEAD
 
   <!-- Confirmation montant anormal -->
   <div id="confirmModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
@@ -142,6 +147,8 @@
     });
   })();
   </script>
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 </div>
 
 {% endblock %}

@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<<<<<<< HEAD
+=======
+  {# ✅ IMPORTANT: Put CSS inside head (not after </html>) #}
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
   <style>
     /* =========================
        GLOBAL STYLES
@@ -34,6 +38,7 @@
       align-items: center;
       padding: 20px 60px;
       border-bottom: 1px solid #1a1a2e;
+<<<<<<< HEAD
       position: sticky;
       top: 0;
       z-index: 20;
@@ -43,6 +48,20 @@
 
     .logo { display: flex; align-items: center; gap: 12px; }
     .logo-text { font-size: 20px; font-weight: bold; }
+=======
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 
     .nav-links a {
       color: #888;
@@ -51,7 +70,13 @@
       margin-left: 40px;
     }
 
+<<<<<<< HEAD
     .nav-links a.active { color: #00d4aa; }
+=======
+    .nav-links a.active {
+      color: #00d4aa;
+    }
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 
     .nav-link{
       color:#c7c7c7;
@@ -76,6 +101,7 @@
       position: relative;
     }
 
+<<<<<<< HEAD
     .glow {
       position: absolute;
       top: 10%;
@@ -93,12 +119,40 @@
       margin-bottom: 14px;
       line-height: 1.1;
       letter-spacing: -0.02em;
+=======
+    /* Glow Effect */
+    .glow {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 520px;
+      height: 320px;
+      background: radial-gradient(
+        ellipse,
+        rgba(0,212,170,0.15) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    /* Hero Text */
+    .hero-title {
+      font-size: 46px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      line-height: 1.1;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .hero-description {
       color: #888;
       font-size: 16px;
+<<<<<<< HEAD
       max-width: 640px;
+=======
+      max-width: 600px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       line-height: 1.7;
       margin-bottom: 26px;
     }
@@ -108,22 +162,37 @@
     ========================= */
     .section-head {
       width: 100%;
+<<<<<<< HEAD
       max-width: 1100px;
+=======
+      max-width: 1000px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 10px;
+<<<<<<< HEAD
       margin-bottom: 14px;
       padding-left: 60px;
       padding-right: 60px;
       box-sizing: border-box;
       gap: 16px;
+=======
+      margin-bottom: 16px;
+      padding-left: 60px;
+      padding-right: 60px;
+      box-sizing: border-box;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .section-title {
       margin: 0;
       font-size: 20px;
+<<<<<<< HEAD
       font-weight: 700;
+=======
+      font-weight: 600;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       text-align: left;
     }
 
@@ -132,14 +201,21 @@
       border-radius: 999px;
       padding: 10px 16px;
       font-size: 13px;
+<<<<<<< HEAD
       font-weight: 700;
+=======
+      font-weight: 600;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       cursor: pointer;
       transition: transform 0.08s ease, opacity 0.15s ease;
       display:inline-flex;
       align-items:center;
       gap:8px;
       text-decoration:none;
+<<<<<<< HEAD
       user-select: none;
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .btn:active { transform: scale(0.98); }
@@ -167,6 +243,7 @@
     }
 
     /* =========================
+<<<<<<< HEAD
        FILTER BAR
     ========================= */
     .filters-wrap{
@@ -275,10 +352,25 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
       margin-top: 10px;
+=======
+       ✅ HORIZONTAL CARDS LIST
+    ========================= */
+    .depenses-list{
+      width:100%;
+      max-width:1000px;
+      padding-left:60px;
+      padding-right:60px;
+      box-sizing:border-box;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .depense-card{
       display:flex;
+<<<<<<< HEAD
       flex-direction: column;
       gap: 14px;
       padding: 18px;
@@ -289,6 +381,17 @@
       transition: .2s;
       min-height: 160px;
       text-align:left;
+=======
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:20px;
+      border-radius:18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(10px);
+      transition:.2s;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .depense-card:hover{
@@ -296,6 +399,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
 
+<<<<<<< HEAD
     .card-top{
       display:flex;
       align-items:flex-start;
@@ -334,6 +438,30 @@
       justify-content:flex-start;
       color:#c7c7c7;
       font-size: 13px;
+=======
+    .depense-left{ flex:1; min-width:0; }
+
+    .depense-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .depense-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      font-size:14px;
+      color:#c7c7c7;
+      opacity:.95;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .pill{
@@ -345,14 +473,23 @@
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       font-size:12px;
+<<<<<<< HEAD
       font-weight:800;
+=======
+      font-weight:700;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       color:#e7e7e7;
       white-space:nowrap;
     }
 
     .status{
+<<<<<<< HEAD
       font-weight: 900;
       text-transform: capitalize;
+=======
+      font-weight:800;
+      text-transform:capitalize;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .status.payee, .status.paid{
@@ -373,6 +510,7 @@
       color:#fecaca;
     }
 
+<<<<<<< HEAD
     .card-actions{
       display:flex;
       gap:10px;
@@ -406,12 +544,35 @@
       background: rgba(239,68,68,.12);
       border-color: rgba(239,68,68,.25);
       color:#fecaca;
+=======
+    .depense-id{
+      flex-shrink:0;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      color:#e7e7e7;
+    }
+
+    .depense-actions{
+      display:flex;
+      gap:10px;
+      flex-shrink:0;
+      align-items:center;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
 
     .empty-box{
       width:100%;
+<<<<<<< HEAD
       max-width:1100px;
       margin-top: 14px;
+=======
+      max-width:1000px;
+      margin-top:24px;
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       padding:20px;
       border-radius:16px;
       background:rgba(255,255,255,.04);
@@ -420,6 +581,7 @@
       box-sizing:border-box;
     }
 
+<<<<<<< HEAD
     /* RESPONSIVE */
     @media (max-width: 1100px){
       .depenses-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -430,16 +592,38 @@
       .section-head { padding: 0 20px; }
       .filters-wrap { padding: 0 20px; }
       .depenses-grid { padding: 0 20px; }
+=======
+    /* =========================
+       RESPONSIVE
+    ========================= */
+    @media (max-width: 900px) {
+      .navbar { padding: 18px 20px; }
+      .section-head { padding-left: 20px; padding-right: 20px; }
+      .depenses-list { padding-left: 20px; padding-right: 20px; }
+
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
       .nav-links a{ margin-left:16px; }
     }
 
     @media (max-width: 720px){
+<<<<<<< HEAD
       .depenses-grid{ grid-template-columns: 1fr; }
       .filters{ flex-direction: column; align-items: stretch; }
       .filters-left{ flex-direction: column; align-items: stretch; }
       .search{ min-width: 0; }
       .filters-right{ justify-content: space-between; }
       .mini{ justify-content: flex-start; text-align:left; }
+=======
+      .depense-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .depense-actions{
+        width:100%;
+        justify-content:flex-end;
+      }
+      .depense-id{ align-self:flex-end; }
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     }
   </style>
 </head>
@@ -465,6 +649,7 @@
         <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
       </svg>
       <span class="logo-text">AIVA</span>
+<<<<<<< HEAD
     </div>
 
     <div class="nav-links">
@@ -566,6 +751,51 @@
           </div>
         </div>
       </div>
+=======
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}" class="active">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandations</a>
+    </div>
+
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">💸 Mes Dépenses</h1>
+    <p class="hero-description">
+      Suivez vos dépenses, montants et catégories.
+    </p>
+
+    <!-- FLASH (optional) -->
+    <div style="margin: 12px 0; width:100%; max-width:1000px; padding:0 60px; box-sizing:border-box;">
+      {% for message in app.flashes('success') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(0,210,150,.15);
+                    border:1px solid rgba(0,210,150,.35);">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- HEAD ACTION -->
+    <div class="section-head">
+      <h2 class="section-title">Mes dépenses</h2>
+      <a class="btn btn-primary" href="{{ path('front_depense_new') }}">
+        <i class="fa-solid fa-plus"></i> Ajouter
+      </a>
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
     </div>
 
     {% if depenses|length == 0 %}
@@ -573,6 +803,7 @@
         Aucune dépense enregistrée.
       </div>
     {% else %}
+<<<<<<< HEAD
       <div id="depensesGrid" class="depenses-grid">
         {% for depense in depenses %}
           {% set statusClass = depense.statut is defined ? depense.statut|lower|replace({' ':'_','-':'_'}) : '' %}
@@ -613,6 +844,55 @@
               </button>
 
               <a class="icon-btn warning" href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" title="Modifier">
+=======
+      <div class="depenses-list">
+        {% for depense in depenses %}
+
+          {% set statusClass = depense.statut is defined ? depense.statut|lower|replace({' ':'_','-':'_'}) : '' %}
+
+          <div class="depense-card">
+
+            <!-- LEFT -->
+            <div class="depense-left">
+              <div class="depense-title">
+                <i class="fa-solid fa-receipt"></i>
+                {{ depense.description }}
+              </div>
+
+              <div class="depense-meta">
+                <span>
+                  <i class="fa-regular fa-calendar"></i>
+                  {{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}
+                </span>
+
+                <span>
+                  <i class="fa-solid fa-tag"></i>
+                  {{ depense.categorie ? depense.categorie.nomCategorie : '-' }}
+                </span>
+
+                <span class="pill">
+                  {{ depense.montant }} TND
+                </span>
+
+                <span class="pill status {{ statusClass }}">
+                  {{ depense.statut }}
+                </span>
+              </div>
+            </div>
+
+            <!-- ID -->
+            <span class="depense-id">#{{ depense.idDepense }}</span>
+
+            <!-- ACTIONS -->
+            <div class="depense-actions">
+              <a class="btn btn-secondary"
+                 href="{{ path('front_depense_show', {id: depense.idDepense}) }}">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+
+              <a class="btn btn-warning"
+                 href="{{ path('front_depense_edit', {id: depense.idDepense}) }}">
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
                 <i class="fa-solid fa-pen"></i>
               </a>
 
@@ -621,13 +901,21 @@
                     onsubmit="return confirm('Supprimer cette dépense ?');"
                     style="margin:0;">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depense.idDepense) }}">
+<<<<<<< HEAD
                 <button class="icon-btn danger" type="submit" title="Supprimer">
+=======
+                <button class="btn btn-danger" type="submit">
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </form>
             </div>
 
           </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
         {% endfor %}
       </div>
     {% endif %}
@@ -635,6 +923,7 @@
   </main>
 </div>
 
+<<<<<<< HEAD
 <script>
   (function () {
     const search = document.getElementById('depenseSearch');
@@ -777,5 +1066,7 @@ function showQr(url, title) {
   })();
 </script>
 
+=======
+>>>>>>> e23ad95072ed1066366413e38271f5821d9b7406
 </body>
 </html>
