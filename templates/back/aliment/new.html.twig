@@ -1,350 +1,347 @@
-{% extends 'base.html.twig' %}
+{# templates/back/aliment/new.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvel Aliment - Dashboard</title>
 
-{% block title %}Nouvel Aliment{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-{% block body %}
-<style>
-    .main-content {
-        margin-left: 15% !important;
-    }
-</style>
-<!-- Sidebar -->
-<!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto; margin-top: 12%;">
-        </div>
-        <span class="logo-text">AIVA</span>
-    </div>
+    {# ✅ same style files used in energy #}
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/serchbtn.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
 
-    <ul class="nav-menu">
+<body>
 
-        {# Menu Principal #}
-        <li class="nav-section">
-            <span class="nav-section-title">Menu Principal</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('dashboard') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 12l9-9 9 9"/>
-                            <path d="M9 21V9h6v12"/>
-                        </svg>
-                        Tableau de bord
-                    </a>
-                </li>
-            </ul>
-        </li>
-  {# ✅ Activités added #}
-              <span class="nav-section-title">sports</span>
+<div class="background"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-        <li class="nav-item">
-            <a href="{{ path('back_sport_index') }}"
-               class="nav-link {% if app.request.attributes.get('_route') starts with 'back_sport_' %}active{% endif %}">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 7h10"/>
-                    <path d="M7 12h10"/>
-                    <path d="M7 17h10"/>
-                </svg>
-                Activités
-            </a>
-        </li>
+<div class="dashboard">
 
-        {# ✅ Objectifs added #}
-        <li class="nav-item">
-            <a href="{{ path('app_objectif_index') }}"
-               class="nav-link {% if app.request.attributes.get('_route') starts with 'app_objectif_' %}active{% endif %}">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="M12 7v5l3 3"/>
-                </svg>
-                Objectifs
-            </a>
-        </li>
-        {# Finance (ton menu existant) #}
-        <li class="nav-section">
-            <span class="nav-section-title">Finance</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('app_depense_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_depense_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 3h12v4H6z"/>
-                            <path d="M4 9h16v4H4z"/>
-                            <path d="M6 15h12v4H6z"/>
-                        </svg>
-                        Dépenses
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('app_categorie_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_categorie_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7" rx="1"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1"/>
-                        </svg>
-                        Catégories
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        {# Menu énergies #}
-        <li class="nav-section">
-            <span class="nav-section-title">Énergies</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('energy') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
-                        </svg>
-                        Consommation d'énergie
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('recommendations') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 18h6"/>
-                            <path d="M10 22h4"/>
-                            <path d="M12 2a7 7 0 0 0-4 12c.6.6 1 1.5 1 2h6c0-.5.4-1.4 1-2a7 7 0 0 0-4-12z"/>
-                        </svg>
-                        Recommandations
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('stateenergi') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 3v18h18"/>
-                            <path d="M7 14l3-3 4 4 5-7"/>
-                        </svg>
-                        Statistiques d'énergie
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        {# ✅ Alimentation (au lieu de Nutrition) #}
-        <li class="nav-section">
-            <span class="nav-section-title">Alimentation</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('app_aliment_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 3c-3 2-5 5-5 8a5 5 0 0 0 10 0c0-3-2-6-5-8z"/>
-                            <path d="M12 14v7"/>
-                        </svg>
-                        Aliments
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('app_repas_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_repas_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 3v7a4 4 0 0 0 4 4v7"/>
-                            <path d="M8 3v8"/>
-                            <path d="M14 3v18"/>
-                            <path d="M20 3v7a4 4 0 0 1-4 4"/>
-                        </svg>
-                        Repas
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        {# Formation #}
-        <li class="nav-section">
-            <span class="nav-section-title">Formation</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('app_cours_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 19a2 2 0 0 0 2 2h12"/>
-                            <path d="M6 17V5a2 2 0 0 1 2-2h10v14H8a2 2 0 0 0-2 2z"/>
-                        </svg>
-                        Cours
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('app_chapitre_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 6h13"/>
-                            <path d="M8 12h13"/>
-                            <path d="M8 18h13"/>
-                            <path d="M3 6h.01"/>
-                            <path d="M3 12h.01"/>
-                            <path d="M3 18h.01"/>
-                        </svg>
-                        Chapitres
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        {# Compte #}
-        <li class="nav-section">
-            <span class="nav-section-title">Compte</span>
-            <ul>
-                <li class="nav-item">
-                    <a href="{{ path('app_profile') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 21a8 8 0 0 0-16 0"/>
-                            <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                        Profil
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('app_user_index') }}"
-                       class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                        Users
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ path('app_logout') }}" class="nav-link">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                            <polyline points="16 17 21 12 16 7"/>
-                            <line x1="21" y1="12" x2="9" y2="12"/>
-                        </svg>
-                        Déconnexion
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-    </ul>
-
-    <div class="sidebar-footer">
-        <div class="user-profile">
-            <div class="user-avatar">TM</div>
-            <div class="user-info">
-                <div class="user-name">TemplateMo</div>
-                <div class="user-role">Administrator</div>
+    {# ===================== SIDEBAR (same as energy) ===================== #}
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto; margin-top: 12%;">
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"/>
-            </svg>
+            <span class="logo-text">AIVA</span>
         </div>
-    </div>
-</aside>
 
-<div class="main-content">
-    <nav class="navbar">
-        <div class="page-header">
+        <ul class="nav-menu">
+
+            {# Menu Principal #}
+            <li class="nav-section">
+                <span class="nav-section-title">Menu Principal</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('dashboard') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') == 'dashboard' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12l9-9 9 9"/>
+                                <path d="M9 21V9h6v12"/>
+                            </svg>
+                            Tableau de bord
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {# Sports #}
+            <span class="nav-section-title">sports</span>
+            <li class="nav-item">
+                <a href="{{ path('back_sport_index') }}"
+                   class="nav-link {% if app.request.attributes.get('_route') starts with 'back_sport_' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 7h10"/>
+                        <path d="M7 12h10"/>
+                        <path d="M7 17h10"/>
+                    </svg>
+                    Activités
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ path('app_objectif_index') }}"
+                   class="nav-link {% if app.request.attributes.get('_route') starts with 'app_objectif_' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7v5l3 3"/>
+                    </svg>
+                    Objectifs
+                </a>
+            </li>
+
+            {# Finance #}
+            <li class="nav-section">
+                <span class="nav-section-title">Finance</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('app_depense_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_depense_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 3h12v4H6z"/>
+                                <path d="M4 9h16v4H4z"/>
+                                <path d="M6 15h12v4H6z"/>
+                            </svg>
+                            Dépenses
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('app_categorie_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_categorie_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                <rect x="14" y="14" width="7" height="7" rx="1"/>
+                            </svg>
+                            Catégories
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {# Énergies #}
+            <li class="nav-section">
+                <span class="nav-section-title">Énergies</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('energy') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') == 'energy' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
+                            </svg>
+                            Consommation d'énergie
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('recommendations') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') == 'recommendations' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18h6"/>
+                                <path d="M10 22h4"/>
+                                <path d="M12 2a7 7 0 0 0-4 12c.6.6 1 1.5 1 2h6c0-.5.4-1.4 1-2a7 7 0 0 0-4-12z"/>
+                            </svg>
+                            Recommandations
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('stateenergi') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') == 'stateenergi' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18"/>
+                                <path d="M7 14l3-3 4 4 5-7"/>
+                            </svg>
+                            Statistiques d'énergie
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {# ✅ Alimentation #}
+            <li class="nav-section">
+                <span class="nav-section-title">Alimentation</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('app_aliment_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_aliment_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3c-3 2-5 5-5 8a5 5 0 0 0 10 0c0-3-2-6-5-8z"/>
+                                <path d="M12 14v7"/>
+                            </svg>
+                            Aliments
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('app_repas_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_repas_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 3v7a4 4 0 0 0 4 4v7"/>
+                                <path d="M8 3v8"/>
+                                <path d="M14 3v18"/>
+                                <path d="M20 3v7a4 4 0 0 1-4 4"/>
+                            </svg>
+                            Repas
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {# Formation #}
+            <li class="nav-section">
+                <span class="nav-section-title">Formation</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('app_cours_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_cours_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19a2 2 0 0 0 2 2h12"/>
+                                <path d="M6 17V5a2 2 0 0 1 2-2h10v14H8a2 2 0 0 0-2 2z"/>
+                            </svg>
+                            Cours
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('app_chapitre_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_chapitre_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 6h13"/>
+                                <path d="M8 12h13"/>
+                                <path d="M8 18h13"/>
+                                <path d="M3 6h.01"/>
+                                <path d="M3 12h.01"/>
+                                <path d="M3 18h.01"/>
+                            </svg>
+                            Chapitres
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {# Compte #}
+            <li class="nav-section">
+                <span class="nav-section-title">Compte</span>
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ path('app_profile') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21a8 8 0 0 0-16 0"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Profil
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('app_user_index') }}"
+                           class="nav-link {% if app.request.attributes.get('_route') starts with 'app_user_' %}active{% endif %}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            Users
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('app_logout') }}" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            Déconnexion
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">TM</div>
+                <div class="user-info">
+                    <div class="user-name">TemplateMo</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </div>
+        </div>
+    </aside>
+
+    {# ===================== MAIN (same style as energy) ===================== #}
+    <main class="main-content">
+
+        <nav class="navbar">
             <h1 class="page-title">Nouvel Aliment</h1>
-            <div class="page-breadcrumb">
-                <a href="{{ path('dashboard') }}">Dashboard</a>
-                <span>/</span>
-                <a href="{{ path('app_aliment_index') }}">Aliments</a>
-                <span>/</span>
-                <span>Nouveau</span>
+
+            <div class="navbar-right">
+                <a href="{{ path('app_aliment_index') }}" class="card-btn">
+                    <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i>
+                    Retour
+                </a>
+
+                <button class="nav-btn" id="theme-toggle" title="Toggle Light/Dark Mode" style="margin-left:10px;">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2"/><path d="M12 20v2"/>
+                        <path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/>
+                        <path d="M2 12h2"/><path d="M20 12h2"/>
+                        <path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/>
+                    </svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
             </div>
-        </div>
-        <div class="navbar-right">
-            <a href="{{ path('app_aliment_index') }}" class="btn btn-secondary" style="width: auto; padding: 10px 20px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
-                    <line x1="19" y1="12" x2="5" y2="12"/>
-                    <polyline points="12 19 5 12 12 5"/>
-                </svg>
-                Retour
-            </a>
-        </div>
-    </nav>
+        </nav>
 
-    {# Afficher les messages flash d'erreur #}
-    {% for message in app.flashes('error') %}
-        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
-            <strong>Erreur:</strong> {{ message }}
-        </div>
-    {% endfor %}
+        {# Flash messages #}
+        {% for message in app.flashes('error') %}
+            <div class="glass-card" style="border:1px solid #ef4444; background: rgba(239, 68, 68, 0.12); color:#ef4444; padding:12px 16px; border-radius:12px; margin-bottom:16px;">
+                <strong>Erreur:</strong> {{ message }}
+            </div>
+        {% endfor %}
 
-    {% for message in app.flashes('success') %}
-        <div style="background: rgba(5, 150, 105, 0.15); border: 1px solid var(--emerald); color: var(--emerald); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;">
-            <strong>Succès:</strong> {{ message }}
-        </div>
-    {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="glass-card" style="border:1px solid rgba(5, 150, 105, 0.6); background: rgba(5, 150, 105, 0.12); color: rgba(5, 150, 105, 0.95); padding:12px 16px; border-radius:12px; margin-bottom:16px;">
+                <strong>Succès:</strong> {{ message }}
+            </div>
+        {% endfor %}
 
-    <div class="settings-grid">
-        <div class="glass-card settings-nav-card">
-            <ul class="settings-nav">
-                <li class="settings-nav-item">
-                    <a href="#" class="settings-nav-link active" data-tab="informations">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-                            <line x1="6" y1="1" x2="6" y2="4"/>
-                        </svg>
-                        Informations
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <section class="content-grid">
+            <div class="glass-card">
 
-        <div class="glass-card">
-            {{ form_start(form) }}
-            
-            <div class="settings-tab-content active" id="tab-informations">
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Détails de l'Aliment</h3>
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">Détails de l’aliment</h2>
+                        <p class="card-subtitle">Ajoutez un nouvel aliment et ses macros</p>
+                    </div>
+                </div>
+
+                <div style="padding: 12px 2px;">
+                    {{ form_start(form) }}
+
+                    {# ✅ keep your form partial #}
                     {{ include('back/aliment/_form.html.twig') }}
+
+                    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:16px;">
+                        <button type="submit" class="card-btn">
+                            <i class="fa-solid fa-check" style="margin-right:8px;"></i>
+                            Créer
+                        </button>
+
+                        <a href="{{ path('app_aliment_index') }}" class="card-btn">
+                            Annuler
+                        </a>
+                    </div>
+
+                    {{ form_end(form) }}
                 </div>
 
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary" style="width: auto;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                        Créer
-                    </button>
-                    <a href="{{ path('app_aliment_index') }}" class="btn btn-secondary" style="width: auto;">Annuler</a>
-                </div>
             </div>
-            
-            {{ form_end(form) }}
-        </div>
-    </div>
+        </section>
+
+    </main>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tabLinks = document.querySelectorAll('.settings-nav-link[data-tab]');
-    const tabContents = document.querySelectorAll('.settings-tab-content');
-    
-    tabLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const tabId = this.getAttribute('data-tab');
-            
-            tabLinks.forEach(l => l.classList.remove('active'));
-            tabContents.forEach(t => t.classList.remove('active'));
-            
-            this.classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
-        });
-    });
-});
-</script>
-{% endblock %}
+<script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+</body>
+</html>

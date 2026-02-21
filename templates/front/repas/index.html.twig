@@ -1,330 +1,358 @@
+{# templates/repasFRONT/index.html.twig #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meals - AIVA</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- ✅ CSS داخل نفس الصفحة: Theme + Cards -->
   <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#0b1b2b;
-      --glass: rgba(255,255,255,.08);
-      --border: rgba(255,255,255,.14);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --muted2: rgba(255,255,255,.55);
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --radius: 18px;
+    /* ✅ FIX OVERFLOW */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* inputs */
+    input, select, textarea {
+      width: 100%;
+      max-width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.18);
+      color: inherit;
+      outline: none;
+      font-size: 14px;
     }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family:"Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, #1a3b6a 0%, transparent 60%),
-                  radial-gradient(900px 600px at 85% 20%, #3a1e65 0%, transparent 55%),
-                  linear-gradient(160deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
+    input:focus, select:focus, textarea:focus {
+      border-color: #00d4aa;
+      box-shadow: 0 0 0 3px rgba(0,212,170,.25);
     }
 
-    .orb{
-      position: fixed;
-      width: 420px; height: 420px;
-      border-radius: 50%;
-      filter: blur(38px);
-      opacity: .55;
-      z-index: -1;
-      animation: floaty 10s ease-in-out infinite;
-    }
-    .orb.one{ left:-140px; top:60px; background:#4f8cff; }
-    .orb.two{ right:-160px; top:120px; background:#ff4fd8; animation-delay:-3s; }
-    .orb.three{ left:40%; bottom:-200px; background:#3bffb8; animation-delay:-6s; }
-    @keyframes floaty{
-      0%,100%{ transform: translateY(0) translateX(0) scale(1); }
-      50%{ transform: translateY(-24px) translateX(18px) scale(1.03); }
-    }
-
-    .wrap{ max-width: 1100px; margin:0 auto; padding: 44px 18px 80px; }
-
-    .hero{
-      position: relative;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: calc(var(--radius) + 8px);
-      box-shadow: var(--shadow);
-      padding: 34px 26px 26px;
-      backdrop-filter: blur(14px);
-    }
-    .glow{
-      position:absolute; inset:-2px;
-      border-radius: calc(var(--radius) + 10px);
-      background: radial-gradient(800px 260px at 25% 10%, rgba(79,140,255,.22), transparent 60%),
-                  radial-gradient(700px 260px at 80% 20%, rgba(255,79,216,.18), transparent 60%);
-      pointer-events:none; z-index:0;
-    }
-    .hero > *{ position:relative; z-index:1; }
-
-    .hero-title{ margin:0 0 6px; font-size:40px; letter-spacing:.2px; }
-    .hero-title span{
-      background: linear-gradient(90deg, #7fb0ff, #ff7ae6);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .hero-description{ margin:0 0 16px; color:var(--muted); font-size:16px; }
-
-    .top-actions{
+    /* ✅ section head */
+    .section-head{
+      margin-top: 22px;
       display:flex;
+      justify-content:space-between;
       gap:12px;
       flex-wrap:wrap;
-      margin-top: 18px;
-      margin-bottom: 16px;
+      align-items:center;
+    }
+    .section-title{
+      margin:0;
+      font-size:16px;
+      font-weight:800;
+      opacity:.95;
     }
 
+    /* ✅ glass wrapper */
+    .glass{
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    /* ✅ table wrap (kept for search box wrapper) */
+    .table-wrap{
+      margin-top: 14px;
+      padding: 14px;
+      overflow:auto;
+    }
+
+    /* ✅ inline form */
+    .inline-form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+    }
+    .inline-form label{
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+      opacity:.8;
+    }
+
+    /* ✅ badge pill */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .pill.kcal{
+      border-color: rgba(245,158,11,.35);
+      background: rgba(245,158,11,.12);
+      color: #fde68a;
+    }
+
+    /* ✅ buttons fallback */
     .btn{
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      padding: 12px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.08);
-      color: var(--text);
-      text-decoration:none;
-      font-weight:700;
-      cursor:pointer;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.24);
-    }
-
-    .panel{
-      margin-top: 16px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-    }
-
-    .panel-head{
-      display:flex;
-      gap:14px;
-      align-items:flex-end;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom: 14px;
-    }
-
-    .input-form{ width: min(520px, 100%); margin: 0; }
-    label{
-      display:block;
-      font-size: 12px;
-      letter-spacing: .3px;
-      color: var(--muted2);
-      margin: 0 0 8px;
-    }
-    .search-row{ display:flex; gap:10px; width:100%; }
-
-    input[type="text"]{
-      flex:1;
-      height: 44px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      outline: none;
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-    }
-    input[type="text"]::placeholder{ color: rgba(255,255,255,.45); }
-    input[type="text"]:focus{
-      border-color: rgba(127,176,255,.55);
-      box-shadow: 0 0 0 3px rgba(127,176,255,.18);
-    }
-
-    .chip-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
       gap:8px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.08);
-      color: var(--text);
-      text-decoration:none;
-      font-weight:700;
-      font-size: 13px;
-      transition: background .12s ease, transform .12s ease, border-color .12s ease;
-      white-space:nowrap;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.24);
-    }
-    .chip.active{
-      background: linear-gradient(90deg, rgba(127,176,255,.22), rgba(255,122,230,.18));
-      border-color: rgba(127,176,255,.35);
-    }
-    .chip.danger{
-      background: rgba(255, 90, 120, .16);
-      border-color: rgba(255, 90, 120, .30);
-    }
-
-    .table-card{
-      margin-top: 10px;
-      overflow:hidden;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-    }
-
-    table{
-      width:100%;
-      border-collapse: collapse;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
       font-size: 14px;
+      text-decoration:none;
+      border: 1px solid transparent;
+      cursor:pointer;
+      transition: .2s ease;
+      white-space: nowrap;
     }
-    thead th{
-      text-align:left;
-      font-size: 12px;
-      letter-spacing: .35px;
-      color: rgba(255,255,255,.70);
-      padding: 12px 14px;
+    .btn-primary{
+      background: linear-gradient(135deg, #00d4aa, #a855f7);
+      color: #020617;
+    }
+    .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 10px 25px rgba(0,0,0,.25); }
+
+    .btn-secondary{
       background: rgba(255,255,255,.06);
-      border-bottom: 1px solid rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+      color: rgba(226,232,240,.95);
     }
-    tbody td{
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      vertical-align: middle;
+    .btn-secondary:hover{ background: rgba(255,255,255,.12); }
+
+    .btn-danger{
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.35);
+      color: #fecaca;
     }
-    tbody tr:hover{ background: rgba(255,255,255,.05); }
+    .btn-danger:hover{ background: rgba(239,68,68,.22); }
 
-    .muted{ color: var(--muted2); }
-    .strong{ font-weight: 800; }
+    /* ✅ empty text */
+    .empty-row{
+      text-align:center;
+      padding: 18px !important;
+      opacity:.8;
+    }
 
-    .cal-pill{
-      display:inline-flex;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+    /* ===========================
+       ✅ NEW: CARDS (instead of table)
+       =========================== */
+    .cards-grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .meal-card{
+      padding: 18px;
+      border-radius: 18px;
+      transition: .25s ease;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .meal-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    }
+
+    .meal-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:18px;
+      padding:1px;
+      background:linear-gradient(135deg,#00d4aa,#a855f7,#ec4899);
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+      opacity:.65;
+    }
+
+    .meal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+    }
+
+    .meal-id{
       font-size: 12px;
-      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-      color: rgba(255,255,255,.88);
+      opacity: .65;
+      margin-bottom: 4px;
     }
 
-    .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+    .meal-title{
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
 
-    @media (max-width: 740px){
-      .hero-title{ font-size: 32px; }
-      thead{ display:none; }
-      table, tbody, tr, td{ display:block; width:100%; }
-      tbody td{ border-bottom: none; padding: 10px 14px; }
-      tbody tr{ border-bottom: 1px solid rgba(255,255,255,.10); }
-      tbody td::before{
-        content: attr(data-label);
-        display:block;
-        color: rgba(255,255,255,.55);
-        font-size: 12px;
-        margin-bottom: 3px;
-      }
+    .meal-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+    }
+
+    .meal-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: auto;
     }
   </style>
 </head>
 
 <body>
-  <div class="orb one"></div>
-  <div class="orb two"></div>
-  <div class="orb three"></div>
+<div class="container">
 
-  <div class="wrap">
-    <main class="hero">
-      <div class="glow"></div>
+  <!-- ✅ NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
 
-      <h1 class="hero-title">Smart <span>Nutrition</span></h1>
-      <p class="hero-description">Monitor your meals and calories.</p>
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">depense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+    </div>
 
-      <div class="top-actions">
-        <a class="btn" href="{{ path('front_repas_new') }}">Add Meal <span>→</span></a>
-        <a class="btn" href="{{ path('front_aliment_index') }}">Aliments <span>→</span></a>
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <!-- ✅ MAIN -->
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">🥗 Meals</h1>
+    <p class="hero-description">Monitor your meals and calories.</p>
+
+    <!-- TOP ACTIONS -->
+    <div class="section-head">
+      <h2 class="section-title">Mes repas</h2>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="{{ path('front_repas_new') }}">
+          <i class="fa-solid fa-plus"></i> Add Meal
+        </a>
+        <a class="btn btn-secondary" href="{{ path('front_aliment_index') }}">
+          <i class="fa-solid fa-apple-whole"></i> Aliments
+        </a>
       </div>
+    </div>
 
-      <section class="panel">
-        <div class="panel-head">
-          <form method="get" action="{{ path('front_repas_index') }}" class="input-form">
-            <label for="search">Search by name</label>
-            <div class="search-row">
-              <input id="search" type="text" name="search" value="{{ searchNom }}" placeholder="Search by name...">
-              {% if sortCalories %}
-                <input type="hidden" name="sort" value="{{ sortCalories }}">
-              {% endif %}
-              <button class="btn" type="submit">Search <span>→</span></button>
-            </div>
-          </form>
-
-          <div class="chip-row">
-            <a class="chip {{ sortCalories == 'asc' ? 'active' : '' }}"
-               href="{{ path('front_repas_index', {'sort':'asc','search':searchNom}) }}">Calories ↑</a>
-            <a class="chip {{ sortCalories == 'desc' ? 'active' : '' }}"
-               href="{{ path('front_repas_index', {'sort':'desc','search':searchNom}) }}">Calories ↓</a>
-            {% if searchNom or sortCalories %}
-              <a class="chip danger" href="{{ path('front_repas_index') }}">Reset</a>
-            {% endif %}
-          </div>
+    <!-- SEARCH + SORT -->
+    <div class="glass table-wrap" style="margin-top:16px;">
+      <form method="get" action="{{ path('front_repas_index') }}" class="inline-form">
+        <div style="min-width:240px; flex:1;">
+          <label for="search">Search by name</label>
+          <input id="search" type="text" name="search" value="{{ searchNom }}" placeholder="Search by name...">
         </div>
 
-        {% if repas|length == 0 %}
-          <p class="hero-description" style="margin: 0; padding: 10px 0;">No meals found.</p>
-        {% else %}
-          <div class="table-card">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:80px;">ID</th>
-                  <th>Name</th>
-                  <th style="width:160px;">Type</th>
-                  <th style="width:110px;">Time</th>
-                  <th style="width:140px;">Calories</th>
-                  <th style="width:160px;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for r in repas %}
-                  <tr>
-                    <td class="muted" data-label="ID">#{{ r.id }}</td>
-                    <td class="strong" data-label="Name">{{ r.nom }}</td>
-                    <td class="muted" data-label="Type">{{ r.type|replace({'-':' '})|title }}</td>
-                    <td class="muted" data-label="Time">{{ r.heure ? r.heure|date('H:i') : 'N/A' }}</td>
-                    <td data-label="Calories"><span class="cal-pill">{{ r.calories }} kcal</span></td>
-                    <td data-label="Actions">
-                      <div class="actions">
-                        <a class="chip" href="{{ path('front_repas_show', {'id': r.id}) }}">View</a>
-                        <a class="chip active" href="{{ path('front_repas_edit', {'id': r.id}) }}">Edit</a>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+        {% if sortCalories %}
+          <input type="hidden" name="sort" value="{{ sortCalories }}">
         {% endif %}
-      </section>
-    </main>
-  </div>
+
+        <button class="btn btn-primary" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+
+        <a class="btn btn-secondary"
+           href="{{ path('front_repas_index', {'sort':'asc','search':searchNom}) }}">
+          <i class="fa-solid fa-arrow-up"></i> Calories
+        </a>
+
+        <a class="btn btn-secondary"
+           href="{{ path('front_repas_index', {'sort':'desc','search':searchNom}) }}">
+          <i class="fa-solid fa-arrow-down"></i> Calories
+        </a>
+
+        {% if searchNom or sortCalories %}
+          <a class="btn btn-danger" href="{{ path('front_repas_index') }}">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </a>
+        {% endif %}
+      </form>
+    </div>
+
+    <!-- ✅ CARDS LIST (instead of table) -->
+    <div class="cards-grid">
+      {% if repas|length == 0 %}
+        <div class="glass meal-card">
+          <div class="empty-row">No meals found.</div>
+        </div>
+      {% else %}
+        {% for r in repas %}
+          <div class="glass meal-card">
+
+            <div class="meal-header">
+              <div>
+                <div class="meal-id">#{{ r.id }}</div>
+                <div class="meal-title">{{ r.nom }}</div>
+              </div>
+
+              <span class="pill kcal">
+                <i class="fa-solid fa-fire"></i> {{ r.calories }} kcal
+              </span>
+            </div>
+
+            <div class="meal-meta">
+              <span class="pill">
+                <i class="fa-solid fa-layer-group"></i>
+                {{ r.type|replace({'-':' '})|title }}
+              </span>
+
+              <span class="pill">
+                <i class="fa-regular fa-clock"></i>
+                {{ r.heure ? r.heure|date('H:i') : 'N/A' }}
+              </span>
+            </div>
+
+            <div class="meal-actions">
+              <a class="btn btn-secondary" href="{{ path('front_repas_show', {'id': r.id}) }}">
+                <i class="fa-regular fa-eye"></i> View
+              </a>
+
+              <a class="btn btn-secondary" href="{{ path('front_repas_edit', {'id': r.id}) }}">
+                <i class="fa-regular fa-pen-to-square"></i> Edit
+              </a>
+            </div>
+
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+  </main>
+</div>
 </body>
 </html>

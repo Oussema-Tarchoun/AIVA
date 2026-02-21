@@ -3,16 +3,145 @@
 {% block title %}Ajouter une dépense - AIVA{% endblock %}
 
 {% block content %}
+
+<style>
+  .form-card{
+      max-width: 720px;
+      margin: 30px auto 60px;
+      padding: 24px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+  }
+  .form-card h1{
+      margin: 0 0 18px;
+      font-size: 28px;
+      font-weight: 800;
+  }
+  .form-card *, .form-card *::before, .form-card *::after{ box-sizing:border-box; }
+
+  .form-card label{
+      display:block;
+      font-size: 13px;
+      margin: 12px 0 6px;
+      opacity: .8;
+  }
+  .form-card input,
+  .form-card select,
+  .form-card textarea{
+      width: 100%;
+      max-width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.18);
+      color: inherit;
+      font-size: 14px;
+      outline: none;
+  }
+  .form-card textarea{ min-height:110px; resize:vertical; }
+
+  .form-card input:focus,
+  .form-card select:focus,
+  .form-card textarea:focus{
+      border-color:#00d4aa;
+      box-shadow:0 0 0 3px rgba(0,212,170,.25);
+  }
+
+  .form-actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 18px;
+  }
+  .back-link{
+      color: rgba(226,232,240,.85);
+      text-decoration:none;
+      font-weight:600;
+  }
+  .back-link:hover{ text-decoration: underline; }
+</style>
+
 <div class="form-card">
-    <h1>Ajouter une dépense</h1>
+  <h1>Ajouter une dépense</h1>
 
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_widget(form) }}
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'depenseForm'}}) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
 
-        <div class="form-actions">
-            <button type="submit" class="hero-button">Enregistrer</button>
-             <a href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
-        </div>
-    {{ form_end(form) }}
+    <div class="form-actions">
+      <button type="submit" class="hero-button">Enregistrer</button>
+      <a class="back-link" href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
+    </div>
+  {{ form_end(form) }}
+
+  <!-- Confirmation montant anormal -->
+  <div id="confirmModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+    <div style="max-width:440px; width:90%; padding:28px; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); border:1px solid rgba(245,158,11,.35); backdrop-filter:blur(20px); text-align:center;">
+      <div style="font-size:40px; margin-bottom:12px;">⚠️</div>
+      <h3 style="margin:0 0 10px; font-size:18px; font-weight:800; color:#fde68a;">Montant inhabituellement élevé</h3>
+      <p id="confirmMsg" style="color:#ccc; font-size:14px; line-height:1.6; margin:0 0 20px;"></p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button id="confirmYes" style="padding:10px 24px; border-radius:999px; border:none; background:linear-gradient(135deg,#0d9488,#00d4aa); color:#0a0a12; font-weight:700; font-size:13px; cursor:pointer;">Oui, confirmer</button>
+        <button id="confirmNo" style="padding:10px 24px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:transparent; color:#ccc; font-weight:700; font-size:13px; cursor:pointer;">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const form = document.getElementById('depenseForm');
+    const modal = document.getElementById('confirmModal');
+    const msg = document.getElementById('confirmMsg');
+    const btnYes = document.getElementById('confirmYes');
+    const btnNo = document.getElementById('confirmNo');
+    let confirmed = false;
+
+    form.addEventListener('submit', function(e) {
+      if (confirmed) return; // déjà confirmé, laisser passer
+
+      const catSelect = form.querySelector('[name="depense[categorie]"]');
+      const montantInput = form.querySelector('[name="depense[montant]"]');
+      if (!catSelect || !montantInput) return;
+
+      const catId = catSelect.value;
+      const montant = parseFloat(montantInput.value);
+      if (!catId || isNaN(montant) || montant <= 0) return;
+
+      e.preventDefault();
+
+      fetch('{{ path("front_depense_moyenne_categorie", {id: 0}) }}'.replace('/0', '/' + catId))
+        .then(r => r.json())
+        .then(data => {
+          if (data.count >= 1 && montant > data.seuil) {
+            const ecart = Math.round(((montant - data.moyenne) / data.moyenne) * 100);
+            msg.innerHTML = 'Le montant <strong>' + montant.toFixed(2) + ' TND</strong> est <strong>+' + ecart + '%</strong> au-dessus de la moyenne de cette catégorie (<strong>' + data.moyenne + ' TND</strong>).<br>Voulez-vous confirmer cette dépense ?';
+            modal.style.display = 'flex';
+          } else {
+            confirmed = true;
+            form.submit();
+          }
+        })
+        .catch(() => {
+          confirmed = true;
+          form.submit();
+        });
+    });
+
+    btnYes.addEventListener('click', function() {
+      modal.style.display = 'none';
+      confirmed = true;
+      form.submit();
+    });
+
+    btnNo.addEventListener('click', function() {
+      modal.style.display = 'none';
+    });
+  })();
+  </script>
 </div>
+
 {% endblock %}

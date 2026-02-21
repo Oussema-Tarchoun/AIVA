@@ -1,62 +1,781 @@
-{% extends 'front/base_finance.html.twig' %}
+{# templates/depenseFRONT/index.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dépenses - AIVA</title>
 
-{% block title %}Mes dépenses - AIVA{% endblock %}
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-{% block content %}
-<div class="finance-panel">
-    <div class="finance-panel-head">
-        <div>
-            <h1>Mes dépenses</h1>
-            <p>Liste de toutes vos dépenses.</p>
+  <style>
+    /* =========================
+       GLOBAL STYLES
+    ========================= */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0a0a12;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container { width: 100%; }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid #1a1a2e;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(10,10,18,0.75);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-text { font-size: 20px; font-weight: bold; }
+
+    .nav-links a {
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 40px;
+    }
+
+    .nav-links a.active { color: #00d4aa; }
+
+    .nav-link{
+      color:#c7c7c7;
+      text-decoration:none;
+      font-size:14px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    /* =========================
+       HERO SECTION
+    ========================= */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding-top: 35px;
+      padding-bottom: 60px;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 560px;
+      height: 340px;
+      background: radial-gradient(ellipse, rgba(0,212,170,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: 46px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-description {
+      color: #888;
+      font-size: 16px;
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    /* =========================
+       SECTION HEAD + BUTTONS
+    ========================= */
+    .section-head {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      padding-left: 60px;
+      padding-right: 60px;
+      box-sizing: border-box;
+      gap: 16px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      user-select: none;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn:hover { opacity: 0.92; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0d9488, #00d4aa);
+      color: #0a0a12;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b, #fde68a);
+      color: #0a0a12;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #fca5a5);
+      color: #0a0a12;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #1a1a2e;
+      color: #c7c7c7;
+    }
+
+    /* =========================
+       FILTER BAR
+    ========================= */
+    .filters-wrap{
+      width:100%;
+      max-width:1100px;
+      padding: 0 60px;
+      box-sizing:border-box;
+      margin-top: 6px;
+      margin-bottom: 18px;
+    }
+
+    .filters{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(10px);
+    }
+
+    .filters-left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search{
+      flex: 1;
+      min-width: 220px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+    }
+
+    .search i{ color:#9ca3af; }
+    .search input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:#fff;
+      font-size: 14px;
+    }
+    .search input::placeholder{ color:#777; }
+
+    .select{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color:#fff;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .select select{
+      border:none;
+      outline:none;
+      background:transparent;
+      color:#fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filters-right{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-shrink: 0;
+    }
+
+    .mini{
+      font-size: 12px;
+      color:#c7c7c7;
+      opacity: .9;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align:right;
+    }
+
+    .mini strong{ color:#fff; }
+
+    /* =========================
+       GRID CARDS
+    ========================= */
+    .depenses-grid{
+      width:100%;
+      max-width:1100px;
+      padding: 0 60px;
+      box-sizing:border-box;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .depense-card{
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(10px);
+      transition: .2s;
+      min-height: 160px;
+      text-align:left;
+    }
+
+    .depense-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .card-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .depense-title{
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.25;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+
+    .depense-title i{ margin-top: 2px; color:#9ca3af; }
+
+    .depense-id{
+      flex-shrink:0;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      color:#e7e7e7;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content:flex-start;
+      color:#c7c7c7;
+      font-size: 13px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      font-size:12px;
+      font-weight:800;
+      color:#e7e7e7;
+      white-space:nowrap;
+    }
+
+    .status{
+      font-weight: 900;
+      text-transform: capitalize;
+    }
+
+    .status.payee, .status.paid{
+      background: rgba(34,197,94,.15);
+      border-color: rgba(34,197,94,.35);
+      color:#86efac;
+    }
+
+    .status.en_attente, .status.pending{
+      background: rgba(245,158,11,.15);
+      border-color: rgba(245,158,11,.35);
+      color:#fde68a;
+    }
+
+    .status.annulee, .status.cancelled{
+      background: rgba(239,68,68,.15);
+      border-color: rgba(239,68,68,.35);
+      color:#fecaca;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top: auto;
+    }
+
+    .icon-btn{
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color:#e7e7e7;
+      text-decoration:none;
+      cursor:pointer;
+      transition: .15s;
+    }
+    .icon-btn:hover{ opacity: .92; transform: translateY(-1px); }
+
+    .icon-btn.warning{
+      background: rgba(245,158,11,.12);
+      border-color: rgba(245,158,11,.25);
+      color:#fde68a;
+    }
+    .icon-btn.danger{
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.25);
+      color:#fecaca;
+    }
+
+    .empty-box{
+      width:100%;
+      max-width:1100px;
+      margin-top: 14px;
+      padding:20px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px dashed rgba(255,255,255,.15);
+      color:#888;
+      box-sizing:border-box;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px){
+      .depenses-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .navbar { padding: 18px 20px; }
+      .section-head { padding: 0 20px; }
+      .filters-wrap { padding: 0 20px; }
+      .depenses-grid { padding: 0 20px; }
+      .nav-links a{ margin-left:16px; }
+    }
+
+    @media (max-width: 720px){
+      .depenses-grid{ grid-template-columns: 1fr; }
+      .filters{ flex-direction: column; align-items: stretch; }
+      .filters-left{ flex-direction: column; align-items: stretch; }
+      .search{ min-width: 0; }
+      .filters-right{ justify-content: space-between; }
+      .mini{ justify-content: flex-start; text-align:left; }
+    }
+  </style>
+</head>
+
+<body>
+
+{% set depenses = depenses|default([]) %}
+
+<div class="container">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a855f7" />
+            <stop offset="50%" stop-color="#00d4aa" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <path d="M50 10 L85 80 L15 80 Z" fill="none" stroke="url(#grad)" stroke-width="4"/>
+        <circle cx="50" cy="50" r="10" fill="#00d4aa"/>
+      </svg>
+      <span class="logo-text">AIVA</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}" class="active">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandations</a>
+    </div>
+
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">💸 Mes Dépenses</h1>
+    <p class="hero-description">Suivez vos dépenses, montants et catégories.</p>
+
+    <!-- FLASH -->
+    <div style="margin: 12px 0; width:100%; max-width:1100px; padding:0 60px; box-sizing:border-box;">
+      {% for message in app.flashes('success') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(0,210,150,.15);
+                    border:1px solid rgba(0,210,150,.35);">
+          {{ message }}
         </div>
-        <a href="{{ path('front_depense_new') }}" class="hero-button">Ajouter une dépense</a>
+      {% endfor %}
     </div>
 
-    <div class="table-card">
-        <table class="aiva-table">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Montant</th>
-                    <th>Date</th>
-                    <th>Statut</th>
-                    <th>Catégorie</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+    <!-- ANOMALIES BANNER -->
+    {% if anomalies is defined and anomalies|length > 0 %}
+    <div style="margin:0 0 12px; width:100%; max-width:1100px; padding:0 60px; box-sizing:border-box;">
+      <div style="padding:14px 18px; border-radius:14px; background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.35); color:#fecaca;">
+        <strong><i class="fa-solid fa-triangle-exclamation"></i> Anomalies détectées !</strong>
+        <ul style="margin:8px 0 0 18px; padding:0; font-size:13px;">
+          {% for a in anomalies %}
+            <li>
+              <strong>{{ a.depense.description }}</strong> — {{ a.depense.montant }} TND
+              ({{ a.depense.categorie ? a.depense.categorie.nomCategorie : '-' }})
+              → <span style="color:#ff6b6b;">+{{ a.ecart }}%</span> au-dessus de la moyenne
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
 
-            <tbody>
-                {% for depense in depenses %}
-                    <tr>
-                        <td class="cell-strong">{{ depense.description }}</td>
-                        <td><span class="cal-pill">{{ depense.montant }} TND</span></td>
-                        <td>{{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}</td>
-                        <td>
-                            <span class="status-badge {{ depense.statut|lower }}">{{ depense.statut }}</span>
-                        </td>
-                        <td>{{ depense.categorie ? depense.categorie.nomCategorie : '-' }}</td>
-                        <td>
-                            <div class="actions">
-                                <a href="{{ path('front_depense_show', {id: depense.idDepense}) }}" class="front-btn">Voir</a>
-                                <a href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" class="btn-link btn-link--edit">Modifier</a>
-                                <form method="post" action="{{ path('front_depense_delete', {id: depense.idDepense}) }}" style="display:inline;" onsubmit="return confirm('Supprimer cette dépense ?');">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depense.idDepense) }}">
-                                    <button type="submit" class="btn-link btn-link--delete">Supprimer</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6" class="front-empty">Aucune dépense. Cliquez sur « Ajouter une dépense » pour commencer.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- HEAD -->
+    <div class="section-head">
+      <h2 class="section-title">Mes dépenses</h2>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="{{ path('front_depense_new') }}">
+          <i class="fa-solid fa-plus"></i> Ajouter
+        </a>
+        <a class="btn btn-secondary" href="{{ path('front_depense_statistiques') }}">
+          <i class="fa-solid fa-chart-pie"></i> Statistiques
+        </a>
+        <a class="btn btn-secondary" href="{{ path('front_depense_export_pdf') }}">
+          <i class="fa-solid fa-file-pdf"></i> Exporter PDF
+        </a>
+        <button class="btn btn-secondary" id="btnAnalyseIa" type="button">
+          <i class="fa-solid fa-robot"></i> Analyse IA
+        </button>
+      </div>
     </div>
 
-    <p style="margin-top: 20px;">
-          <a href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
-    </p>
+    <!-- ✅ FILTERS (Recherche + Tri: date/montant only) -->
+    <div class="filters-wrap">
+      <div class="filters">
+        <div class="filters-left">
+          <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="depenseSearch" type="text" placeholder="Rechercher (description, catégorie, statut, montant, date...)" autocomplete="off">
+          </div>
+
+          <div class="select">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+            <select id="depenseSort">
+              <option value="date">Trier par date</option>
+              <option value="montant">Trier par montant</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filters-right">
+          <button id="depenseDir" class="btn btn-secondary" type="button" title="Inverser l'ordre">
+            <i class="fa-solid fa-arrow-down-wide-short"></i>
+          </button>
+
+          <div class="mini">
+            <span><strong id="countShown">0</strong> affichées</span>
+            <span>Total: <strong id="totalShown">0</strong> TND</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if depenses|length == 0 %}
+      <div class="empty-box">
+        Aucune dépense enregistrée.
+      </div>
+    {% else %}
+      <div id="depensesGrid" class="depenses-grid">
+        {% for depense in depenses %}
+          {% set statusClass = depense.statut is defined ? depense.statut|lower|replace({' ':'_','-':'_'}) : '' %}
+          {% set catName = depense.categorie ? depense.categorie.nomCategorie : '-' %}
+          {% set dateStr = depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' %}
+          {% set dateIso = depense.dateDepense ? depense.dateDepense|date('Y-m-d') : '' %}
+
+          <div class="depense-card"
+               data-id="{{ depense.idDepense }}"
+               data-description="{{ depense.description|default('')|lower }}"
+               data-statut="{{ depense.statut|default('')|lower }}"
+               data-categorie="{{ catName|lower }}"
+               data-montant="{{ depense.montant|default(0) }}"
+               data-date="{{ dateIso }}">
+
+            <div class="card-top">
+              <h3 class="depense-title">
+                <i class="fa-solid fa-receipt"></i>
+                <span>{{ depense.description }}</span>
+              </h3>
+              <span class="depense-id">#{{ depense.idDepense }}</span>
+            </div>
+
+            <div class="meta">
+              <span class="pill"><i class="fa-regular fa-calendar"></i> {{ dateStr }}</span>
+              <span class="pill"><i class="fa-solid fa-tag"></i> {{ catName }}</span>
+              <span class="pill"><i class="fa-solid fa-coins"></i> {{ depense.montant }} TND</span>
+              <span class="pill status {{ statusClass }}"><i class="fa-solid fa-circle"></i> {{ depense.statut }}</span>
+            </div>
+
+            <div class="card-actions">
+              <a class="icon-btn" href="{{ path('front_depense_show', {id: depense.idDepense}) }}" title="Voir">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+
+              <button class="icon-btn" onclick="showQr('{{ path('front_depense_qrcode', {id: depense.idDepense}) }}', '{{ depense.description }}')" title="QR Code" type="button">
+                <i class="fa-solid fa-qrcode"></i>
+              </button>
+
+              <a class="icon-btn warning" href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" title="Modifier">
+                <i class="fa-solid fa-pen"></i>
+              </a>
+
+              <form method="post"
+                    action="{{ path('front_depense_delete', {id: depense.idDepense}) }}"
+                    onsubmit="return confirm('Supprimer cette dépense ?');"
+                    style="margin:0;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depense.idDepense) }}">
+                <button class="icon-btn danger" type="submit" title="Supprimer">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </main>
 </div>
-{% endblock %}
+
+<script>
+  (function () {
+    const search = document.getElementById('depenseSearch');
+    const sortSel = document.getElementById('depenseSort');
+    const dirBtn  = document.getElementById('depenseDir');
+    const grid    = document.getElementById('depensesGrid');
+    if (!grid) return;
+
+    const countShown = document.getElementById('countShown');
+    const totalShown = document.getElementById('totalShown');
+
+    let asc = false; // default: newest/highest first
+
+    const getCards = () => Array.from(grid.querySelectorAll('.depense-card'));
+
+    const normalize = (s) => (s || '').toString().toLowerCase().trim();
+
+    function matches(card, q){
+      if (!q) return true;
+      const hay = [
+        card.dataset.id,
+        card.dataset.description,
+        card.dataset.statut,
+        card.dataset.categorie,
+        card.dataset.montant,
+        card.dataset.date
+      ].join(' ');
+      return hay.includes(q);
+    }
+
+    function compare(a, b, key){
+      const get = (el) => el.dataset[key] ?? '';
+      if (key === 'montant'){
+        const av = parseFloat(get(a)) || 0;
+        const bv = parseFloat(get(b)) || 0;
+        return av - bv;
+      }
+      if (key === 'date'){
+        const av = get(a) || '';
+        const bv = get(b) || '';
+        return av.localeCompare(bv); // ISO yyyy-mm-dd
+      }
+      return 0;
+    }
+
+    function updateSummary(cards){
+      const visible = cards.filter(c => c.style.display !== 'none');
+      const total = visible.reduce((sum, c) => sum + (parseFloat(c.dataset.montant) || 0), 0);
+
+      countShown.textContent = visible.length.toString();
+      totalShown.textContent = total.toLocaleString('fr-FR', { maximumFractionDigits: 2 });
+    }
+
+    function apply(){
+      const q = normalize(search.value);
+      const sortKey = sortSel.value; // "date" or "montant"
+
+      const cards = getCards();
+
+      // filter (search stays)
+      cards.forEach(c => {
+        c.style.display = matches(c, q) ? '' : 'none';
+      });
+
+      // sort visible only
+      const visible = cards.filter(c => c.style.display !== 'none');
+      visible.sort((a,b) => {
+        const key = (sortKey === 'montant') ? 'montant' : 'date';
+        const base = compare(a, b, key);
+        return asc ? base : -base;
+      });
+
+      visible.forEach(c => grid.appendChild(c));
+      updateSummary(cards);
+    }
+
+    dirBtn.addEventListener('click', () => {
+      asc = !asc;
+      dirBtn.innerHTML = asc
+        ? '<i class="fa-solid fa-arrow-up-wide-short"></i>'
+        : '<i class="fa-solid fa-arrow-down-wide-short"></i>';
+      apply();
+    });
+
+    search.addEventListener('input', apply);
+    sortSel.addEventListener('change', apply);
+
+    // initial
+    apply();
+  })();
+</script>
+
+<!-- QR Code Modal -->
+<div id="qrModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+  <div style="max-width:360px; width:90%; padding:28px; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.15); backdrop-filter:blur(20px); text-align:center; position:relative;">
+    <button onclick="document.getElementById('qrModal').style.display='none'" style="position:absolute; top:14px; right:14px; background:none; border:none; color:#888; font-size:20px; cursor:pointer;">&times;</button>
+    <h3 id="qrTitle" style="margin:0 0 16px; font-size:16px; font-weight:800;"><i class="fa-solid fa-qrcode"></i> QR Code</h3>
+    <img id="qrImg" src="" alt="QR Code" style="border-radius:12px; background:#fff; padding:8px; max-width:250px;">
+  </div>
+</div>
+
+<script>
+function showQr(url, title) {
+  document.getElementById('qrImg').src = url;
+  document.getElementById('qrTitle').innerHTML = '<i class="fa-solid fa-qrcode"></i> ' + title;
+  const modal = document.getElementById('qrModal');
+  modal.style.display = 'flex';
+  modal.onclick = function(e) { if (e.target === modal) modal.style.display = 'none'; };
+}
+</script>
+
+<!-- IA Modal -->
+<div id="iaModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+  <div style="max-width:600px; width:90%; max-height:80vh; overflow-y:auto; padding:28px; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.15); backdrop-filter:blur(20px); position:relative;">
+    <button id="iaClose" style="position:absolute; top:14px; right:14px; background:none; border:none; color:#888; font-size:20px; cursor:pointer;">&times;</button>
+    <h3 style="margin:0 0 14px; font-size:18px; font-weight:800;"><i class="fa-solid fa-robot"></i> Analyse IA de vos dépenses</h3>
+    <div id="iaContent" style="color:#ccc; font-size:14px; line-height:1.7; white-space:pre-wrap;">Chargement...</div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const btn = document.getElementById('btnAnalyseIa');
+    const modal = document.getElementById('iaModal');
+    const content = document.getElementById('iaContent');
+    const close = document.getElementById('iaClose');
+    if (!btn || !modal) return;
+
+    btn.addEventListener('click', function(){
+      modal.style.display = 'flex';
+      content.textContent = 'Chargement de l\'analyse...';
+      fetch('{{ path("front_depense_analyse_ia") }}')
+        .then(r => r.json())
+        .then(data => { content.textContent = data.analyse || 'Aucune analyse disponible.'; })
+        .catch(() => { content.textContent = 'Erreur lors de l\'analyse.'; });
+    });
+
+    close.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+  })();
+</script>
+
+</body>
+</html>

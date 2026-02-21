@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(composer require:*)",
+      "Bash(php bin/console cache:clear:*)",
+      "Bash(php bin/console debug:router:*)",
+      "Bash(composer show:*)",
+      "Bash(php -r:*)",
+      "Bash(php bin/console cache:warmup:*)",
+      "Bash(php bin/console debug:container:*)",
+      "Bash(php -m:*)",
+      "Bash(php -i:*)",
+      "WebSearch",
+      "Bash(php -d memory_limit=256M bin/console:*)"
+    ]
+  }
+}

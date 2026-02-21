@@ -1,15 +1,334 @@
+{# templates/objectifFRONT/index.html.twig #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Objectifs - AIVA</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* =========================
+       GLOBAL STYLES (same as Dépenses)
+    ========================= */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0a0a12;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container { width: 100%; }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid #1a1a2e;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 40px;
+    }
+
+    .nav-links a.active {
+      color: #00d4aa;
+    }
+
+    .nav-link{
+      color:#c7c7c7;
+      text-decoration:none;
+      font-size:14px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    /* =========================
+       HERO SECTION
+    ========================= */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding-top: 35px;
+      padding-bottom: 60px;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 520px;
+      height: 320px;
+      background: radial-gradient(
+        ellipse,
+        rgba(0,212,170,0.15) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: 46px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+
+    .hero-description {
+      color: #888;
+      font-size: 16px;
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    /* =========================
+       SECTION HEAD + BUTTONS
+    ========================= */
+    .section-head {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      padding-left: 60px;
+      padding-right: 60px;
+      box-sizing: border-box;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn:hover { opacity: 0.92; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0d9488, #00d4aa);
+      color: #0a0a12;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b, #fde68a);
+      color: #0a0a12;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #fca5a5);
+      color: #0a0a12;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #1a1a2e;
+      color: #c7c7c7;
+    }
+
+    /* =========================
+       ✅ SAME HORIZONTAL LIST (re-used)
+    ========================= */
+    .depenses-list{
+      width:100%;
+      max-width:1000px;
+      padding-left:60px;
+      padding-right:60px;
+      box-sizing:border-box;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .depense-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:20px;
+      border-radius:18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(10px);
+      transition:.2s;
+    }
+
+    .depense-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .depense-left{ flex:1; min-width:0; }
+
+    .depense-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .depense-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      font-size:14px;
+      color:#c7c7c7;
+      opacity:.95;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      font-size:12px;
+      font-weight:700;
+      color:#e7e7e7;
+      white-space:nowrap;
+    }
+
+    /* ✅ status color (same idea) */
+    .status{
+      font-weight:800;
+      text-transform:capitalize;
+    }
+
+    .status.termine, .status.done{
+      background: rgba(34,197,94,.15);
+      border-color: rgba(34,197,94,.35);
+      color:#86efac;
+    }
+
+    .status.en_cours, .status.pending{
+      background: rgba(245,158,11,.15);
+      border-color: rgba(245,158,11,.35);
+      color:#fde68a;
+    }
+
+    .status.annule, .status.cancelled{
+      background: rgba(239,68,68,.15);
+      border-color: rgba(239,68,68,.35);
+      color:#fecaca;
+    }
+
+    .depense-id{
+      flex-shrink:0;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      color:#e7e7e7;
+    }
+
+    .depense-actions{
+      display:flex;
+      gap:10px;
+      flex-shrink:0;
+      align-items:center;
+    }
+
+    .empty-box{
+      width:100%;
+      max-width:1000px;
+      margin-top:24px;
+      padding:20px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px dashed rgba(255,255,255,.15);
+      color:#888;
+      box-sizing:border-box;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+    @media (max-width: 900px) {
+      .navbar { padding: 18px 20px; }
+      .section-head { padding-left: 20px; padding-right: 20px; }
+      .depenses-list { padding-left: 20px; padding-right: 20px; }
+
+      .nav-links a{ margin-left:16px; }
+    }
+
+    @media (max-width: 720px){
+      .depense-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .depense-actions{
+        width:100%;
+        justify-content:flex-end;
+      }
+      .depense-id{ align-self:flex-end; }
+    }
+  </style>
 </head>
+
 <body>
+
+{% set objectifs = objectifs|default([]) %}
+
 <div class="container">
-       <!-- Navbar -->
+
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
       <svg width="32" height="32" viewBox="0 0 100 100">
@@ -27,79 +346,120 @@
     </div>
 
     <div class="nav-links">
-   <a href="{{ path('front_categorie_index') }}">categorie</a>
-<a href="{{ path('front_activite_index') }}">Activité</a>
-    <a href="{{ path('front_objectif_index') }}">Objectif</a>
-               <a href="{{ path('front_depense_index') }}">depense</a>            
-<a href="{{ path('front_aliment_index') }}">Alimentation</a>
-        <a href="{{ path('cours_front_index') }}">apprentissage</a>
-        <a href="{{ path('front_energie_index') }}">Énergie</a>
-    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}" class="active">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandations</a>
+    </div>
 
-        </div>
-
-  <a href="{{ path('app_logout') }}" class="nav-link">
-                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
-                            </a>  </nav>
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
 
   <main class="hero">
-    <h1 class="hero-title">Objectifs <span>CRUD</span></h1>
-    <p class="hero-description">List + delete (CSRF) — front.</p>
+    <div class="glow"></div>
 
-    <div style="margin-top:16px;">
-      <a class="hero-button" href="{{ path('front_objectif_new') }}" style="text-decoration:none;">➕ New Objectif</a>
+    <h1 class="hero-title">🎯 Mes Objectifs</h1>
+    <p class="hero-description">
+      Suivez vos objectifs, types et statuts.
+    </p>
+
+    <!-- FLASH (optional) -->
+    <div style="margin: 12px 0; width:100%; max-width:1000px; padding:0 60px; box-sizing:border-box;">
+      {% for message in app.flashes('success') %}
+        <div style="padding:10px;border-radius:8px;margin-bottom:8px;
+                    background:rgba(0,210,150,.15);
+                    border:1px solid rgba(0,210,150,.35);">
+          {{ message }}
+        </div>
+      {% endfor %}
     </div>
 
-    <div style="width:min(980px,95%); margin:26px auto 0; border:1px solid #1a1a2e; border-radius:14px; overflow:auto;">
-      <table style="width:100%; border-collapse:collapse; min-width: 900px;">
-        <thead>
-        <tr style="border-bottom:1px solid #1a1a2e;">
-          <th style="padding:14px; text-align:left; color:#888;">ID</th>
-          <th style="padding:14px; text-align:left; color:#888;">Description</th>
-          <th style="padding:14px; text-align:left; color:#888;">User</th>
-          <th style="padding:14px; text-align:left; color:#888;">Type</th>
-          <th style="padding:14px; text-align:left; color:#888;">Statut</th>
-          <th style="padding:14px; text-align:left; color:#888;">Actions</th>
-        </tr>
-        </thead>
+    <!-- HEAD ACTION -->
+    <div class="section-head">
+      <h2 class="section-title">Mes objectifs</h2>
+      <a class="btn btn-primary" href="{{ path('front_objectif_new') }}">
+        <i class="fa-solid fa-plus"></i> Ajouter
+      </a>
+    </div>
 
-        <tbody>
+    {% if objectifs|length == 0 %}
+      <div class="empty-box">
+        Aucun objectif enregistré.
+      </div>
+    {% else %}
+      <div class="depenses-list">
         {% for o in objectifs %}
-          <tr style="border-bottom:1px solid #1a1a2e;">
-            <td style="padding:14px;">#{{ o.id }}</td>
-            <td style="padding:14px;">{{ o.description }}</td>
-            <td style="padding:14px;">{{ o.user ? o.user.name : '—' }}</td>
-            <td style="padding:14px;">{{ o.type }}</td>
-            <td style="padding:14px;">{{ o.statut }}</td>
 
-            <td style="padding:14px;">
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <a href="{{ path('front_objectif_show', {id:o.id}) }}" style="color:#00d4aa; font-weight:800; text-decoration:none;">Show</a>
-                <a href="{{ path('front_objectif_edit', {id:o.id}) }}" style="color:#00d4aa; font-weight:800; text-decoration:none;">Edit</a>
+          {# normalize statut into a class like "en_cours" etc #}
+          {% set statusClass = o.statut is defined ? o.statut|lower|replace({' ':'_','-':'_'}) : '' %}
 
-                <form method="post"
-                      action="{{ path('front_objectif_delete', {id:o.id}) }}"
-                      onsubmit="return confirm('Delete this objectif ?');"
-                      style="display:inline-block; margin:0;">
-                  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ o.id) }}">
-                  <input type="hidden" name="_method" value="DELETE">
-                  <button type="submit"
-                          style="background:transparent;border:1px solid #ff6b6b;color:#ff6b6b;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:800;">
-                    🗑 Delete
-                  </button>
-                </form>
+          <div class="depense-card">
+
+            <!-- LEFT -->
+            <div class="depense-left">
+              <div class="depense-title">
+                <i class="fa-solid fa-bullseye"></i>
+                {{ o.description }}
               </div>
-            </td>
-          </tr>
-        {% else %}
-          <tr><td colspan="6" style="padding:18px; color:#888; text-align:center;">No objectifs found.</td></tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
 
-    <div style="height:40px;"></div>
+              <div class="depense-meta">
+                <span>
+                  <i class="fa-solid fa-tag"></i>
+                  {{ o.type ?? '-' }}
+                </span>
+
+                <span>
+                  <i class="fa-solid fa-user"></i>
+                  {{ o.user ? o.user.name : '-' }}
+                </span>
+
+                <span class="pill status {{ statusClass }}">
+                  {{ o.statut ?? '-' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- ID -->
+            <span class="depense-id">#{{ o.id }}</span>
+
+            <!-- ACTIONS -->
+            <div class="depense-actions">
+              <a class="btn btn-secondary"
+                 href="{{ path('front_objectif_show', {id: o.id}) }}">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+
+              <a class="btn btn-warning"
+                 href="{{ path('front_objectif_edit', {id: o.id}) }}">
+                <i class="fa-solid fa-pen"></i>
+              </a>
+
+              <form method="post"
+                    action="{{ path('front_objectif_delete', {id: o.id}) }}"
+                    onsubmit="return confirm('Supprimer cet objectif ?');"
+                    style="margin:0;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ o.id) }}">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-danger" type="submit">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
+
+        {% endfor %}
+      </div>
+    {% endif %}
+
   </main>
 </div>
+
 </body>
 </html>

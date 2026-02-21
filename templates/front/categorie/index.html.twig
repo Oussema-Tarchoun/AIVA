@@ -5,194 +5,512 @@
 {% block content %}
 
 <style>
-    .btn-secondary {
-        display: inline-block;
-        padding: 10px 18px;
-        border-radius: 10px;
-        background: transparent;
-        border: 1px solid #38bdf8;
-        color: #38bdf8;
-        font-weight: 600;
-        text-decoration: none;
-        transition: 0.3s;
-    }
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #0a0a12;
+    color: #fff;
+    min-height: 100vh;
+  }
 
-    .btn-secondary:hover {
-        background: #38bdf8;
-        color: #0f172a;
-    }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding-top: 35px;
+    padding-bottom: 60px;
+    position: relative;
+  }
+
+  .glow {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 560px;
+    height: 340px;
+    background: radial-gradient(ellipse, rgba(0,212,170,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-title {
+    font-size: 46px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-description {
+    color: #888;
+    font-size: 16px;
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 26px;
+  }
+
+  .section-head {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 14px;
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+    gap: 16px;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.08s ease, opacity 0.15s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    user-select:none;
+  }
+
+  .btn:active { transform: scale(0.98); }
+  .btn:hover { opacity: 0.92; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #0d9488, #00d4aa);
+    color: #0a0a12;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #e7e7e7;
+  }
+
+  .btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #fde68a);
+    color: #0a0a12;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #ef4444, #fca5a5);
+    color: #0a0a12;
+  }
+
+  /* ✅ FILTER BAR (Search + Sort by name only) */
+  .filters-wrap{
+    width:100%;
+    max-width:1100px;
+    padding: 0 60px;
+    box-sizing:border-box;
+    margin-top: 6px;
+    margin-bottom: 18px;
+  }
+
+  .filters{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content: space-between;
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    backdrop-filter: blur(10px);
+  }
+
+  .filters-left{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search{
+    flex: 1;
+    min-width: 220px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+  }
+
+  .search i{ color:#9ca3af; }
+  .search input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size: 14px;
+  }
+  .search input::placeholder{ color:#777; }
+
+  .select{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+    color:#fff;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .select select{
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .filters-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-shrink: 0;
+  }
+
+  .mini{
+    font-size: 12px;
+    color:#c7c7c7;
+    opacity: .9;
+    display:flex;
+    gap:10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    text-align:right;
+  }
+  .mini strong{ color:#fff; }
+
+  /* ✅ GRID CARDS */
+  .categories-grid{
+    width:100%;
+    max-width:1100px;
+    padding: 0 60px;
+    box-sizing:border-box;
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .cat-card{
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    backdrop-filter: blur(10px);
+    transition: .2s;
+    min-height: 150px;
+    text-align:left;
+  }
+
+  .cat-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  }
+
+  .card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .cat-title{
+    margin:0;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.25;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .cat-title i{ margin-top: 2px; color:#9ca3af; }
+
+  .cat-id{
+    flex-shrink:0;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:800;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    color:#e7e7e7;
+  }
+
+  .cat-desc{
+    color:#c7c7c7;
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: .95;
+    margin: 0;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    font-size:12px;
+    font-weight:800;
+    color:#e7e7e7;
+    white-space:nowrap;
+  }
+
+  .card-actions{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    align-items:center;
+    margin-top: auto;
+  }
+
+  .icon-btn{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    color:#e7e7e7;
+    text-decoration:none;
+    cursor:pointer;
+    transition: .15s;
+  }
+  .icon-btn:hover{ opacity: .92; transform: translateY(-1px); }
+
+  .icon-btn.warning{
+    background: rgba(245,158,11,.12);
+    border-color: rgba(245,158,11,.25);
+    color:#fde68a;
+  }
+  .icon-btn.danger{
+    background: rgba(239,68,68,.12);
+    border-color: rgba(239,68,68,.25);
+    color:#fecaca;
+  }
+
+  .empty-box{
+    width:100%;
+    max-width:1100px;
+    margin-top: 14px;
+    padding:20px;
+    border-radius:16px;
+    background:rgba(255,255,255,.04);
+    border:1px dashed rgba(255,255,255,.15);
+    color:#888;
+    box-sizing:border-box;
+  }
+
+  @media (max-width: 1100px){
+    .categories-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 900px) {
+    .section-head { padding: 0 20px; }
+    .filters-wrap { padding: 0 20px; }
+    .categories-grid { padding: 0 20px; }
+  }
+
+  @media (max-width: 720px){
+    .categories-grid{ grid-template-columns: 1fr; }
+    .filters{ flex-direction: column; align-items: stretch; }
+    .filters-left{ flex-direction: column; align-items: stretch; }
+    .search{ min-width: 0; }
+    .filters-right{ justify-content: space-between; }
+    .mini{ justify-content: flex-start; text-align:left; }
+  }
 </style>
-<style>
-    /* Table Card */
-    .table-card {
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        overflow-x: auto;
-    }
 
-    /* Table */
-    .aiva-table {
-        width: 100%;
-        border-collapse: collapse;
-        color: #e2e8f0;
-        font-size: 15px;
-    }
+<main class="hero">
+  <div class="glow"></div>
 
-    /* Header */
-    .aiva-table thead {
-        background: rgba(56, 189, 248, 0.15);
-    }
+  <h1 class="hero-title">
+    <i class="fa-solid fa-layer-group" style="color:#00d4aa;"></i>
+    Mes Catégories
+  </h1>
 
-    .aiva-table th {
-        text-align: left;
-        padding: 14px;
-        font-weight: 700;
-        color: #38bdf8;
-        text-transform: uppercase;
-        font-size: 13px;
-        letter-spacing: 1px;
-    }
+  <p class="hero-description">Gérez vos catégories de dépenses.</p>
 
-    /* Rows */
-    .aiva-table td {
-        padding: 14px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
+  <div class="section-head">
+    <h2 class="section-title">Mes catégories</h2>
+    <a class="btn btn-primary" href="{{ path('front_categorie_new') }}">
+      <i class="fa-solid fa-plus"></i> Ajouter
+    </a>
+  </div>
 
-    .aiva-table tr:hover {
-        background: rgba(56, 189, 248, 0.07);
-        transition: 0.3s;
-    }
-
-    /* Strong cell */
-    .cell-strong {
-        font-weight: 700;
-        color: white;
-    }
-
-    /* Actions */
-    .actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    /* Buttons */
-    .front-btn {
-        padding: 6px 12px;
-        border-radius: 10px;
-        background: rgba(56,189,248,0.15);
-        color: #38bdf8;
-        text-decoration: none;
-        font-weight: 600;
-        transition: 0.3s;
-    }
-
-    .front-btn:hover {
-        background: #38bdf8;
-        color: #0f172a;
-    }
-
-    .btn-link--edit {
-        color: #facc15;
-        font-weight: 600;
-        text-decoration: none;
-    }
-
-    .btn-link--edit:hover {
-        text-decoration: underline;
-    }
-
-    .btn-link--delete {
-        color: #f87171;
-        font-weight: 600;
-        border: none;
-        background: none;
-        cursor: pointer;
-    }
-
-    .btn-link--delete:hover {
-        text-decoration: underline;
-    }
-
-    /* Empty message */
-    .front-empty {
-        text-align: center;
-        padding: 20px;
-        color: rgba(226,232,240,0.7);
-        font-style: italic;
-    }
-</style>
- 
-<div class="finance-panel">
-    <div class="finance-panel-head">
-        <div>
-            <h1>Mes catégories</h1>
-            <p>Gérez vos catégories de dépenses.</p>
+  <!-- ✅ Recherche + Tri (nom uniquement) -->
+  <div class="filters-wrap">
+    <div class="filters">
+      <div class="filters-left">
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="catSearch" type="text" placeholder="Rechercher une catégorie..." autocomplete="off">
         </div>
-        <a href="{{ path('front_categorie_new') }}" class="hero-button">
-            Ajouter une catégorie
-        </a>
+
+        <div class="select">
+          <i class="fa-solid fa-arrow-down-a-z"></i>
+          <select id="catSort">
+            <option value="nom">Trier par nom</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filters-right">
+        <button id="catDir" class="btn btn-secondary" type="button" title="Inverser l'ordre">
+          <i class="fa-solid fa-arrow-down-wide-short"></i>
+        </button>
+
+        <div class="mini">
+          <span><strong id="catCountShown">0</strong> affichées</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="table-card">
-        <table class="aiva-table">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for categorie in categories %}
-                    <tr>
-                        <td class="cell-strong">{{ categorie.nomCategorie }}</td>
-                        <td>{{ categorie.description }}</td>
-                        <td>
-                            <div class="actions">
-                                <a href="{{ path('front_categorie_show', {id: categorie.idCategorie}) }}" class="front-btn">
-                                    Voir
-                                </a>
-
-                                <a href="{{ path('front_categorie_edit', {id: categorie.idCategorie}) }}"
-                                   class="btn-link btn-link--edit">
-                                    Modifier
-                                </a>
-
-                                <form method="post"
-                                      action="{{ path('front_categorie_delete', {'id': categorie.idCategorie}) }}"
-                                      onsubmit="return confirm('Supprimer cette catégorie ?');">
-
-                                    <input type="hidden" name="_token"
-                                           value="{{ csrf_token('delete' ~ categorie.idCategorie) }}">
-
-                                    <button type="submit" class="btn-link btn-link--delete">
-                                        Supprimer
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" class="front-empty">
-                            Aucune catégorie. Cliquez sur « Ajouter une catégorie » pour commencer.
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  {% if categories|length == 0 %}
+    <div class="empty-box">
+      Aucune catégorie. Cliquez sur « Ajouter » pour commencer.
     </div>
+  {% else %}
+    <div id="categoriesGrid" class="categories-grid">
+      {% for categorie in categories %}
+        {% set desc = categorie.description ?: '—' %}
 
-    <!-- Bouton Retour -->
-    <p style="margin-top: 20px;">
-        <a href="{{ path('front_categorie_index') }}">← Retour à la page Finance</a>
-           
-    </p>
+        <div class="cat-card"
+             data-nom="{{ categorie.nomCategorie|default('')|lower }}"
+             data-description="{{ desc|lower }}"
+             data-id="{{ categorie.idCategorie }}">
+          <div class="card-top">
+            <h3 class="cat-title">
+              <i class="fa-solid fa-tags"></i>
+              <span>{{ categorie.nomCategorie }}</span>
+            </h3>
+            <span class="cat-id">#{{ categorie.idCategorie }}</span>
+          </div>
 
-</div>
+          <p class="cat-desc">
+            <span class="pill"><i class="fa-solid fa-align-left"></i> Description</span>
+            <br>
+            {{ desc }}
+          </p>
+
+          <div class="card-actions">
+            <a class="icon-btn" href="{{ path('front_categorie_show', {id: categorie.idCategorie}) }}" title="Voir">
+              <i class="fa-regular fa-eye"></i>
+            </a>
+
+            <a class="icon-btn warning" href="{{ path('front_categorie_edit', {id: categorie.idCategorie}) }}" title="Modifier">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+
+            <form method="post"
+                  action="{{ path('front_categorie_delete', {'id': categorie.idCategorie}) }}"
+                  onsubmit="return confirm('Supprimer cette catégorie ?');"
+                  style="margin:0;">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.idCategorie) }}">
+              <button class="icon-btn danger" type="submit" title="Supprimer">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div style="margin-top:20px; width:100%; max-width:1100px; padding:0 60px; box-sizing:border-box; text-align:left;">
+    <a href="{{ path('front_categorie_index') }}" style="color:#00d4aa; text-decoration:none;">
+      ← Retour
+    </a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    const search = document.getElementById('catSearch');
+    const dirBtn  = document.getElementById('catDir');
+    const grid    = document.getElementById('categoriesGrid');
+    if (!grid) return;
+
+    const countShown = document.getElementById('catCountShown');
+    let asc = true; // default: A → Z
+
+    const getCards = () => Array.from(grid.querySelectorAll('.cat-card'));
+    const normalize = (s) => (s || '').toString().toLowerCase().trim();
+
+    function matches(card, q){
+      if (!q) return true;
+      // Search in name + description + id (still ok, sort only by name)
+      const hay = [card.dataset.nom, card.dataset.description, card.dataset.id].join(' ');
+      return hay.includes(q);
+    }
+
+    function apply(){
+      const q = normalize(search.value);
+      const cards = getCards();
+
+      // filter
+      cards.forEach(c => c.style.display = matches(c, q) ? '' : 'none');
+
+      // sort visible only (BY NAME ONLY)
+      const visible = cards.filter(c => c.style.display !== 'none');
+      visible.sort((a,b) => {
+        const base = (a.dataset.nom || '').localeCompare(b.dataset.nom || '');
+        return asc ? base : -base;
+      });
+
+      visible.forEach(c => grid.appendChild(c));
+
+      // count
+      countShown.textContent = visible.length.toString();
+    }
+
+    dirBtn.addEventListener('click', () => {
+      asc = !asc;
+      dirBtn.innerHTML = asc
+        ? '<i class="fa-solid fa-arrow-up-wide-short"></i>'
+        : '<i class="fa-solid fa-arrow-down-wide-short"></i>';
+      apply();
+    });
+
+    search.addEventListener('input', apply);
+
+    apply();
+  })();
+</script>
 
 {% endblock %}

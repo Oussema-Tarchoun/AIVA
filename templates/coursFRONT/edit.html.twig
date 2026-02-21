@@ -1,111 +1,130 @@
 {# templates/coursFRONT/edit.html.twig #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Course - AIVA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Modifier un cours - AIVA</title>
+
+  <!-- Fonts + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="{{ asset('css/stylefront.css') }}">
+
+  <!-- ✅ CSS ajouté مباشرة في نفس الصفحة -->
   <style>
-    /* même styles que new, tu peux factoriser si tu veux */
-    .form-container {
-      max-width: 800px;
-      margin: 2.5rem auto 3rem;
-      padding: 2rem 2.25rem;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95));
-      border-radius: 24px;
-      border: 1.5px solid rgba(100, 116, 139, 0.35);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.75);
-      color: #e2e8f0;
+    /* ✅ FIX INPUT OVERFLOW */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
     }
-    .form-header {
-      margin-bottom: 1.5rem;
-    }
-    .form-header h1 {
-      font-size: 2.1rem;
-      margin-bottom: 0.3rem;
-    }
-    .form-header p {
-      color: #94a3b8;
-      font-size: 0.95rem;
-    }
-    .form-row {
-      margin-bottom: 1rem;
-    }
-    .form-row label {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-size: 0.9rem;
-      color: #cbd5f5;
-    }
-    .form-row input[type="text"],
-    .form-row input[type="number"],
-    .form-row input[type="date"],
-    .form-row select,
-    .form-row textarea {
+
+    /* ✅ FORM INPUTS STYLE */
+    input,
+    textarea,
+    select {
       width: 100%;
-      padding: 0.75rem 0.9rem;
+      max-width: 100%;
+      padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(100, 116, 139, 0.5);
-      background: rgba(15, 23, 42, 0.8);
-      color: #e2e8f0;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-    }
-    .form-row input::placeholder,
-    .form-row textarea::placeholder {
-      color: #64748b;
-    }
-    .form-row input:focus,
-    .form-row textarea:focus,
-    .form-row select:focus {
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.18);
+      color: inherit;
       outline: none;
-      border-color: #00d4aa;
-      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+      font-size: 14px;
     }
-    .form-actions {
-      margin-top: 1.75rem;
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #00d4aa;
+      box-shadow: 0 0 0 3px rgba(0,212,170,.25);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    /* ✅ GLASS CARD */
+    .glass-card {
+      max-width: 900px;
+      margin: 25px auto 0;
+      padding: 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+    }
+
+    /* LABELS */
+    .form-label {
+      font-size: 13px;
+      opacity: .85;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* GRID */
+    .grid-fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    /* ACTION BUTTONS */
+    .actions {
+      margin-top: 18px;
       display: flex;
-      gap: 0.75rem;
+      justify-content: flex-end;
+      gap: 10px;
       flex-wrap: wrap;
     }
-    .btn-outline, .btn-primary {
-      padding: 0.75rem 1.2rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
+
+    .btn-custom {
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 14px;
       font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      transition: all 0.25s ease;
+      gap: 6px;
     }
-    .btn-outline {
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      color: #e5e7eb;
-      background: transparent;
+
+    .btn-cancel {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      color: white;
     }
-    .btn-outline:hover {
-      background: rgba(148, 163, 184, 0.2);
+
+    .btn-cancel:hover {
+      background: rgba(255,255,255,.12);
     }
-    .btn-primary {
-      border: none;
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+
+    .btn-save {
+      background: linear-gradient(135deg, #00d4aa, #a855f7);
       color: #020617;
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
     }
-    .btn-primary:hover {
+
+    .btn-save:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 10px 25px rgba(0,212,170,.25);
     }
   </style>
 </head>
+
 <body>
+
 <div class="container">
-  <!-- Navbar -->
-  <     <!-- Navbar -->
+
+  <!-- ✅ NAVBAR -->
   <nav class="navbar">
     <div class="logo">
       <svg width="32" height="32" viewBox="0 0 100 100">
@@ -123,84 +142,119 @@
     </div>
 
     <div class="nav-links">
-<a href="{{ path('front_activite_index') }}">Activité</a>
-    <a href="{{ path('front_objectif_index') }}">Objectif</a>
-               <a href="{{ path('front_depense_index') }}">depense</a>            
-<a href="{{ path('front_aliment_index') }}">Alimentation</a>
-        <a href="{{ path('cours_front_index') }}">apprentissage</a>
-        <a href="{{ path('front_energie_index') }}">Énergie</a>
-    <a href="{{ path('front_recommandation_index') }}">Recommandation</a>
-
-        </div>
-
-  <a href="{{ path('app_logout') }}" class="nav-link">
-                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
-                            </a>  </nav>
-
-
-  <div class="learning-container">
-    <div class="page-header" style="text-align:left; margin-bottom:1.5rem;">
-      <p style="margin-bottom:0.5rem;">
-        <a href="{{ path('cours_front_index') }}" style="color:#94a3b8; text-decoration:none;">← Back to My Courses</a>
-      </p>
-      <h1>Edit Course</h1>
-      <p>Update the information of your course</p>
+      <a href="{{ path('front_categorie_index') }}">Categorie</a>
+      <a href="{{ path('front_activite_index') }}">Activité</a>
+      <a href="{{ path('front_objectif_index') }}">Objectif</a>
+      <a href="{{ path('front_depense_index') }}">Dépense</a>
+      <a href="{{ path('front_aliment_index') }}">Alimentation</a>
+      <a href="{{ path('cours_front_index') }}" class="active">Apprentissage</a>
+      <a href="{{ path('front_energie_index') }}">Énergie</a>
+      <a href="{{ path('front_recommandation_index') }}">Recommandations</a>
     </div>
 
-    <div class="form-container">
-      <div class="form-header">
-        <h1>Edit {{ cours.tittre }}</h1>
-        <p>Adjust any details you want to change</p>
+    <a href="{{ path('app_logout') }}" class="nav-link">
+      <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </a>
+  </nav>
+
+  <!-- ✅ MAIN -->
+  <main class="hero">
+    <div class="glow"></div>
+
+    <h1 class="hero-title">✏️ Modifier le cours</h1>
+    <p class="hero-description">
+      Mettre à jour les informations de votre cours facilement.
+    </p>
+
+    <!-- ✅ FORM CARD -->
+    <div class="glass-card">
+
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0;font-size:18px;font-weight:700;">
+            {{ cours.tittre }}
+          </h2>
+          <a href="{{ path('cours_front_index') }}"
+             style="font-size:13px;opacity:.75;text-decoration:none;">
+            ← Retour à mes cours
+          </a>
+        </div>
+
+        <span style="
+          padding:6px 12px;
+          border-radius:999px;
+          font-size:12px;
+          font-weight:700;
+          border:1px solid rgba(255,255,255,.18);
+          background: rgba(255,255,255,.06);
+        ">
+          {{ cours.status }}
+        </span>
       </div>
 
+      <!-- Symfony Form -->
       {{ form_start(form) }}
-        {{ form_errors(form) }}
+      {{ form_errors(form) }}
 
-        
-        <div class="form-row">
-          {{ form_label(form.tittre) }}
+      <div style="margin-top:16px;display:grid;gap:14px;">
+
+        <div>
+          <label class="form-label">{{ form_label(form.tittre) }}</label>
           {{ form_widget(form.tittre) }}
-          {{ form_errors(form.tittre) }}
         </div>
-        <div class="form-row">
-          {{ form_label(form.description) }}
-          {{ form_widget(form.description) }}
-          {{ form_errors(form.description) }}
-        </div>
-        <div class="form-row">
-          {{ form_label(form.niveau) }}
-          {{ form_widget(form.niveau) }}
-          {{ form_errors(form.niveau) }}
-        </div>
-        <div class="form-row">
-          {{ form_label(form.dureeEstimee) }}
-          {{ form_widget(form.dureeEstimee) }}
-          {{ form_errors(form.dureeEstimee) }}
-        </div>
-        <div class="form-row">
-          {{ form_label(form.categorie) }}
-          {{ form_widget(form.categorie) }}
-          {{ form_errors(form.categorie) }}
-        </div>
-        <div class="form-row">
-          {{ form_label(form.dateCreation) }}
-          {{ form_widget(form.dateCreation) }}
-          {{ form_errors(form.dateCreation) }}
-        </div>
-        <div class="form-row">
-          {{ form_label(form.status) }}
-          {{ form_widget(form.status) }}
-          {{ form_errors(form.status) }}
-        </div>
-        
 
-        <div class="form-actions">
-          <a href="{{ path('cours_front_index') }}" class="btn-outline">Cancel</a>
-          <button type="submit" class="btn-primary">Save changes</button>
+        <div>
+          <label class="form-label">{{ form_label(form.description) }}</label>
+          {{ form_widget(form.description) }}
         </div>
+
+        <div class="grid-fields">
+
+          <div>
+            <label class="form-label">{{ form_label(form.niveau) }}</label>
+            {{ form_widget(form.niveau) }}
+          </div>
+
+          <div>
+            <label class="form-label">{{ form_label(form.dureeEstimee) }}</label>
+            {{ form_widget(form.dureeEstimee) }}
+          </div>
+
+          <div>
+            <label class="form-label">{{ form_label(form.categorie) }}</label>
+            {{ form_widget(form.categorie) }}
+          </div>
+
+          <div>
+            <label class="form-label">{{ form_label(form.dateCreation) }}</label>
+            {{ form_widget(form.dateCreation) }}
+          </div>
+
+          <div>
+            <label class="form-label">{{ form_label(form.status) }}</label>
+            {{ form_widget(form.status) }}
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a href="{{ path('cours_front_index') }}" class="btn-custom btn-cancel">
+          Annuler
+        </a>
+
+        <button type="submit" class="btn-custom btn-save">
+          <i class="fa-solid fa-floppy-disk"></i> Sauvegarder
+        </button>
+      </div>
+
       {{ form_end(form) }}
     </div>
-  </div>
+
+  </main>
 </div>
+
 </body>
 </html>

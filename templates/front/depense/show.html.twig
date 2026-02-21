@@ -3,18 +3,139 @@
 {% block title %}Détail dépense - AIVA{% endblock %}
 
 {% block content %}
+
+<style>
+  /* ✅ Same glass card theme */
+  .form-card{
+    max-width: 720px;
+    margin: 30px auto 60px;
+    padding: 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+  }
+
+  .form-card h1{
+    margin: 0 0 18px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* details list */
+  .detail-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    color: rgba(226,232,240,.95);
+  }
+
+  .detail-list li{
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.10);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .detail-label{
+    font-weight: 800;
+    opacity: .85;
+  }
+
+  .detail-value{
+    font-weight: 600;
+    color: rgba(255,255,255,.88);
+  }
+
+  /* actions */
+  .form-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top: 18px;
+  }
+
+  .back-link{
+    color: rgba(226,232,240,.85);
+    text-decoration:none;
+    font-weight:600;
+  }
+
+  .back-link:hover{
+    text-decoration: underline;
+  }
+</style>
+
 <div class="form-card">
-    <h1>Détail de la dépense</h1>
-    <ul style="list-style:none; padding:0; color:#e2e8f0;">
-        <li style="margin-bottom:8px;"><strong>Description :</strong> {{ depense.description }}</li>
-        <li style="margin-bottom:8px;"><strong>Montant :</strong> {{ depense.montant }} TND</li>
-        <li style="margin-bottom:8px;"><strong>Date :</strong> {{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}</li>
-        <li style="margin-bottom:8px;"><strong>Statut :</strong> {{ depense.statut }}</li>
-        <li style="margin-bottom:8px;"><strong>Catégorie :</strong> {{ depense.categorie ? depense.categorie.nomCategorie : '-' }}</li>
-    </ul>
-    <div class="form-actions">
-        <a href="{{ path('front_depense_edit', {id: depense.idDepense}) }}" class="hero-button" style="text-decoration:none;">Modifier</a>
-          <a href="{{ path('front_depense_index') }}">← Retour à la page depense</a>
+  <h1>Détail de la dépense</h1>
+
+  <ul class="detail-list">
+    <li>
+      <span class="detail-label">Description :</span>
+      <span class="detail-value">{{ depense.description }}</span>
+    </li>
+
+    <li>
+      <span class="detail-label">Montant :</span>
+      <span class="detail-value">{{ depense.montant }} TND</span>
+    </li>
+
+    <li>
+      <span class="detail-label">Date :</span>
+      <span class="detail-value">
+        {{ depense.dateDepense ? depense.dateDepense|date('d/m/Y') : '-' }}
+      </span>
+    </li>
+
+    <li>
+      <span class="detail-label">Statut :</span>
+      <span class="detail-value">{{ depense.statut }}</span>
+    </li>
+
+    <li>
+      <span class="detail-label">Catégorie :</span>
+      <span class="detail-value">
+        {{ depense.categorie ? depense.categorie.nomCategorie : '-' }}
+      </span>
+    </li>
+  </ul>
+
+  <!-- QR Code Button -->
+  <div style="text-align:center; margin:20px 0;">
+    <button onclick="document.getElementById('qrShowModal').style.display='flex'"
+            style="border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.15); color:#e7e7e7; display:inline-flex; align-items:center; gap:8px;">
+      <i class="fa-solid fa-qrcode"></i> Afficher QR Code
+    </button>
+  </div>
+
+  <!-- QR Modal -->
+  <div id="qrShowModal" onclick="if(event.target===this)this.style.display='none'" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+    <div style="max-width:360px; width:90%; padding:28px; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.15); backdrop-filter:blur(20px); text-align:center; position:relative;">
+      <button onclick="document.getElementById('qrShowModal').style.display='none'" style="position:absolute; top:14px; right:14px; background:none; border:none; color:#888; font-size:20px; cursor:pointer;">&times;</button>
+      <h3 style="margin:0 0 16px; font-size:16px; font-weight:800;"><i class="fa-solid fa-qrcode"></i> {{ depense.description }}</h3>
+      <img src="{{ path('front_depense_qrcode', {id: depense.idDepense}) }}" alt="QR Code" style="border-radius:12px; background:#fff; padding:8px; max-width:250px;">
     </div>
+  </div>
+
+  <div class="form-actions">
+    <a href="{{ path('front_depense_edit', {id: depense.idDepense}) }}"
+       class="hero-button"
+       style="text-decoration:none;">
+      Modifier
+    </a>
+
+    <a class="back-link" href="{{ path('front_depense_index') }}">
+      ← Retour à la page depense
+    </a>
+  </div>
 </div>
+
 {% endblock %}
