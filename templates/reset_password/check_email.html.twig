@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Email - Glass Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1 class="login-title">Check Your Email</h1>
+                    <p class="login-subtitle">We've sent you a password reset link</p>
+                </div>
+
+                <div class="alert alert-success">
+                    <p>If an account exists with the email you provided, you will receive an email with a link to reset your password.</p>
+                    <p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+                </div>
+
+                <p class="login-footer">
+                    <a href="{{ path('app_login') }}">Back to Sign In</a>
+                </p>
+            </div>
+        </div>
+
+        
+    </div>
+</body>
+</html>

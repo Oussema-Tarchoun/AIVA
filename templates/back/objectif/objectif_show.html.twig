@@ -1,0 +1,59 @@
+{% extends 'back/sport/base_back.html.twig' %}
+{% block title %}Détails Objectif{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .page { padding: 28px; max-width: 950px; margin: 0 auto; }
+    .header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom: 18px; }
+    .header h1 { margin:0; font-size: 36px; font-weight: 900; color: rgba(255,255,255,0.95); }
+    .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.20); }
+    .row { display:flex; justify-content:space-between; gap:14px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .row:last-child{ border-bottom:none; }
+    .k { color: rgba(255,255,255,0.65); font-weight: 800; }
+    .v { color: rgba(255,255,255,0.92); font-weight: 700; text-align:right; }
+    .badge { display:inline-flex; align-items:center; gap:8px; padding: 7px 12px; border-radius: 999px; font-weight: 800; font-size: 12px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.90); }
+    .actions { margin-top: 18px; display:flex; gap:12px; flex-wrap:wrap; }
+    .btn { flex:1; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.92); padding: 14px 16px; border-radius: 14px; cursor:pointer; text-decoration:none; font-weight: 800; display:inline-flex; align-items:center; justify-content:center; gap:10px; transition: .25s ease; }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); }
+    .btn-primary { background: rgba(102,126,234,0.20); border-color: rgba(102,126,234,0.35); }
+    .btn-danger { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.25); }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="page">
+    <div class="header">
+        <div>
+            <h1>👁️ Détails Objectif</h1>
+            <div style="color:rgba(255,255,255,0.65); font-weight:700;">#{{ objectif.id }}</div>
+        </div>
+        <a class="btn" style="flex:0 0 auto;" href="{{ path('app_objectif_index') }}">← Retour</a>
+    </div>
+
+    <div class="card">
+        <div class="row"><div class="k">Description</div><div class="v">{{ objectif.description }}</div></div>
+
+        {# ✅ NEW: Utilisateur #}
+        <div class="row">
+            <div class="k">Utilisateur</div>
+            <div class="v"><span class="badge">👤 {{ objectif.user ? objectif.user.name : '—' }}</span></div>
+        </div>
+
+        <div class="row"><div class="k">Type</div><div class="v">{{ objectif.type }}</div></div>
+        <div class="row"><div class="k">Valeur cible</div><div class="v">{{ objectif.valeurCible }}</div></div>
+        <div class="row"><div class="k">Date début</div><div class="v">{{ objectif.dateDebut ? objectif.dateDebut|date('d/m/Y') : '-' }}</div></div>
+        <div class="row"><div class="k">Date fin</div><div class="v">{{ objectif.dateFin ? objectif.dateFin|date('d/m/Y') : '-' }}</div></div>
+        <div class="row"><div class="k">Statut</div><div class="v"><span class="badge">🎯 {{ objectif.statut }}</span></div></div>
+
+        <div class="actions">
+            <a class="btn btn-primary" href="{{ path('app_objectif_edit', {id: objectif.id}) }}">✏️ Modifier</a>
+            <form method="post" action="{{ path('app_objectif_delete', {id: objectif.id}) }}"
+                  onsubmit="return confirm('Supprimer cet objectif ?');" style="flex:1;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ objectif.id) }}">
+                <button class="btn btn-danger" type="submit">🗑️ Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

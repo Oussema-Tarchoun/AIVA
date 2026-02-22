@@ -1,0 +1,84 @@
+{% extends 'back/sport/base_back.html.twig' %}
+{% block title %}Modifier Objectif{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .form-page { padding: 30px; max-width: 800px; margin: 0 auto; }
+    .form-header { margin-bottom: 35px; }
+    .form-header h1 { font-size: 36px; font-weight: 800; color: rgba(255,255,255,0.95); margin:0 0 10px 0; display:flex; gap:12px; align-items:center; }
+    .form-header p { color: rgba(255,255,255,0.6); margin:0; }
+    .form-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.20); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display:block; color: rgba(255,255,255,0.85); font-weight: 800; margin-bottom: 8px; }
+    .required-star { color:#f87171; }
+    .ctrl { width:100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.92); }
+    .ctrl:focus { outline:none; border-color: rgba(102,126,234,0.45); box-shadow: 0 0 0 4px rgba(102,126,234,0.10); }
+    .has-error .ctrl { border-color: rgba(239,68,68,0.55); background: rgba(239,68,68,0.06); }
+    .form-error { color:#f87171; font-weight:700; font-size: 13px; margin-top: 6px; display:flex; gap:6px; align-items:center; }
+    .form-error::before { content:"⚠"; }
+    .actions { display:flex; gap:12px; margin-top: 22px; flex-wrap:wrap; }
+    .btn { flex:1; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.92); padding: 14px 16px; border-radius: 14px; cursor:pointer; text-decoration:none; font-weight: 800; display:inline-flex; align-items:center; justify-content:center; gap:10px; transition: .25s ease; }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); }
+    .btn-primary { background: rgba(102,126,234,0.20); border-color: rgba(102,126,234,0.35); }
+    .btn-primary:hover { background: rgba(102,126,234,0.28); }
+    input[type="date"].ctrl { color-scheme: dark; }
+    textarea.ctrl { min-height: 120px; resize: vertical; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-page">
+    <div class="form-header">
+        <h1>✏️ Modifier Objectif</h1>
+        <p>Mettez à jour les informations de l’objectif</p>
+    </div>
+
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <div class="form-group {% if form.description.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.description.vars.id }}">Description <span class="required-star">*</span></label>
+            {{ form_widget(form.description, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.description.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group {% if form.type.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.type.vars.id }}">Type <span class="required-star">*</span></label>
+            {{ form_widget(form.type, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.type.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group {% if form.valeurCible.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.valeurCible.vars.id }}">Valeur cible <span class="required-star">*</span></label>
+            {{ form_widget(form.valeurCible, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.valeurCible.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group {% if form.dateDebut.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.dateDebut.vars.id }}">Date début <span class="required-star">*</span></label>
+            {{ form_widget(form.dateDebut, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.dateDebut.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group {% if form.dateFin.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.dateFin.vars.id }}">Date fin <span class="required-star">*</span></label>
+            {{ form_widget(form.dateFin, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.dateFin.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group {% if form.statut.vars.errors|length > 0 %}has-error{% endif %}">
+            <label for="{{ form.statut.vars.id }}">Statut <span class="required-star">*</span></label>
+            {{ form_widget(form.statut, {'attr': {'class':'ctrl'}}) }}
+            {% for error in form.statut.vars.errors %}<div class="form-error">{{ error.message }}</div>{% endfor %}
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" type="submit">💾 Enregistrer</button>
+            <a class="btn" href="{{ path('app_objectif_index') }}">← Annuler</a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<?php //easyadmin.routes.fqcn_to_route
+
+return [PHP_INT_MAX, [
+    'App\\Controller\\Admin\\DashboardController' => [
+        '' => [
+            '' => 'admin',
+        ],
+        'App\\Controller\\Admin\\ResetPasswordRequestCrudController' => [
+            'index' => 'admin_reset_password_request_index',
+            'new' => 'admin_reset_password_request_new',
+            'batchDelete' => 'admin_reset_password_request_batch_delete',
+            'autocomplete' => 'admin_reset_password_request_autocomplete',
+            'renderFilters' => 'admin_reset_password_request_render_filters',
+            'edit' => 'admin_reset_password_request_edit',
+            'delete' => 'admin_reset_password_request_delete',
+            'detail' => 'admin_reset_password_request_detail',
+        ],
+        'App\\Controller\\Admin\\UserCrudController' => [
+            'index' => 'admin_user_index',
+            'new' => 'admin_user_new',
+            'batchDelete' => 'admin_user_batch_delete',
+            'autocomplete' => 'admin_user_autocomplete',
+            'renderFilters' => 'admin_user_render_filters',
+            'edit' => 'admin_user_edit',
+            'delete' => 'admin_user_delete',
+            'detail' => 'admin_user_detail',
+        ],
+    ],
+]];

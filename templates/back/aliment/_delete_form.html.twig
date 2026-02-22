@@ -1,0 +1,14 @@
+{#
+  templates/back/aliment/_delete_form.html.twig
+  ✅ method="post" + _method=DELETE  (Symfony http_method_override)
+  ✅ _token CSRF correct
+  ✅ id="delete-form" pour le bouton onclick dans edit.html.twig
+#}
+<form id="delete-form"
+      method="post"
+      action="{{ path('app_aliment_delete', {'id': aliment.id}) }}"
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet aliment ?');">
+
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ aliment.id) }}">
+</form>

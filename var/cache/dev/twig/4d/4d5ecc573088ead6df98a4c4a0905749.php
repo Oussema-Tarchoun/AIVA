@@ -1,0 +1,703 @@
+<?php
+
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Markup;
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Source;
+use Twig\Template;
+use Twig\TemplateWrapper;
+
+/* coursFRONT/index.html.twig */
+class __TwigTemplate_66bf271bb8cebed5cb77c41c5d2b8592 extends Template
+{
+    private Source $source;
+    /**
+     * @var array<string, Template>
+     */
+    private array $macros = [];
+
+    public function __construct(Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->source = $this->getSourceContext();
+
+        $this->parent = false;
+
+        $this->blocks = [
+        ];
+    }
+
+    protected function doDisplay(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "coursFRONT/index.html.twig"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "coursFRONT/index.html.twig"));
+
+        // line 2
+        yield "<!DOCTYPE html>
+<html lang=\"fr\">
+<head>
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <title>Apprentissage - AIVA</title>
+
+  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap\" rel=\"stylesheet\">
+  <link rel=\"stylesheet\" href=\"";
+        // line 10
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("css/stylefront.css"), "html", null, true);
+        yield "\">
+  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\">
+</head>
+
+<body>
+
+<div class=\"container\">
+
+  <!-- ✅ NAVBAR (même que Recommandations) -->
+  <nav class=\"navbar\">
+    <div class=\"logo\">
+      <svg width=\"32\" height=\"32\" viewBox=\"0 0 100 100\">
+        <defs>
+          <linearGradient id=\"grad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">
+            <stop offset=\"0%\" stop-color=\"#a855f7\" />
+            <stop offset=\"50%\" stop-color=\"#00d4aa\" />
+            <stop offset=\"100%\" stop-color=\"#ec4899\" />
+          </linearGradient>
+        </defs>
+        <path d=\"M50 10 L85 80 L15 80 Z\" fill=\"none\" stroke=\"url(#grad)\" stroke-width=\"4\"/>
+        <circle cx=\"50\" cy=\"50\" r=\"10\" fill=\"#00d4aa\"/>
+      </svg>
+      <span class=\"logo-text\">AIVA</span>
+    </div>
+
+    <div class=\"nav-links\">
+      <a href=\"";
+        // line 36
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_categorie_index");
+        yield "\">Categorie</a>
+      <a href=\"";
+        // line 37
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_activite_index");
+        yield "\">Activité</a>
+      <a href=\"";
+        // line 38
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_objectif_index");
+        yield "\">Objectif</a>
+      <a href=\"";
+        // line 39
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_depense_index");
+        yield "\">Dépense</a>
+      <a href=\"";
+        // line 40
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_aliment_index");
+        yield "\">Alimentation</a>
+      <a href=\"";
+        // line 41
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("cours_front_index");
+        yield "\" class=\"active\">Apprentissage</a>
+      <a href=\"";
+        // line 42
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_energie_index");
+        yield "\">Énergie</a>
+      <a href=\"";
+        // line 43
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_recommandation_index");
+        yield "\">Recommandations</a>
+    </div>
+
+    <a href=\"";
+        // line 46
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_logout");
+        yield "\" class=\"nav-link\">
+      <i class=\"fa-solid fa-right-from-bracket\"></i> Déconnexion
+    </a>
+  </nav>
+
+  <!-- ✅ MAIN (même structure que Recommandations) -->
+  <main class=\"hero\">
+    <div class=\"glow\"></div>
+
+    <h1 class=\"hero-title\">📚 Apprentissage</h1>
+    <p class=\"hero-description\">
+      Suivez vos cours, votre progression et atteignez vos objectifs.
+    </p>
+
+    <!-- ✅ BARRE CONTROLES (même look “glass”) -->
+    <div style=\"
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    \">
+      <div style=\"display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1;min-width:260px;\">
+        <div style=\"position:relative;min-width:220px;flex:1;\">
+          <i class=\"fa-solid fa-magnifying-glass\" style=\"position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.7;\"></i>
+          <input
+            type=\"text\"
+            id=\"searchInput\"
+            placeholder=\"Rechercher un cours...\"
+            style=\"
+              width:100%;
+              padding: 10px 12px 10px 36px;
+              border-radius: 12px;
+              border: 1px solid rgba(255,255,255,.12);
+              background: rgba(0,0,0,.15);
+              color: inherit;
+              outline:none;
+            \"
+          >
+        </div>
+
+        <select class=\"filter-select\" id=\"categoryFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Toutes catégories</option>
+          <option value=\"programming\">Programming</option>
+          <option value=\"design\">Design</option>
+          <option value=\"business\">Business</option>
+          <option value=\"language\">Language</option>
+          <option value=\"science\">Science</option>
+        </select>
+
+        <select class=\"filter-select\" id=\"levelFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Tous niveaux</option>
+          <option value=\"beginner\">Beginner</option>
+          <option value=\"intermediate\">Intermediate</option>
+          <option value=\"advanced\">Advanced</option>
+        </select>
+
+        <select class=\"filter-select\" id=\"statusFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Tous statuts</option>
+          <option value=\"active\">Active</option>
+          <option value=\"completed\">Completed</option>
+          <option value=\"draft\">Draft</option>
+        </select>
+      </div>
+
+      <div style=\"display:flex;gap:10px;align-items:center;\">
+        <a href=\"";
+        // line 121
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("chapitre_front_index");
+        yield "\" class=\"btn btn-secondary\" style=\"border-radius:12px;\">
+          <i class=\"fa-solid fa-book\"></i> Tous les chapitres
+        </a>
+
+        <button class=\"btn btn-primary\" style=\"border-radius:12px;\"
+                onclick=\"window.location.href='";
+        // line 126
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("cours_front_new");
+        yield "'\">
+          <i class=\"fa-solid fa-plus\"></i> Ajouter
+        </button>
+      </div>
+    </div>
+
+    <!-- ✅ GRID CARDS (même style que Recommandations) -->
+    <div style=\"
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:20px;
+      margin-top:24px;
+    \" id=\"coursesGrid\">
+
+      ";
+        // line 140
+        if ((array_key_exists("courses", $context) && (Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["courses"]) || array_key_exists("courses", $context) ? $context["courses"] : (function () { throw new RuntimeError('Variable "courses" does not exist.', 140, $this->source); })())) > 0))) {
+            // line 141
+            yield "        ";
+            $context['_parent'] = $context;
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["courses"]) || array_key_exists("courses", $context) ? $context["courses"] : (function () { throw new RuntimeError('Variable "courses" does not exist.', 141, $this->source); })()));
+            foreach ($context['_seq'] as $context["_key"] => $context["cours"]) {
+                // line 142
+                yield "          <div class=\"course-card\"
+               data-category=\"";
+                // line 143
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "categorie", [], "any", false, false, false, 143)), "html", null, true);
+                yield "\"
+               data-level=\"";
+                // line 144
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "niveau", [], "any", false, false, false, 144)), "html", null, true);
+                yield "\"
+               data-status=\"";
+                // line 145
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::lower($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "status", [], "any", false, false, false, 145)), "html", null, true);
+                yield "\"
+               style=\"
+                 position:relative;
+                 padding:18px;
+                 border-radius:18px;
+                 background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+                 border:1px solid rgba(255,255,255,.12);
+                 backdrop-filter: blur(10px);
+                 transition: transform .2s ease, box-shadow .2s ease;
+               \"
+               onmouseover=\"this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,.25)'\"
+               onmouseout=\"this.style.transform='none'; this.style.boxShadow='none'\">
+
+            <div style=\"display:flex;justify-content:space-between;gap:12px;align-items:flex-start;\">
+              <div style=\"min-width:0;\">
+                <div style=\"font-size:17px;font-weight:700;\">
+                  ";
+                // line 161
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "tittre", [], "any", false, false, false, 161), "html", null, true);
+                yield "
+                </div>
+                <div style=\"font-size:13px;opacity:.75;margin-top:6px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;\">
+                  <span><i class=\"fa-solid fa-layer-group\"></i> ";
+                // line 164
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "categorie", [], "any", false, false, false, 164), "html", null, true);
+                yield "</span>
+                  <span>· <i class=\"fa-solid fa-signal\"></i> ";
+                // line 165
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "niveau", [], "any", false, false, false, 165), "html", null, true);
+                yield "</span>
+                  <span>· <i class=\"fa-regular fa-clock\"></i> ";
+                // line 166
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "dureeEstimee", [], "any", false, false, false, 166), "html", null, true);
+                yield "h</span>
+                  <span>· <i class=\"fa-solid fa-book-open\"></i> ";
+                // line 167
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::length($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "chapitres", [], "any", false, false, false, 167)), "html", null, true);
+                yield " chapitres</span>
+                </div>
+              </div>
+
+              <span style=\"
+                padding:6px 12px;
+                border-radius:999px;
+                font-size:12px;
+                font-weight:700;
+                border:1px solid rgba(255,255,255,.18);
+                background: rgba(255,255,255,.06);
+                white-space:nowrap;
+              \">
+                ";
+                // line 180
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "status", [], "any", false, false, false, 180), "html", null, true);
+                yield "
+              </span>
+            </div>
+
+            <div style=\"margin-top:14px;font-size:14px;line-height:1.65;opacity:.95;\">
+              ";
+                // line 185
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "description", [], "any", false, false, false, 185), "html", null, true);
+                yield "
+            </div>
+
+            <div style=\"margin-top:18px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;\">
+              <a href=\"";
+                // line 189
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("cours_front_show", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "id", [], "any", false, false, false, 189)]), "html", null, true);
+                yield "\" class=\"btn btn-secondary\" style=\"border-radius:10px;\">
+                <i class=\"fa-regular fa-eye\"></i>
+              </a>
+
+              <a href=\"";
+                // line 193
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("cours_front_edit", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "id", [], "any", false, false, false, 193)]), "html", null, true);
+                yield "\" class=\"btn btn-secondary\" style=\"border-radius:10px;\">
+                <i class=\"fa-regular fa-pen-to-square\"></i>
+              </a>
+
+              <form method=\"post\"
+                    action=\"";
+                // line 198
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("cours_front_delete", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "id", [], "any", false, false, false, 198)]), "html", null, true);
+                yield "\"
+                    onsubmit=\"return confirm('Supprimer ce cours ?');\">
+                <input type=\"hidden\" name=\"_token\" value=\"";
+                // line 200
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["cours"], "id", [], "any", false, false, false, 200))), "html", null, true);
+                yield "\">
+                <button type=\"submit\" class=\"btn btn-danger\" style=\"border-radius:10px;\">
+                  <i class=\"fa-solid fa-trash\"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_key'], $context['cours'], $context['_parent']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 209
+            yield "      ";
+        } else {
+            // line 210
+            yield "        <div style=\"
+          padding:20px;
+          border-radius:16px;
+          background:rgba(255,255,255,.04);
+          border:1px dashed rgba(255,255,255,.15);
+          grid-column: 1 / -1;
+        \">
+          Aucun cours disponible pour le moment.
+        </div>
+      ";
+        }
+        // line 220
+        yield "    </div>
+
+  </main>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const levelFilter = document.getElementById('levelFilter');
+  const statusFilter = document.getElementById('statusFilter');
+  const coursesGrid = document.getElementById('coursesGrid');
+
+  function filterCourses() {
+    const searchTerm = (searchInput?.value || '').toLowerCase();
+    const category = (categoryFilter?.value || '').toLowerCase();
+    const level = (levelFilter?.value || '').toLowerCase();
+    const status = (statusFilter?.value || '').toLowerCase();
+
+    const cards = coursesGrid.querySelectorAll('.course-card');
+
+    cards.forEach(card => {
+      const title = (card.querySelector('div[style*=\"font-weight:700\"]')?.textContent || '').toLowerCase();
+      const cardCategory = card.dataset.category || '';
+      const cardLevel = card.dataset.level || '';
+      const cardStatus = card.dataset.status || '';
+
+      const matchesSearch = title.includes(searchTerm);
+      const matchesCategory = !category || cardCategory === category;
+      const matchesLevel = !level || cardLevel === level;
+      const matchesStatus = !status || cardStatus === status;
+
+      card.style.display = (matchesSearch && matchesCategory && matchesLevel && matchesStatus) ? 'block' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', filterCourses);
+  categoryFilter?.addEventListener('change', filterCourses);
+  levelFilter?.addEventListener('change', filterCourses);
+  statusFilter?.addEventListener('change', filterCourses);
+</script>
+
+</body>
+</html>
+";
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getTemplateName(): string
+    {
+        return "coursFRONT/index.html.twig";
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function isTraitable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getDebugInfo(): array
+    {
+        return array (  360 => 220,  348 => 210,  345 => 209,  330 => 200,  325 => 198,  317 => 193,  310 => 189,  303 => 185,  295 => 180,  279 => 167,  275 => 166,  271 => 165,  267 => 164,  261 => 161,  242 => 145,  238 => 144,  234 => 143,  231 => 142,  226 => 141,  224 => 140,  207 => 126,  199 => 121,  121 => 46,  115 => 43,  111 => 42,  107 => 41,  103 => 40,  99 => 39,  95 => 38,  91 => 37,  87 => 36,  58 => 10,  48 => 2,);
+    }
+
+    public function getSourceContext(): Source
+    {
+        return new Source("{# templates/coursFRONT/index.html.twig #}
+<!DOCTYPE html>
+<html lang=\"fr\">
+<head>
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <title>Apprentissage - AIVA</title>
+
+  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap\" rel=\"stylesheet\">
+  <link rel=\"stylesheet\" href=\"{{ asset('css/stylefront.css') }}\">
+  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\">
+</head>
+
+<body>
+
+<div class=\"container\">
+
+  <!-- ✅ NAVBAR (même que Recommandations) -->
+  <nav class=\"navbar\">
+    <div class=\"logo\">
+      <svg width=\"32\" height=\"32\" viewBox=\"0 0 100 100\">
+        <defs>
+          <linearGradient id=\"grad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">
+            <stop offset=\"0%\" stop-color=\"#a855f7\" />
+            <stop offset=\"50%\" stop-color=\"#00d4aa\" />
+            <stop offset=\"100%\" stop-color=\"#ec4899\" />
+          </linearGradient>
+        </defs>
+        <path d=\"M50 10 L85 80 L15 80 Z\" fill=\"none\" stroke=\"url(#grad)\" stroke-width=\"4\"/>
+        <circle cx=\"50\" cy=\"50\" r=\"10\" fill=\"#00d4aa\"/>
+      </svg>
+      <span class=\"logo-text\">AIVA</span>
+    </div>
+
+    <div class=\"nav-links\">
+      <a href=\"{{ path('front_categorie_index') }}\">Categorie</a>
+      <a href=\"{{ path('front_activite_index') }}\">Activité</a>
+      <a href=\"{{ path('front_objectif_index') }}\">Objectif</a>
+      <a href=\"{{ path('front_depense_index') }}\">Dépense</a>
+      <a href=\"{{ path('front_aliment_index') }}\">Alimentation</a>
+      <a href=\"{{ path('cours_front_index') }}\" class=\"active\">Apprentissage</a>
+      <a href=\"{{ path('front_energie_index') }}\">Énergie</a>
+      <a href=\"{{ path('front_recommandation_index') }}\">Recommandations</a>
+    </div>
+
+    <a href=\"{{ path('app_logout') }}\" class=\"nav-link\">
+      <i class=\"fa-solid fa-right-from-bracket\"></i> Déconnexion
+    </a>
+  </nav>
+
+  <!-- ✅ MAIN (même structure que Recommandations) -->
+  <main class=\"hero\">
+    <div class=\"glow\"></div>
+
+    <h1 class=\"hero-title\">📚 Apprentissage</h1>
+    <p class=\"hero-description\">
+      Suivez vos cours, votre progression et atteignez vos objectifs.
+    </p>
+
+    <!-- ✅ BARRE CONTROLES (même look “glass”) -->
+    <div style=\"
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    \">
+      <div style=\"display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1;min-width:260px;\">
+        <div style=\"position:relative;min-width:220px;flex:1;\">
+          <i class=\"fa-solid fa-magnifying-glass\" style=\"position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.7;\"></i>
+          <input
+            type=\"text\"
+            id=\"searchInput\"
+            placeholder=\"Rechercher un cours...\"
+            style=\"
+              width:100%;
+              padding: 10px 12px 10px 36px;
+              border-radius: 12px;
+              border: 1px solid rgba(255,255,255,.12);
+              background: rgba(0,0,0,.15);
+              color: inherit;
+              outline:none;
+            \"
+          >
+        </div>
+
+        <select class=\"filter-select\" id=\"categoryFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Toutes catégories</option>
+          <option value=\"programming\">Programming</option>
+          <option value=\"design\">Design</option>
+          <option value=\"business\">Business</option>
+          <option value=\"language\">Language</option>
+          <option value=\"science\">Science</option>
+        </select>
+
+        <select class=\"filter-select\" id=\"levelFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Tous niveaux</option>
+          <option value=\"beginner\">Beginner</option>
+          <option value=\"intermediate\">Intermediate</option>
+          <option value=\"advanced\">Advanced</option>
+        </select>
+
+        <select class=\"filter-select\" id=\"statusFilter\"
+                style=\"padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);color:inherit;\">
+          <option value=\"\">Tous statuts</option>
+          <option value=\"active\">Active</option>
+          <option value=\"completed\">Completed</option>
+          <option value=\"draft\">Draft</option>
+        </select>
+      </div>
+
+      <div style=\"display:flex;gap:10px;align-items:center;\">
+        <a href=\"{{ path('chapitre_front_index') }}\" class=\"btn btn-secondary\" style=\"border-radius:12px;\">
+          <i class=\"fa-solid fa-book\"></i> Tous les chapitres
+        </a>
+
+        <button class=\"btn btn-primary\" style=\"border-radius:12px;\"
+                onclick=\"window.location.href='{{ path('cours_front_new') }}'\">
+          <i class=\"fa-solid fa-plus\"></i> Ajouter
+        </button>
+      </div>
+    </div>
+
+    <!-- ✅ GRID CARDS (même style que Recommandations) -->
+    <div style=\"
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:20px;
+      margin-top:24px;
+    \" id=\"coursesGrid\">
+
+      {% if courses is defined and courses|length > 0 %}
+        {% for cours in courses %}
+          <div class=\"course-card\"
+               data-category=\"{{ cours.categorie|lower }}\"
+               data-level=\"{{ cours.niveau|lower }}\"
+               data-status=\"{{ cours.status|lower }}\"
+               style=\"
+                 position:relative;
+                 padding:18px;
+                 border-radius:18px;
+                 background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+                 border:1px solid rgba(255,255,255,.12);
+                 backdrop-filter: blur(10px);
+                 transition: transform .2s ease, box-shadow .2s ease;
+               \"
+               onmouseover=\"this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,.25)'\"
+               onmouseout=\"this.style.transform='none'; this.style.boxShadow='none'\">
+
+            <div style=\"display:flex;justify-content:space-between;gap:12px;align-items:flex-start;\">
+              <div style=\"min-width:0;\">
+                <div style=\"font-size:17px;font-weight:700;\">
+                  {{ cours.tittre }}
+                </div>
+                <div style=\"font-size:13px;opacity:.75;margin-top:6px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;\">
+                  <span><i class=\"fa-solid fa-layer-group\"></i> {{ cours.categorie }}</span>
+                  <span>· <i class=\"fa-solid fa-signal\"></i> {{ cours.niveau }}</span>
+                  <span>· <i class=\"fa-regular fa-clock\"></i> {{ cours.dureeEstimee }}h</span>
+                  <span>· <i class=\"fa-solid fa-book-open\"></i> {{ cours.chapitres|length }} chapitres</span>
+                </div>
+              </div>
+
+              <span style=\"
+                padding:6px 12px;
+                border-radius:999px;
+                font-size:12px;
+                font-weight:700;
+                border:1px solid rgba(255,255,255,.18);
+                background: rgba(255,255,255,.06);
+                white-space:nowrap;
+              \">
+                {{ cours.status }}
+              </span>
+            </div>
+
+            <div style=\"margin-top:14px;font-size:14px;line-height:1.65;opacity:.95;\">
+              {{ cours.description }}
+            </div>
+
+            <div style=\"margin-top:18px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;\">
+              <a href=\"{{ path('cours_front_show', {'id': cours.id}) }}\" class=\"btn btn-secondary\" style=\"border-radius:10px;\">
+                <i class=\"fa-regular fa-eye\"></i>
+              </a>
+
+              <a href=\"{{ path('cours_front_edit', {'id': cours.id}) }}\" class=\"btn btn-secondary\" style=\"border-radius:10px;\">
+                <i class=\"fa-regular fa-pen-to-square\"></i>
+              </a>
+
+              <form method=\"post\"
+                    action=\"{{ path('cours_front_delete', {'id': cours.id}) }}\"
+                    onsubmit=\"return confirm('Supprimer ce cours ?');\">
+                <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ cours.id) }}\">
+                <button type=\"submit\" class=\"btn btn-danger\" style=\"border-radius:10px;\">
+                  <i class=\"fa-solid fa-trash\"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style=\"
+          padding:20px;
+          border-radius:16px;
+          background:rgba(255,255,255,.04);
+          border:1px dashed rgba(255,255,255,.15);
+          grid-column: 1 / -1;
+        \">
+          Aucun cours disponible pour le moment.
+        </div>
+      {% endif %}
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const levelFilter = document.getElementById('levelFilter');
+  const statusFilter = document.getElementById('statusFilter');
+  const coursesGrid = document.getElementById('coursesGrid');
+
+  function filterCourses() {
+    const searchTerm = (searchInput?.value || '').toLowerCase();
+    const category = (categoryFilter?.value || '').toLowerCase();
+    const level = (levelFilter?.value || '').toLowerCase();
+    const status = (statusFilter?.value || '').toLowerCase();
+
+    const cards = coursesGrid.querySelectorAll('.course-card');
+
+    cards.forEach(card => {
+      const title = (card.querySelector('div[style*=\"font-weight:700\"]')?.textContent || '').toLowerCase();
+      const cardCategory = card.dataset.category || '';
+      const cardLevel = card.dataset.level || '';
+      const cardStatus = card.dataset.status || '';
+
+      const matchesSearch = title.includes(searchTerm);
+      const matchesCategory = !category || cardCategory === category;
+      const matchesLevel = !level || cardLevel === level;
+      const matchesStatus = !status || cardStatus === status;
+
+      card.style.display = (matchesSearch && matchesCategory && matchesLevel && matchesStatus) ? 'block' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', filterCourses);
+  categoryFilter?.addEventListener('change', filterCourses);
+  levelFilter?.addEventListener('change', filterCourses);
+  statusFilter?.addEventListener('change', filterCourses);
+</script>
+
+</body>
+</html>
+", "coursFRONT/index.html.twig", "C:\\Users\\User\\Desktop\\projetpiTEST2\\projetpi (1)\\projetpi\\templates\\coursFRONT\\index.html.twig");
+    }
+}

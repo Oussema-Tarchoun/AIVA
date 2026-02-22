@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Glass Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/templatemo-glass-admin-style.css') }}">
+    <style>
+        .field-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 500;
+        }
+        .form-input.error {
+            border-color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="login-page">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-float" id="theme-toggle" title="Toggle Light/Dark Mode">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/>
+                <path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/>
+                <path d="M2 12h2"/><path d="M20 12h2"/>
+                <path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </button>
+
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1 class="login-title">Welcome Back</h1>
+                    <p class="login-subtitle">Sign in to continue to GlassDash</p>
+                </div>
+
+                {% if error %}
+                    <div class="alert alert-error">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="alert alert-success">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <form method="post" action="{{ path('app_login') }}" id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="inputEmail">Email Address</label>
+                        <input type="email" 
+                               id="inputEmail" 
+                               name="email" 
+                               class="form-input" 
+                               value="{{ last_username }}"
+                               placeholder="Enter your email" 
+                               autocomplete="email"
+                               autofocus>
+                        <span class="field-error" id="emailError">Please enter your email address</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="inputPassword">Password</label>
+                        <input type="password" 
+                               id="inputPassword" 
+                               name="password" 
+                               class="form-input" 
+                               placeholder="Enter your password"
+                               autocomplete="current-password">
+                        <span class="field-error" id="passwordError">Please enter your password</span>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="form-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="_remember_me">
+                            Remember me
+                        </label>
+                       <a href="{{ path('app_forgot_password_request') }}" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Sign In
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <p class="login-footer">
+                    Don't have an account? <a href="{{ path('app_register') }}">Create Account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/templatemo-glass-admin-script.js') }}"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            // Clear previous errors
+            document.querySelectorAll('.field-error').forEach(error => error.style.display = 'none');
+            document.querySelectorAll('.form-input').forEach(input => input.classList.remove('error'));
+
+            let hasError = false;
+
+            // Validate email
+            const email = document.getElementById('inputEmail');
+            if (!email.value.trim()) {
+                document.getElementById('emailError').style.display = 'block';
+                email.classList.add('error');
+                hasError = true;
+            } else if (!isValidEmail(email.value)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                document.getElementById('emailError').style.display = 'block';
+                email.classList.add('error');
+                hasError = true;
+            }
+
+            // Validate password
+            const password = document.getElementById('inputPassword');
+            if (!password.value.trim()) {
+                document.getElementById('passwordError').style.display = 'block';
+                password.classList.add('error');
+                hasError = true;
+            }
+
+            // Prevent form submission if there are errors
+            if (hasError) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Email validation function
+        function isValidEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Remove error on input
+        document.getElementById('inputEmail').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('emailError').style.display = 'none';
+        });
+
+        document.getElementById('inputPassword').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('passwordError').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

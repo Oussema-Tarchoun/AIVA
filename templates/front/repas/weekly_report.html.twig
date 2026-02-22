@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport Nutrition AIVA</title>
+<style>
+  /* ── Reset ── */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Wrapper ── */
+  .wrapper {
+    max-width: 620px;
+    margin: 30px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a2f 100%);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .header .logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: #4ade80;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+  }
+  .header .date {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(74,222,128,.12);
+    border: 1px solid rgba(74,222,128,.3);
+    border-radius: 20px;
+    padding: 5px 16px;
+    color: #4ade80;
+    font-size: 12px;
+  }
+
+  /* ── Greeting ── */
+  .greeting {
+    padding: 24px 32px 0;
+    font-size: 16px;
+    color: #374151;
+  }
+  .greeting strong { color: #0f172a; }
+
+  /* ── Score ── */
+  .score-section {
+    margin: 24px 32px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+  .score-ring {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 5px solid;
+    line-height: 80px;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .score-label {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .score-resume {
+    color: #64748b;
+    font-size: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* ── Stats ── */
+  .stats-row {
+    display: table;
+    width: calc(100% - 64px);
+    margin: 0 32px 24px;
+    border-collapse: separate;
+    border-spacing: 10px 0;
+  }
+  .stat-cell {
+    display: table-cell;
+    width: 33%;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 900; color: #0f172a; }
+  .stat-label { font-size: 11px; color: #94a3b8; margin-top: 3px; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* ── Sections ── */
+  .section {
+    margin: 0 32px 22px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #64748b;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 7px;
+  }
+  .item-pos  { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
+  .item-neg  { background: #fffbeb; border-left: 3px solid #d97706; color: #78350f; }
+  .item-tip  { background: #faf5ff; border-left: 3px solid #7c3aed; color: #3b0764; }
+  .item-day  {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 7px;
+    display: table;
+    width: 100%;
+  }
+  .day-name {
+    display: table-cell;
+    font-weight: 700;
+    color: #475569;
+    font-size: 13px;
+    width: 90px;
+    vertical-align: top;
+    padding-top: 1px;
+  }
+  .day-comment {
+    display: table-cell;
+    font-size: 13px;
+    color: #374151;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    text-align: center;
+    margin: 10px 32px 30px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00d4aa, #a855f7);
+    color: #0f172a !important;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 12px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 20px 32px;
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .footer a { color: #64748b; }
+
+  /* ── Score colors ── */
+  .c-excellent { color: #00d4aa; border-color: #00d4aa; }
+  .c-bon       { color: #60a5fa; border-color: #60a5fa; }
+  .c-moyen     { color: #f59e0b; border-color: #f59e0b; }
+  .c-faible    { color: #ef4444; border-color: #ef4444; }
+
+  @media (max-width: 480px) {
+    .stats-row { display: block; }
+    .stat-cell { display: block; width: 100%; margin-bottom: 8px; }
+    .wrapper { margin: 0; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  {# ── HEADER ── #}
+  <div class="header">
+    <div class="logo">AIVA</div>
+    <div class="subtitle">Votre assistant nutrition intelligent</div>
+    <div class="date">Rapport du {{ "now"|date("d/m/Y") }}</div>
+  </div>
+
+  {# ── GREETING ── #}
+  <div class="greeting">
+    Bonjour <strong>{{ user.name ?? user.email }}</strong> 👋<br>
+    Voici votre rapport nutritionnel hebdomadaire généré par l'IA AIVA.
+  </div>
+
+  {# ── SCORE ── #}
+  {% set score = analyse.score_semaine ?? 0 %}
+  {% if score >= 80 %}
+    {% set scoreClass = 'c-excellent' %}{% set scoreLabel = 'Excellent' %}
+  {% elseif score >= 60 %}
+    {% set scoreClass = 'c-bon' %}{% set scoreLabel = 'Bon' %}
+  {% elseif score >= 40 %}
+    {% set scoreClass = 'c-moyen' %}{% set scoreLabel = 'Moyen' %}
+  {% else %}
+    {% set scoreClass = 'c-faible' %}{% set scoreLabel = 'Faible' %}
+  {% endif %}
+
+  <div class="score-section">
+    <div class="score-ring {{ scoreClass }}">{{ score }}</div>
+    <div class="score-label {{ scoreClass }}">{{ scoreLabel }} — {{ score }}/100</div>
+    <div class="score-resume">{{ analyse.resume ?? '' }}</div>
+  </div>
+
+  {# ── STATS ── #}
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-value">{{ stats.totalRepas }}</div>
+      <div class="stat-label">Repas</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-value">{{ stats.totalJours }}</div>
+      <div class="stat-label">Jours</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-value" style="color:#f59e0b;">{{ stats.moyenneCals }}</div>
+      <div class="stat-label">kcal/jour moy.</div>
+    </div>
+  </div>
+
+  {# ── POINTS POSITIFS ── #}
+  {% if analyse.points_positifs|default([])|length > 0 %}
+  <div class="section">
+    <div class="section-title">✅ Points positifs</div>
+    {% for point in analyse.points_positifs %}
+      <div class="item item-pos">{{ point }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── À AMÉLIORER ── #}
+  {% if analyse.points_amelioration|default([])|length > 0 %}
+  <div class="section">
+    <div class="section-title">⚠️ À améliorer</div>
+    {% for point in analyse.points_amelioration %}
+      <div class="item item-neg">{{ point }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── ANALYSE PAR JOUR ── #}
+  {% if analyse.analyse_par_jour|default([])|length > 0 %}
+  <div class="section">
+    <div class="section-title">📅 Analyse par jour</div>
+    {% for jour in analyse.analyse_par_jour %}
+      <div class="item-day">
+        <div class="day-name">{{ jour.jour }}</div>
+        <div class="day-comment">{{ jour.commentaire }}</div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── CONSEILS ── #}
+  {% if analyse.conseils|default([])|length > 0 %}
+  <div class="section">
+    <div class="section-title">💡 Conseils personnalisés</div>
+    {% for conseil in analyse.conseils %}
+      <div class="item item-tip">{{ conseil }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── CTA ── #}
+  <div class="cta-section">
+    <a href="{{ app.request.schemeAndHttpHost }}/nutrition/repas" class="cta-btn">
+      🥗 Voir mes repas
+    </a>
+  </div>
+
+  {# ── FOOTER ── #}
+  <div class="footer">
+    Envoi automatique : <strong>Dimanche à 20h00</strong> ({{ 'EMAIL_DEMO' in constant('PHP_MAJOR_VERSION') ? 'démo' : 'actif' }})<br>
+    <br>
+    Vous recevez cet email car vous êtes inscrit sur AIVA.<br>
+    <a href="{{ app.request.schemeAndHttpHost }}/nutrition/repas">Accéder à AIVA</a>
+    &nbsp;·&nbsp;
+    © {{ "now"|date("Y") }} AIVA Nutrition
+  </div>
+
+</div>
+</body>
+</html>

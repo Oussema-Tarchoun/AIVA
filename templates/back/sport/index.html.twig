@@ -1,0 +1,165 @@
+{% extends 'back/sport/base_back.html.twig' %}
+
+{% block title %}Gestion des Activités{% endblock %}
+
+{% block body %}
+{% set currentSort = sort|default('id') %}
+{% set currentDir  = dir|default('desc') %}
+
+<div class="page-header">
+    <div class="page-title">🏃 Gestion des Activités</div>
+    <div class="page-breadcrumb">
+        <a href="#">Dashboard</a> <span>/</span> <span>Activités</span>
+    </div>
+</div>
+
+{# ✅ STATS CARDS #}
+<div class="stats-grid">
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Total activités</h3>
+                <div class="stat-value">{{ activites|length }}</div>
+            </div>
+            <div class="stat-icon cyan">🏃</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Calories totales</h3>
+                <div class="stat-value">{{ activites|reduce((carry, a) => carry + a.caloriesBrulees, 0) }}</div>
+            </div>
+            <div class="stat-icon magenta">🔥</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Durée totale (min)</h3>
+                <div class="stat-value">{{ activites|reduce((carry, a) => carry + a.duree, 0) }}</div>
+            </div>
+            <div class="stat-icon success">⏱</div>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card glass-card-3d">
+        <div class="stat-card-inner">
+            <div class="stat-info">
+                <h3>Intensité élevée</h3>
+                <div class="stat-value">{{ activites|filter(a => a.intensite == 'elevee')|length }}</div>
+            </div>
+            <div class="stat-icon purple">⚡</div>
+        </div>
+    </div>
+</div>
+
+{# ✅ TABLE CARD #}
+<div class="glass-card table-card">
+    <div class="card-header" style="gap:16px; flex-wrap:wrap;">
+        <div>
+            <div class="card-title">📋 Liste des activités</div>
+        </div>
+
+        {# ✅ Buttons (API + New) #}
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-left:auto;">
+            <a class="card-btn" href="{{ path('back_api_meteo') }}">🌦️ Météo</a>
+            <a class="card-btn active" href="{{ path('back_sport_new') }}">➕ Nouvelle activité</a>
+        </div>
+    </div>
+
+    {# ✅ SEARCH + TRI #}
+    <form method="get" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+        <input
+            class="search-input"
+            style="width:360px; max-width:100%;"
+            name="search"
+            value="{{ search|default('') }}"
+            placeholder="Rechercher (type / intensité / durée / calories / objectif)..."
+        >
+
+        <select class="settings-select" name="sort">
+            <option value="id" {{ currentSort == 'id' ? 'selected' : '' }}>Tri: ID</option>
+            <option value="type" {{ currentSort == 'type' ? 'selected' : '' }}>Tri: Type</option>
+            <option value="intensite" {{ currentSort == 'intensite' ? 'selected' : '' }}>Tri: Intensité</option>
+            <option value="duree" {{ currentSort == 'duree' ? 'selected' : '' }}>Tri: Durée</option>
+            <option value="caloriesBrulees" {{ currentSort == 'caloriesBrulees' ? 'selected' : '' }}>Tri: Calories</option>
+            <option value="date" {{ currentSort == 'date' ? 'selected' : '' }}>Tri: Date</option>
+            <option value="objectif" {{ currentSort == 'objectif' ? 'selected' : '' }}>Tri: Objectif</option>
+        </select>
+
+        <select class="settings-select" name="dir">
+            <option value="asc" {{ currentDir == 'asc' ? 'selected' : '' }}>Ascendant ▲</option>
+            <option value="desc" {{ currentDir == 'desc' ? 'selected' : '' }}>Descendant ▼</option>
+        </select>
+
+        <button class="card-btn active" type="submit">🔎 Rechercher</button>
+        <a class="card-btn" href="{{ path('back_sport_index') }}">↻ Reset</a>
+    </form>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Objectif</th>
+                    <th>Intensité</th>
+                    <th>Durée</th>
+                    <th>Calories</th>
+                    <th>Date</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for a in activites %}
+                <tr>
+                    <td style="color:var(--text-primary); font-weight:600;">
+                        {{ a.type }}
+                    </td>
+
+                    <td>
+                        <span class="status-badge processing">
+                            🎯 {{ a.objectif ? a.objectif.description : '—' }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {% if a.intensite == 'elevee' %}
+                            <span class="status-badge completed">⚡ élevée</span>
+                        {% elseif a.intensite == 'moyenne' %}
+                            <span class="status-badge processing">⏳ moyenne</span>
+                        {% else %}
+                            <span class="status-badge pending">🌿 faible</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="table-amount">{{ a.duree }} min</td>
+                    <td class="table-amount">{{ a.caloriesBrulees }}</td>
+                    <td>{{ a.date ? a.date|date('d/m/Y') : '-' }}</td>
+
+                    <td style="text-align:right;">
+                        <a class="card-btn active" href="{{ path('back_sport_edit',{id:a.id}) }}">✏️</a>
+
+                        <form method="post" action="{{ path('back_sport_delete',{id:a.id}) }}"
+                              style="display:inline-block;"
+                              onsubmit="return confirm('Supprimer cette activité ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~a.id) }}">
+                            <button class="card-btn" style="border-color:rgba(220,38,38,.35); color:#ffb4b4;" type="submit">🗑</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" style="padding:18px; color:var(--text-secondary);">
+                        Aucune activité
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

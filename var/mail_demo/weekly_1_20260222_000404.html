@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport Nutrition AIVA</title>
+<style>
+  /* ── Reset ── */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Wrapper ── */
+  .wrapper {
+    max-width: 620px;
+    margin: 30px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a2f 100%);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .header .logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: #4ade80;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+  }
+  .header .date {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(74,222,128,.12);
+    border: 1px solid rgba(74,222,128,.3);
+    border-radius: 20px;
+    padding: 5px 16px;
+    color: #4ade80;
+    font-size: 12px;
+  }
+
+  /* ── Greeting ── */
+  .greeting {
+    padding: 24px 32px 0;
+    font-size: 16px;
+    color: #374151;
+  }
+  .greeting strong { color: #0f172a; }
+
+  /* ── Score ── */
+  .score-section {
+    margin: 24px 32px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+  .score-ring {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 5px solid;
+    line-height: 80px;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .score-label {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .score-resume {
+    color: #64748b;
+    font-size: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* ── Stats ── */
+  .stats-row {
+    display: table;
+    width: calc(100% - 64px);
+    margin: 0 32px 24px;
+    border-collapse: separate;
+    border-spacing: 10px 0;
+  }
+  .stat-cell {
+    display: table-cell;
+    width: 33%;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 900; color: #0f172a; }
+  .stat-label { font-size: 11px; color: #94a3b8; margin-top: 3px; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* ── Sections ── */
+  .section {
+    margin: 0 32px 22px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #64748b;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 7px;
+  }
+  .item-pos  { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
+  .item-neg  { background: #fffbeb; border-left: 3px solid #d97706; color: #78350f; }
+  .item-tip  { background: #faf5ff; border-left: 3px solid #7c3aed; color: #3b0764; }
+  .item-day  {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 7px;
+    display: table;
+    width: 100%;
+  }
+  .day-name {
+    display: table-cell;
+    font-weight: 700;
+    color: #475569;
+    font-size: 13px;
+    width: 90px;
+    vertical-align: top;
+    padding-top: 1px;
+  }
+  .day-comment {
+    display: table-cell;
+    font-size: 13px;
+    color: #374151;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    text-align: center;
+    margin: 10px 32px 30px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00d4aa, #a855f7);
+    color: #0f172a !important;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 12px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 20px 32px;
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .footer a { color: #64748b; }
+
+  /* ── Score colors ── */
+  .c-excellent { color: #00d4aa; border-color: #00d4aa; }
+  .c-bon       { color: #60a5fa; border-color: #60a5fa; }
+  .c-moyen     { color: #f59e0b; border-color: #f59e0b; }
+  .c-faible    { color: #ef4444; border-color: #ef4444; }
+
+  @media (max-width: 480px) {
+    .stats-row { display: block; }
+    .stat-cell { display: block; width: 100%; margin-bottom: 8px; }
+    .wrapper { margin: 0; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="header">
+    <div class="logo">AIVA</div>
+    <div class="subtitle">Votre assistant nutrition intelligent</div>
+    <div class="date">Rapport du 22/02/2026</div>
+  </div>
+
+    <div class="greeting">
+    Bonjour <strong>qws</strong> 👋<br>
+    Voici votre rapport nutritionnel hebdomadaire généré par l'IA AIVA.
+  </div>
+
+            
+  <div class="score-section">
+    <div class="score-ring c-bon">60</div>
+    <div class="score-label c-bon">Bon — 60/100</div>
+    <div class="score-resume">L&#039;alimentation de l&#039;utilisateur est généralement équilibrée, mais nécessite quelques ajustements pour améliorer la qualité des repas.</div>
+  </div>
+
+    <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Repas</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-value">2</div>
+      <div class="stat-label">Jours</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-value" style="color:#f59e0b;">1236</div>
+      <div class="stat-label">kcal/jour moy.</div>
+    </div>
+  </div>
+
+      <div class="section">
+    <div class="section-title">✅ Points positifs</div>
+          <div class="item item-pos">La consommation de calories est relativement élevée, ce qui peut aider à soutenir l&#039;énergie physique.</div>
+          <div class="item item-pos">L&#039;inclusion de protéines dans les repas est généralement bonne, avec des quantités variées entre 18,9g et 59g.</div>
+          <div class="item item-pos">La variété des aliments consommés est bonne, avec des choix de fruits de mer, de légumes et de céréales.</div>
+          <div class="item item-pos">La consommation de calories est relativement faible le samedi, ce qui peut aider à favoriser une journée de récupération.</div>
+      </div>
+  
+      <div class="section">
+    <div class="section-title">⚠️ À améliorer</div>
+          <div class="item item-neg">La consommation de glucides est relativement élevée, ce qui peut contribuer à un pic de sucre dans le sang. Il est recommandé de choisir des sources de glucides complexes.</div>
+          <div class="item item-neg">La consommation de graisses est relativement faible, ce qui peut contribuer à un manque d&#039;énergie. Il est recommandé d&#039;inclure des sources de graisses saines dans les repas.</div>
+          <div class="item item-neg">La consommation de fibres est relativement faible, ce qui peut contribuer à des problèmes digestifs. Il est recommandé d&#039;inclure des sources de fibres dans les repas.</div>
+          <div class="item item-neg">La consommation de calories est relativement élevée, ce qui peut contribuer à un gain de poids. Il est recommandé de surveiller la consommation de calories et de faire des ajustements pour atteindre un objectif de poids souhaité.</div>
+      </div>
+  
+      <div class="section">
+    <div class="section-title">📅 Analyse par jour</div>
+          <div class="item-day">
+        <div class="day-name">Friday (2026-02-20)</div>
+        <div class="day-comment">Le repas du soir est riche en calories et en glucides, mais il est recommandé d&#039;inclure des sources de graisses saines et de fibres pour améliorer la qualité du repas.</div>
+      </div>
+          <div class="item-day">
+        <div class="day-name">Saturday (2026-02-21)</div>
+        <div class="day-comment">Le repas du soir est léger et riche en glucides, mais il est recommandé d&#039;inclure des sources de protéines et de graisses saines pour améliorer la qualité du repas.</div>
+      </div>
+      </div>
+  
+      <div class="section">
+    <div class="section-title">💡 Conseils personnalisés</div>
+          <div class="item item-tip">Inclure des sources de graisses saines dans les repas, telles que les noix, les graines et les huiles végétales.</div>
+          <div class="item item-tip">Inclure des sources de fibres dans les repas, telles que les légumes, les fruits et les céréales complètes.</div>
+          <div class="item item-tip">Surveiller la consommation de calories et faire des ajustements pour atteindre un objectif de poids souhaité.</div>
+          <div class="item item-tip">Choisir des sources de glucides complexes, telles que les céréales complètes, les légumes et les fruits.</div>
+          <div class="item item-tip">Inclure des sources de protéines dans les repas, telles que les viandes, les poissons, les œufs et les légumineuses.</div>
+      </div>
+  
+    <div class="cta-section">
+    <a href="http://127.0.0.1:8000/nutrition/repas" class="cta-btn">
+      🥗 Voir mes repas
+    </a>
+  </div>
+
+    <div class="footer">
+    Envoi automatique : <strong>Dimanche à 20h00</strong> (actif)<br>
+    <br>
+    Vous recevez cet email car vous êtes inscrit sur AIVA.<br>
+    <a href="http://127.0.0.1:8000/nutrition/repas">Accéder à AIVA</a>
+    &nbsp;·&nbsp;
+    © 2026 AIVA Nutrition
+  </div>
+
+</div>
+</body>
+</html>
